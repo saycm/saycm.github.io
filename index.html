@@ -307,6 +307,7 @@
             transition: all 0.3s;
             border: 1px solid transparent;
             min-width: 0;
+            position: relative;
         }
         
         .site-card:hover {
@@ -499,6 +500,119 @@
             border-color: #667eea !important;
             box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
+        
+        /* 拖动样式 */
+        .site-card.dragging {
+            opacity: 0.5;
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .site-card.drag-over {
+            border: 2px dashed #667eea;
+            background: #f0f7ff;
+        }
+        
+        .sites-grid.drag-active {
+            cursor: grabbing;
+        }
+        
+        .drag-handle {
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            cursor: grab;
+            opacity: 0.5;
+        }
+        
+        .site-card.drag-mode .drag-handle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .site-card.drag-mode {
+            position: relative;
+        }
+
+        /* 删除按钮样式 */
+        .delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(255,71,87,0.4);
+            z-index: 100;
+        }
+
+        .edit-mode .delete-btn {
+            display: flex;
+        }
+
+        .delete-btn:hover {
+            background: #ff3344;
+            transform: scale(1.1);
+        }
+
+        .add-card-btn-inline:hover {
+            transform: scale(1.1);
+        }
+
+        /* 分区标题的删除按钮 */
+        .subsection-delete-btn {
+            display: none;
+            margin-left: 10px;
+            padding: 4px 10px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .edit-mode .subsection-delete-btn {
+            display: inline-block;
+        }
+
+        .subsection-delete-btn:hover {
+            background: #ff3344;
+        }
+
+        /* 分区删除确认 */
+        .subsection-add-btn {
+            display: none;
+            margin-left: 10px;
+            padding: 4px 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .edit-mode .subsection-add-btn {
+            display: inline-block;
+        }
+
+        .subsection-add-btn:hover {
+            background: #5568d3;
+        }
     </style>
 </head>
 <body>
@@ -518,6 +632,8 @@
                 <a href="#">在线便笺</a>
                 <a href="#">留言板</a>
                 <button id="editLinksBtn" onclick="toggleEditMode()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(102,126,234,0.3); transition: all 0.3s; margin-left: 10px;">✏️ 编辑链接</button>
+                <button id="dragModeBtn" onclick="toggleDragMode()" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(17,153,142,0.3); transition: all 0.3s; margin-left: 6px;">🔄 拖动排序</button>
+                <button id="addCardBtn" onclick="openAddCardModal()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(245,87,108,0.3); transition: all 0.3s; margin-left: 6px;">➕ 添加卡片</button>
             </div>
         </div>
     </nav>
@@ -568,12 +684,13 @@
             </div>
             
             <div class="sidebar-section">
-                <div class="sidebar-title">设计资源</div>
+                <div class="sidebar-title">实用工具</div>
                 <ul class="sidebar-menu">
                     <li><a href="#">在线设计</a></li>
                     <li><a href="#">免费图标</a></li>
                     <li><a href="#">图片素材</a></li>
                     <li><a href="#">设计字体</a></li>
+                    <li><a href="#">刷机专区</a></li>
                 </ul>
             </div>
         </aside>
@@ -627,7 +744,7 @@
                             </div>
                         </a>
                         <a href="https://www.c5game.com" class="site-card" target="_blank">
-                            <img src="https://www.c5game.com/favicon.ico" class="site-icon-img" alt="C5" onerror="this.src='https://www.google.com/s2/favicons?domain=c5game.com'">
+                            <img src="https://www.google.com/s2/favicons?domain=c5game.com&sz=128" class="site-icon-img" alt="C5">
                             <div class="site-info">
                                 <div class="site-name">C5GAME</div>
                                 <div class="site-desc">交易+价格查询</div>
@@ -790,7 +907,161 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- 视频专区 -->
+            <div class="video-section" id="video-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                <div class="category-header" style="margin-bottom: 25px;">
+                    <h2 class="category-title" style="font-size: 22px;">🎬 视频专区</h2>
+                </div>
+
+                <!-- 综合视频 -->
+                <div class="video-subsection" id="video-general" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">📺 综合视频</h3>
+                    <div class="sites-grid video-grid">
+                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
+                            <div class="site-info">
+                                <div class="site-name">哔哩哔哩</div>
+                                <div class="site-desc">国内最大弹幕视频网站</div>
+                            </div>
+                        </a>
+                        <a href="https://www.youtube.com" class="site-card" target="_blank">
+                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="YouTube">
+                            <div class="site-info">
+                                <div class="site-name">YouTube</div>
+                                <div class="site-desc">全球最大视频平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.douyin.com" class="site-card" target="_blank">
+                            <img src="https://www.douyin.com/favicon.ico" class="site-icon-img" alt="抖音">
+                            <div class="site-info">
+                                <div class="site-name">抖音</div>
+                                <div class="site-desc">短视频平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.kuaishou.com" class="site-card" target="_blank">
+                            <img src="https://www.kuaishou.com/favicon.ico" class="site-icon-img" alt="快手">
+                            <div class="site-info">
+                                <div class="site-name">快手</div>
+                                <div class="site-desc">短视频社区</div>
+                            </div>
+                        </a>
+                        <a href="https://v.qq.com" class="site-card" target="_blank">
+                            <img src="https://v.qq.com/favicon.ico" class="site-icon-img" alt="腾讯视频">
+                            <div class="site-info">
+                                <div class="site-name">腾讯视频</div>
+                                <div class="site-desc">正版高清视频</div>
+                            </div>
+                        </a>
+                        <a href="https://www.iqiyi.com" class="site-card" target="_blank">
+                            <img src="https://www.iqiyi.com/favicon.ico" class="site-icon-img" alt="爱奇艺">
+                            <div class="site-info">
+                                <div class="site-name">爱奇艺</div>
+                                <div class="site-desc">海量影视资源</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 影视追剧 -->
+                <div class="video-subsection" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">🎭 影视追剧</h3>
+                    <div class="sites-grid video-grid">
+                        <a href="https://www.youku.com" class="site-card" target="_blank">
+                            <img src="https://www.youku.com/favicon.ico" class="site-icon-img" alt="优酷">
+                            <div class="site-info">
+                                <div class="site-name">优酷</div>
+                                <div class="site-desc">视频服务平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.mgtv.com" class="site-card" target="_blank">
+                            <img src="https://www.mgtv.com/favicon.ico" class="site-icon-img" alt="芒果TV">
+                            <div class="site-info">
+                                <div class="site-name">芒果TV</div>
+                                <div class="site-desc">湖南卫视综艺</div>
+                            </div>
+                        </a>
+                        <a href="https://www.netflix.com" class="site-card" target="_blank">
+                            <img src="https://www.netflix.com/favicon.ico" class="site-icon-img" alt="Netflix">
+                            <div class="site-info">
+                                <div class="site-name">Netflix</div>
+                                <div class="site-desc">全球流媒体巨头</div>
+                            </div>
+                        </a>
+                        <a href="https://www.disneyplus.com" class="site-card" target="_blank">
+                            <img src="https://www.disneyplus.com/favicon.ico" class="site-icon-img" alt="Disney+">
+                            <div class="site-info">
+                                <div class="site-name">Disney+</div>
+                                <div class="site-desc">迪士尼流媒体</div>
+                            </div>
+                        </a>
+                        <a href="https://www.hbomax.com" class="site-card" target="_blank">
+                            <img src="https://www.hbomax.com/favicon.ico" class="site-icon-img" alt="HBO">
+                            <div class="site-info">
+                                <div class="site-name">HBO Max</div>
+                                <div class="site-desc">美剧影视平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.hulu.com" class="site-card" target="_blank">
+                            <img src="https://www.hulu.com/favicon.ico" class="site-icon-img" alt="Hulu">
+                            <div class="site-info">
+                                <div class="site-name">Hulu</div>
+                                <div class="site-desc">美国视频网站</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 直播 -->
+                <div class="video-subsection">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #96ceb4;">📡 直播平台</h3>
+                    <div class="sites-grid video-grid">
+                        <a href="https://www.huya.com" class="site-card" target="_blank">
+                            <img src="https://www.huya.com/favicon.ico" class="site-icon-img" alt="虎牙">
+                            <div class="site-info">
+                                <div class="site-name">虎牙直播</div>
+                                <div class="site-desc">游戏直播平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.douyu.com" class="site-card" target="_blank">
+                            <img src="https://www.douyu.com/favicon.ico" class="site-icon-img" alt="斗鱼">
+                            <div class="site-info">
+                                <div class="site-name">斗鱼直播</div>
+                                <div class="site-desc">游戏娱乐直播</div>
+                            </div>
+                        </a>
+                        <a href="https://www.twitch.tv" class="site-card" target="_blank">
+                            <img src="https://www.twitch.tv/favicon.ico" class="site-icon-img" alt="Twitch">
+                            <div class="site-info">
+                                <div class="site-name">Twitch</div>
+                                <div class="site-desc">国外游戏直播</div>
+                            </div>
+                        </a>
+                        <a href="https://live.bilibili.com" class="site-card" target="_blank">
+                            <img src="https://live.bilibili.com/favicon.ico" class="site-icon-img" alt="B站直播">
+                            <div class="site-info">
+                                <div class="site-name">B站直播</div>
+                                <div class="site-desc">哔哩哔哩直播</div>
+                            </div>
+                        </a>
+                        <a href="https://www.yy.com" class="site-card" target="_blank">
+                            <img src="https://www.yy.com/favicon.ico" class="site-icon-img" alt="YY">
+                            <div class="site-info">
+                                <div class="site-name">YY直播</div>
+                                <div class="site-desc">语音视频直播</div>
+                            </div>
+                        </a>
+                        <a href="https://www.zhanqi.tv" class="site-card" target="_blank">
+                            <img src="https://www.zhanqi.tv/favicon.ico" class="site-icon-img" alt="战旗">
+                            <div class="site-info">
+                                <div class="site-name">战旗直播</div>
+                                <div class="site-desc">游戏直播平台</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <!-- 省钱购物 -->
             <div class="cs2-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
                 <div class="category-header" style="margin-bottom: 25px;">
@@ -2453,6 +2724,188 @@
                     </a>
                 </div>
             </div>
+
+            <!-- 刷机专区 -->
+            <div class="category-section" id="flash" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📱 刷机专区</h2>
+                </div>
+
+                <!-- 通用刷机工具 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #667eea;">🔧 通用刷机工具</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.miui.com" class="site-card" target="_blank">
+                            <img src="https://www.miui.com/favicon.ico" class="site-icon-img" alt="MIUI">
+                            <div class="site-info">
+                                <div class="site-name">MIUI 官网</div>
+                                <div class="site-desc">小米官方系统下载，卡刷线刷教程</div>
+                            </div>
+                        </a>
+                        <a href="https://www.coloros.com" class="site-card" target="_blank">
+                            <img src="https://www.coloros.com/favicon.ico" class="site-icon-img" alt="ColorOS">
+                            <div class="site-info">
+                                <div class="site-name">ColorOS</div>
+                                <div class="site-desc">OPPO/一加/Realme官方系统</div>
+                            </div>
+                        </a>
+                        <a href="https://www.hihonor.com" class="site-card" target="_blank">
+                            <img src="https://www.hihonor.com/favicon.ico" class="site-icon-img" alt="荣耀">
+                            <div class="site-info">
+                                <div class="site-name">荣耀官网</div>
+                                <div class="site-desc">华为荣耀官方系统下载</div>
+                            </div>
+                        </a>
+                        <a href="https://www.samsung.com/cn" class="site-card" target="_blank">
+                            <img src="https://www.samsung.com/favicon.ico" class="site-icon-img" alt="三星">
+                            <div class="site-info">
+                                <div class="site-name">三星官网</div>
+                                <div class="site-desc">三星官方固件和刷机工具</div>
+                            </div>
+                        </a>
+                        <a href="https://www.vivo.com" class="site-card" target="_blank">
+                            <img src="https://www.vivo.com/favicon.ico" class="site-icon-img" alt="vivo">
+                            <div class="site-info">
+                                <div class="site-name">vivo 官网</div>
+                                <div class="site-desc">vivo官方系统下载和教程</div>
+                            </div>
+                        </a>
+                        <a href="https://www.lenovo.com" class="site-card" target="_blank">
+                            <img src="https://www.lenovo.com/favicon.ico" class="site-icon-img" alt="联想">
+                            <div class="site-info">
+                                <div class="site-name">联想官网</div>
+                                <div class="site-desc">联想/摩托罗拉官方系统</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 第三方Recovery -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">📦 第三方Recovery</h3>
+                    <div class="sites-grid">
+                        <a href="https://twrp.me" class="site-card" target="_blank">
+                            <img src="https://twrp.me/favicon.ico" class="site-icon-img" alt="TWRP">
+                            <div class="site-info">
+                                <div class="site-name">TWRP 官网</div>
+                                <div class="site-desc">最流行的第三方Recovery</div>
+                            </div>
+                        </a>
+                        <a href="https://orangefox.download" class="site-card" target="_blank">
+                            <img src="https://orangefox.download/favicon.ico" class="site-icon-img" alt="OrangeFox">
+                            <div class="site-info">
+                                <div class="site-name">OrangeFox</div>
+                                <div class="site-desc">小米专用第三方Recovery</div>
+                            </div>
+                        </a>
+                        <a href="https://www.phhusson.com" class="site-card" target="_blank">
+                            <img src="https://www.phhusson.com/favicon.ico" class="site-icon-img" alt="phhusson">
+                            <div class="site-info">
+                                <div class="site-name">phhusson's TREBLE</div>
+                                <div class="site-desc">通用系统镜像和Recovery</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 第三方ROM -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">🚀 第三方ROM</h3>
+                    <div class="sites-grid">
+                        <a href="https://xiaomi.eu" class="site-card" target="_blank">
+                            <img src="https://xiaomi.eu/favicon.ico" class="site-icon-img" alt="Xiaomi.eu">
+                            <div class="site-info">
+                                <div class="site-name">Xiaomi.eu</div>
+                                <div class="site-desc">MIUI国际版，精简无广告</div>
+                            </div>
+                        </a>
+                        <a href="https://lineageos.org" class="site-card" target="_blank">
+                            <img src="https://lineageos.org/favicon.ico" class="site-icon-img" alt="LineageOS">
+                            <div class="site-info">
+                                <div class="site-name">LineageOS</div>
+                                <div class="site-desc">最流行的第三方安卓系统</div>
+                            </div>
+                        </a>
+                        <a href="https://crdroid.net" class="site-card" target="_blank">
+                            <img src="https://crdroid.net/favicon.ico" class="site-icon-img" alt="crDroid">
+                            <div class="site-info">
+                                <div class="site-name">crDroid</div>
+                                <div class="site-desc">注重稳定性的第三方ROM</div>
+                            </div>
+                        </a>
+                        <a href="https://evolution-x.org" class="site-card" target="_blank">
+                            <img src="https://evolution-x.org/favicon.ico" class="site-icon-img" alt="Evolution X">
+                            <div class="site-info">
+                                <div class="site-name">Evolution X</div>
+                                <div class="site-desc">功能丰富的第三方ROM</div>
+                            </div>
+                        </a>
+                        <a href="https://pixelexperience.org" class="site-card" target="_blank">
+                            <img src="https://pixelexperience.org/favicon.ico" class="site-icon-img" alt="PixelExperience">
+                            <div class="site-info">
+                                <div class="site-name">PixelExperience</div>
+                                <div class="site-desc">类原生体验的第三方ROM</div>
+                            </div>
+                        </a>
+                        <a href="https://www.resurrectionremix.com" class="site-card" target="_blank">
+                            <img src="https://www.resurrectionremix.com/favicon.ico" class="site-icon-img" alt="ResurrectionRemix">
+                            <div class="site-info">
+                                <div class="site-name">ResurrectionRemix</div>
+                                <div class="site-desc">高度可定制的第三方ROM</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 刷机教程社区 -->
+                <div>
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">📖 刷机教程社区</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.rom.cn" class="site-card" target="_blank">
+                            <img src="https://www.rom.cn/favicon.ico" class="site-icon-img" alt="刷机之家">
+                            <div class="site-info">
+                                <div class="site-name">刷机之家</div>
+                                <div class="site-desc">安卓刷机教程和资源下载</div>
+                            </div>
+                        </a>
+                        <a href="https://www.imobile.com.cn" class="site-card" target="_blank">
+                            <img src="https://www.imobile.com.cn/favicon.ico" class="site-icon-img" alt="iMobile">
+                            <div class="site-info">
+                                <div class="site-name">iMobile</div>
+                                <div class="site-desc">专业手机论坛，刷机教程</div>
+                            </div>
+                        </a>
+                        <a href="https://www.weibo.com" class="site-card" target="_blank">
+                            <img src="https://www.weibo.com/favicon.ico" class="site-icon-img" alt="微博">
+                            <div class="site-info">
+                                <div class="site-name">微博数码</div>
+                                <div class="site-desc">数码博主分享刷机经验</div>
+                            </div>
+                        </a>
+                        <a href="https://tieba.baidu.com" class="site-card" target="_blank">
+                            <img src="https://tieba.baidu.com/favicon.ico" class="site-icon-img" alt="百度贴吧">
+                            <div class="site-info">
+                                <div class="site-name">百度贴吧</div>
+                                <div class="site-desc">各机型刷机贴吧交流</div>
+                            </div>
+                        </a>
+                        <a href="https://www.zhihu.com" class="site-card" target="_blank">
+                            <img src="https://www.zhihu.com/favicon.ico" class="site-icon-img" alt="知乎">
+                            <div class="site-info">
+                                <div class="site-name">知乎</div>
+                                <div class="site-desc">刷机相关问答和教程</div>
+                            </div>
+                        </a>
+                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
+                            <div class="site-info">
+                                <div class="site-name">B站视频</div>
+                                <div class="site-desc">刷机视频教程大全</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
             
             <!-- 省钱能手 -->
             <div class="category-section" id="moneysaver" style="display: none;">
@@ -2707,12 +3160,34 @@
         function loadSavedLinks() {
             const savedLinks = localStorage.getItem('customLinks');
             if (savedLinks) {
-                const links = JSON.parse(savedLinks);
-                document.querySelectorAll('.site-card').forEach((card, index) => {
-                    if (links[index]) {
-                        card.href = links[index];
+                try {
+                    const links = JSON.parse(savedLinks);
+                    const mainCards = Array.from(document.querySelectorAll('.site-card')).filter(card => !card.closest('.video-section'));
+                    
+                    // 检查数据完整性：如果链接数量与卡片数量不匹配，清除损坏的数据
+                    if (links.length !== mainCards.length) {
+                        console.log('检测到 localStorage 数据损坏（链接数量不匹配），清除缓存...');
+                        localStorage.removeItem('customLinks');
+                        localStorage.removeItem('customNames');
+                        localStorage.removeItem('customDescs');
+                        localStorage.removeItem('customIcons');
+                        return;
                     }
-                });
+                    
+                    document.querySelectorAll('.site-card').forEach((card, index) => {
+                        if (card.closest('.video-section')) return; // 跳过视频专区卡片
+                        if (links[index]) {
+                            card.href = links[index];
+                        }
+                    });
+                } catch (e) {
+                    // JSON 解析失败，清除损坏数据
+                    console.log('检测到 localStorage 数据损坏（JSON解析失败），清除缓存...');
+                    localStorage.removeItem('customLinks');
+                    localStorage.removeItem('customNames');
+                    localStorage.removeItem('customDescs');
+                    localStorage.removeItem('customIcons');
+                }
             }
         }
         
@@ -2737,28 +3212,376 @@
 
         // 启用编辑模式
         function enableEditMode() {
+            // 给主内容区添加编辑模式class
+            document.querySelector('.main-content').classList.add('edit-mode');
+
+            // 给每个卡片添加删除按钮
             document.querySelectorAll('.site-card').forEach(card => {
+                if (!card.querySelector('.delete-btn')) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = '×';
+                    deleteBtn.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteCard(this.parentElement);
+                    };
+                    card.appendChild(deleteBtn);
+                }
                 card.addEventListener('click', handleCardClick, true);
                 card.style.cursor = 'pointer';
             });
-            showToast('编辑模式已开启，点击任意卡片进行编辑');
+
+            showToast('编辑模式已开启，点击卡片编辑或删除');
         }
 
         // 禁用编辑模式
         function disableEditMode() {
+            document.querySelector('.main-content').classList.remove('edit-mode');
+
             document.querySelectorAll('.site-card').forEach(card => {
                 card.removeEventListener('click', handleCardClick, true);
                 card.style.cursor = '';
+                // 移除删除按钮
+                const deleteBtn = card.querySelector('.delete-btn');
+                if (deleteBtn) deleteBtn.remove();
             });
+
             closeEditModal();
+        }
+
+        // ==================== 删除卡片功能 ====================
+        function deleteCard(card) {
+            if (confirm('确定要删除这个卡片吗？')) {
+                card.remove();
+                showToast('卡片已删除！');
+                // 延迟保存，确保DOM更新
+                setTimeout(() => saveAllData(), 500);
+            }
+        }
+
+        // ==================== 添加卡片功能 ====================
+        let currentTargetGrid = null;
+
+        function openAddCardModal(grid) {
+            currentTargetGrid = grid;
+            const subsection = grid.closest('.cs2-subsection, .video-subsection, .category-section, .cs2-section, .video-section');
+            let subsectionName = '';
+            if (subsection) {
+                const titleEl = subsection.querySelector('h2, h3');
+                subsectionName = titleEl ? titleEl.textContent.trim() : '';
+            }
+
+            const modal = document.createElement('div');
+            modal.id = 'addCardModal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+
+            modal.innerHTML = `
+                <div style="background: #fff; border-radius: 16px; padding: 30px; width: 420px; max-width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                    <h3 style="margin: 0 0 20px 0; font-size: 18px; color: #333;">➕ 添加卡片</h3>
+                    <p style="margin: 0 0 15px 0; font-size: 12px; color: #999;">添加到：${subsectionName || '默认分区'}</p>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500;">网站名称 *</label>
+                        <input type="text" id="addName" placeholder="例如：哔哩哔哩" style="width: 100%; padding: 10px 12px; border: 2px solid #e8e8e8; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500;">网站描述</label>
+                        <input type="text" id="addDesc" placeholder="网站简短描述" style="width: 100%; padding: 10px 12px; border: 2px solid #e8e8e8; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500;">网址链接 *</label>
+                        <input type="text" id="addLink" placeholder="https://example.com" style="width: 100%; padding: 10px 12px; border: 2px solid #e8e8e8; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500;">图标URL</label>
+                        <input type="text" id="addIcon" placeholder="留空则使用默认图标" style="width: 100%; padding: 10px 12px; border: 2px solid #e8e8e8; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;">
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button onclick="closeAddCardModal()" style="padding: 10px 20px; background: #f0f0f0; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">取消</button>
+                        <button onclick="confirmAddCard()" style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">确认添加</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // ESC键关闭
+            modal.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeAddCardModal();
+            });
+        }
+
+        function closeAddCardModal() {
+            const modal = document.getElementById('addCardModal');
+            if (modal) modal.remove();
+            currentTargetGrid = null;
+        }
+
+        function confirmAddCard() {
+            const name = document.getElementById('addName').value.trim();
+            const desc = document.getElementById('addDesc').value.trim();
+            const link = document.getElementById('addLink').value.trim();
+            const icon = document.getElementById('addIcon').value.trim();
+
+            if (!name) {
+                alert('请输入网站名称！');
+                return;
+            }
+            if (!link) {
+                alert('请输入网址链接！');
+                return;
+            }
+            if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                link = 'https://' + link;
+            }
+
+            // 生成图标URL
+            const iconUrl = icon || `https://www.google.com/s2/favicons?domain=${link.replace(/^https?:\/\//, '')}&sz=64`;
+
+            // 创建新卡片
+            const newCard = document.createElement('a');
+            newCard.href = link;
+            newCard.className = 'site-card';
+            newCard.target = '_blank';
+            newCard.innerHTML = `
+                <img src="${iconUrl}" class="site-icon-img" alt="${name}" onerror="this.src='https://www.google.com/s2/favicons?domain=${link.replace(/^https?:\/\//, '')}'">
+                <div class="site-info">
+                    <div class="site-name">${name}</div>
+                    <div class="site-desc">${desc || '暂无描述'}</div>
+                </div>
+            `;
+
+            // 添加删除按钮（如果已开启编辑模式）
+            if (isEditMode) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '×';
+                deleteBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    deleteCard(this.parentElement);
+                };
+                newCard.appendChild(deleteBtn);
+                newCard.addEventListener('click', handleCardClick, true);
+                newCard.style.cursor = 'pointer';
+            }
+
+            // 添加到目标grid
+            if (currentTargetGrid) {
+                currentTargetGrid.appendChild(newCard);
+            }
+
+            closeAddCardModal();
+            showToast('卡片添加成功！');
+            setTimeout(() => saveAllData(), 500);
+        }
+
+        // ==================== 拖动排序功能 ====================
+        let isDragMode = false;
+        let draggedCard = null;
+        let draggedGrid = null;
+
+        // 切换拖动模式
+        function toggleDragMode() {
+            isDragMode = !isDragMode;
+            const btn = document.getElementById('dragModeBtn');
+            const editBtn = document.getElementById('editLinksBtn');
+
+            if (isDragMode) {
+                btn.textContent = '✅ 完成拖动';
+                btn.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%)';
+                // 退出编辑模式
+                if (isEditMode) {
+                    isEditMode = false;
+                    editBtn.textContent = '✏️ 编辑链接';
+                    editBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    disableEditMode();
+                }
+                enableDragMode();
+            } else {
+                btn.textContent = '🔄 拖动排序';
+                btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                disableDragMode();
+                saveDragOrder();
+            }
+        }
+
+        // 启用拖动模式
+        function enableDragMode() {
+            document.querySelectorAll('.sites-grid').forEach(grid => {
+                grid.classList.add('drag-active');
+                grid.querySelectorAll('.site-card').forEach(card => {
+                    card.setAttribute('draggable', 'true');
+                    card.classList.add('drag-mode');
+                    
+                    // 拖动事件
+                    card.addEventListener('dragstart', handleDragStart);
+                    card.addEventListener('dragend', handleDragEnd);
+                    card.addEventListener('dragover', handleDragOver);
+                    card.addEventListener('dragenter', handleDragEnter);
+                    card.addEventListener('dragleave', handleDragLeave);
+                    card.addEventListener('drop', handleDrop);
+                });
+            });
+            showToast('拖动模式已开启，拖动卡片可调整顺序');
+        }
+
+        // 禁用拖动模式
+        function disableDragMode() {
+            document.querySelectorAll('.sites-grid').forEach(grid => {
+                grid.classList.remove('drag-active');
+                grid.querySelectorAll('.site-card').forEach(card => {
+                    card.removeAttribute('draggable');
+                    card.classList.remove('drag-mode');
+                    card.classList.remove('drag-over');
+                    
+                    card.removeEventListener('dragstart', handleDragStart);
+                    card.removeEventListener('dragend', handleDragEnd);
+                    card.removeEventListener('dragover', handleDragOver);
+                    card.removeEventListener('dragenter', handleDragEnter);
+                    card.removeEventListener('dragleave', handleDragLeave);
+                    card.removeEventListener('drop', handleDrop);
+                });
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedCard = this;
+            draggedGrid = this.parentElement;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.site-card').forEach(card => {
+                card.classList.remove('drag-over');
+            });
+            draggedCard = null;
+            draggedGrid = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            if (this !== draggedCard) {
+                this.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (this !== draggedCard && this.parentElement === draggedGrid) {
+                // 获取两个卡片的位置
+                const allCards = Array.from(draggedGrid.querySelectorAll('.site-card'));
+                const fromIndex = allCards.indexOf(draggedCard);
+                const toIndex = allCards.indexOf(this);
+
+                if (fromIndex !== toIndex) {
+                    // 移动卡片
+                    if (fromIndex < toIndex) {
+                        draggedGrid.insertBefore(draggedCard, this.nextSibling);
+                    } else {
+                        draggedGrid.insertBefore(draggedCard, this);
+                    }
+                }
+            }
+            this.classList.remove('drag-over');
+        }
+
+        // 保存拖动排序
+        function saveDragOrder() {
+            const grids = document.querySelectorAll('.sites-grid');
+            const orderData = {};
+
+            grids.forEach((grid, gridIndex) => {
+                const gridId = grid.closest('.cs2-subsection, .video-subsection, .category-section, .cs2-section')?.id || `grid-${gridIndex}`;
+                const cards = grid.querySelectorAll('.site-card');
+                const cardOrder = [];
+
+                cards.forEach(card => {
+                    // 使用卡片的关键信息作为标识
+                    const name = card.querySelector('.site-name')?.textContent || '';
+                    const link = card.href || '';
+                    cardOrder.push({ name, link });
+                });
+
+                if (cardOrder.length > 0) {
+                    orderData[gridId] = cardOrder;
+                }
+            });
+
+            localStorage.setItem('cardOrder', JSON.stringify(orderData));
+            console.log('拖动排序已保存');
+            showToast('排序已保存！');
+        }
+
+        // 加载拖动排序
+        function loadDragOrder() {
+            const savedOrder = localStorage.getItem('cardOrder');
+            if (!savedOrder) return;
+
+            try {
+                const orderData = JSON.parse(savedOrder);
+                const grids = document.querySelectorAll('.sites-grid');
+
+                grids.forEach(grid => {
+                    const gridId = grid.closest('.cs2-subsection, .video-subsection, .category-section, .cs2-section')?.id || `grid-${Array.from(grids).indexOf(grid)}`;
+                    const targetOrder = orderData[gridId];
+
+                    if (!targetOrder) return;
+
+                    const cards = Array.from(grid.querySelectorAll('.site-card'));
+                    const orderedCards = [];
+
+                    targetOrder.forEach(target => {
+                        const card = cards.find(c => {
+                            const name = c.querySelector('.site-name')?.textContent || '';
+                            return name === target.name;
+                        });
+                        if (card) orderedCards.push(card);
+                    });
+
+                    // 添加未在排序中的卡片（保持原有顺序）
+                    cards.forEach(card => {
+                        if (!orderedCards.includes(card)) {
+                            orderedCards.push(card);
+                        }
+                    });
+
+                    // 重新排列卡片
+                    orderedCards.forEach(card => {
+                        grid.appendChild(card);
+                    });
+                });
+            } catch (e) {
+                console.log('加载拖动排序失败:', e);
+            }
         }
 
         // 处理卡片点击
         function handleCardClick(e) {
             if (!isEditMode) return;
-            e.preventDefault();
-            e.stopPropagation();
-            openEditModal(this);
+            // 点击删除按钮时不处理
+            if (e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) {
+                return; // 不阻止冒泡，让按钮正常响应
+            }
+            // 只有直接点击卡片本身才打开编辑
+            if (e.target === this || e.target.closest('.site-info')) {
+                e.preventDefault();
+                openEditModal(this);
+            }
         }
 
         // 打开编辑弹窗
@@ -2820,6 +3643,7 @@
             const modal = document.getElementById('editModal');
             if (modal) modal.remove();
             currentEditCard = null;
+            closeAddCardModal();
         }
 
         // 保存编辑
@@ -2847,107 +3671,292 @@
 
         // 保存所有链接到 Firebase Realtime Database
         async function saveAllLinks() {
-            const links = [];
-            const names = [];
-            const descs = [];
-            const icons = [];
+            // 保存主区域卡片（CS2专区、省钱购物等）
+            const mainLinks = [];
+            const mainNames = [];
+            const mainDescs = [];
+            const mainIcons = [];
 
+            // 只选择非视频专区的卡片
             document.querySelectorAll('.site-card').forEach(card => {
-                links.push(card.href);
-                names.push(card.querySelector('.site-name').textContent);
-                descs.push(card.querySelector('.site-desc').textContent);
+                // 跳过视频专区的卡片
+                if (card.closest('.video-section')) return;
+
+                mainLinks.push(card.href);
+                mainNames.push(card.querySelector('.site-name').textContent);
+                mainDescs.push(card.querySelector('.site-desc').textContent);
                 const img = card.querySelector('.site-icon-img');
-                icons.push(img ? img.src : '');
+                mainIcons.push(img ? img.src : '');
             });
 
-            const data = { links, names, descs, icons, updatedAt: new Date().toISOString() };
+            const mainData = { links: mainLinks, names: mainNames, descs: mainDescs, icons: mainIcons, updatedAt: new Date().toISOString() };
+
+            // 保存视频专区卡片
+            const videoLinks = [];
+            const videoNames = [];
+            const videoDescs = [];
+            const videoIcons = [];
+
+            document.querySelectorAll('.video-section .site-card').forEach(card => {
+                videoLinks.push(card.href);
+                videoNames.push(card.querySelector('.site-name').textContent);
+                videoDescs.push(card.querySelector('.site-desc').textContent);
+                const img = card.querySelector('.site-icon-img');
+                videoIcons.push(img ? img.src : '');
+            });
+
+            const videoData = { links: videoLinks, names: videoNames, descs: videoDescs, icons: videoIcons, updatedAt: new Date().toISOString() };
 
             // 保存到本地存储（作为缓存）
-            localStorage.setItem('customLinks', JSON.stringify(links));
-            localStorage.setItem('customNames', JSON.stringify(names));
-            localStorage.setItem('customDescs', JSON.stringify(descs));
-            localStorage.setItem('customIcons', JSON.stringify(icons));
+            localStorage.setItem('customLinks', JSON.stringify(mainLinks));
+            localStorage.setItem('customNames', JSON.stringify(mainNames));
+            localStorage.setItem('customDescs', JSON.stringify(mainDescs));
+            localStorage.setItem('customIcons', JSON.stringify(mainIcons));
+            localStorage.setItem('videoLinks', JSON.stringify(videoLinks));
+            localStorage.setItem('videoNames', JSON.stringify(videoNames));
+            localStorage.setItem('videoDescs', JSON.stringify(videoDescs));
+            localStorage.setItem('videoIcons', JSON.stringify(videoIcons));
 
             // 保存到 Firebase
             try {
                 const { ref, set } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
-                await set(ref(window.db, 'navLinks/main'), data);
+                await set(ref(window.db, 'navLinks/main'), mainData);
+                await set(ref(window.db, 'navLinks/video'), videoData);
                 console.log('已保存到 Firebase');
             } catch (error) {
                 console.error('保存到 Firebase 失败:', error);
             }
         }
 
+        // 保存所有数据（卡片+排序）
+        function saveAllData() {
+            saveAllLinks();
+            saveDragOrder();
+        }
+
         // 从 Firebase Realtime Database 加载数据
         async function loadSavedData() {
-            // 先尝试从 Firebase 加载
+            // 先尝试从 Firebase 加载主区域数据
             try {
                 const { ref, get } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
-                const snapshot = await get(ref(window.db, 'navLinks/main'));
 
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    console.log('从 Firebase 加载数据:', data);
+                // 加载主区域数据
+                const mainSnapshot = await get(ref(window.db, 'navLinks/main'));
+                if (mainSnapshot.exists()) {
+                    const data = mainSnapshot.val();
+                    console.log('从 Firebase 加载主区域数据:', data);
 
-                    document.querySelectorAll('.site-card').forEach((card, index) => {
-                        if (data.names && data.names[index]) {
-                            card.querySelector('.site-name').textContent = data.names[index];
-                        }
-                        if (data.descs && data.descs[index]) {
-                            card.querySelector('.site-desc').textContent = data.descs[index];
-                        }
-                        if (data.links && data.links[index]) {
-                            card.href = data.links[index];
-                        }
-                        if (data.icons && data.icons[index]) {
-                            const img = card.querySelector('.site-icon-img');
-                            if (img) img.src = data.icons[index];
-                        }
-                    });
+                    // 只更新非视频专区的卡片
+                    const mainCards = Array.from(document.querySelectorAll('.site-card')).filter(card => !card.closest('.video-section'));
+                    
+                    // 检查数据完整性：如果链接数量与卡片数量不匹配，跳过 Firebase 数据加载
+                    if (data.links && data.links.length !== mainCards.length) {
+                        console.log('检测到 Firebase 数据损坏（链接数量不匹配），使用默认数据...');
+                    } else {
+                        mainCards.forEach((card, index) => {
+                            if (data.names && data.names[index]) {
+                                card.querySelector('.site-name').textContent = data.names[index];
+                            }
+                            if (data.descs && data.descs[index]) {
+                                card.querySelector('.site-desc').textContent = data.descs[index];
+                            }
+                            if (data.links && data.links[index]) {
+                                card.href = data.links[index];
+                            }
+                            if (data.icons && data.icons[index]) {
+                                const img = card.querySelector('.site-icon-img');
+                                if (img) img.src = data.icons[index];
+                            }
+                        });
 
-                    // 同时更新本地缓存
-                    localStorage.setItem('customLinks', JSON.stringify(data.links || []));
-                    localStorage.setItem('customNames', JSON.stringify(data.names || []));
-                    localStorage.setItem('customDescs', JSON.stringify(data.descs || []));
-                    localStorage.setItem('customIcons', JSON.stringify(data.icons || []));
-
-                    return;
+                        // 更新本地缓存
+                        localStorage.setItem('customLinks', JSON.stringify(data.links || []));
+                        localStorage.setItem('customNames', JSON.stringify(data.names || []));
+                        localStorage.setItem('customDescs', JSON.stringify(data.descs || []));
+                        localStorage.setItem('customIcons', JSON.stringify(data.icons || []));
+                    }
                 }
+
+                // 加载视频专区数据
+                const videoSnapshot = await get(ref(window.db, 'navLinks/video'));
+                if (videoSnapshot.exists()) {
+                    const data = videoSnapshot.val();
+                    console.log('从 Firebase 加载视频专区数据:', data);
+
+                    const videoCards = document.querySelectorAll('.video-section .site-card');
+                    
+                    // 检查数据完整性
+                    if (data.links && data.links.length !== videoCards.length) {
+                        console.log('检测到 Firebase 视频数据损坏（链接数量不匹配），使用默认数据...');
+                    } else {
+                        videoCards.forEach((card, index) => {
+                            if (data.names && data.names[index]) {
+                                card.querySelector('.site-name').textContent = data.names[index];
+                            }
+                            if (data.descs && data.descs[index]) {
+                                card.querySelector('.site-desc').textContent = data.descs[index];
+                            }
+                            if (data.links && data.links[index]) {
+                                card.href = data.links[index];
+                            }
+                            if (data.icons && data.icons[index]) {
+                                const img = card.querySelector('.site-icon-img');
+                                if (img) img.src = data.icons[index];
+                            }
+                        });
+
+                        // 更新本地缓存
+                        localStorage.setItem('videoLinks', JSON.stringify(data.links || []));
+                        localStorage.setItem('videoNames', JSON.stringify(data.names || []));
+                        localStorage.setItem('videoDescs', JSON.stringify(data.descs || []));
+                        localStorage.setItem('videoIcons', JSON.stringify(data.icons || []));
+                    }
+                }
+
+                return;
             } catch (error) {
                 console.error('从 Firebase 加载失败:', error);
             }
 
             // 如果 Firebase 加载失败，使用本地存储
+            loadFromLocalStorage();
+        }
+
+        // 重置 Firebase 数据
+        async function resetFirebaseData() {
+            try {
+                const { ref, set } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+
+                // 保存主区域默认数据
+                const mainCards = Array.from(document.querySelectorAll('.site-card')).filter(card => !card.closest('.video-section'));
+                const mainLinks = [], mainNames = [], mainDescs = [], mainIcons = [];
+                mainCards.forEach(card => {
+                    mainLinks.push(card.href);
+                    mainNames.push(card.querySelector('.site-name').textContent);
+                    mainDescs.push(card.querySelector('.site-desc').textContent);
+                    const img = card.querySelector('.site-icon-img');
+                    mainIcons.push(img ? img.src : '');
+                });
+
+                // 保存视频专区默认数据
+                const videoCards = document.querySelectorAll('.video-section .site-card');
+                const videoLinks = [], videoNames = [], videoDescs = [], videoIcons = [];
+                videoCards.forEach(card => {
+                    videoLinks.push(card.href);
+                    videoNames.push(card.querySelector('.site-name').textContent);
+                    videoDescs.push(card.querySelector('.site-desc').textContent);
+                    const img = card.querySelector('.site-icon-img');
+                    videoIcons.push(img ? img.src : '');
+                });
+
+                await set(ref(window.db, 'navLinks/main'), {
+                    links: mainLinks, names: mainNames, descs: mainDescs, icons: mainIcons,
+                    updatedAt: new Date().toISOString()
+                });
+                await set(ref(window.db, 'navLinks/video'), {
+                    links: videoLinks, names: videoNames, descs: videoDescs, icons: videoIcons,
+                    updatedAt: new Date().toISOString()
+                });
+
+                console.log('Firebase 数据已重置');
+                showToast('数据已重置，请刷新页面');
+            } catch (error) {
+                console.error('重置失败:', error);
+            }
+        }
+
+        // 从本地存储加载数据
+        function loadFromLocalStorage() {
+            // 加载主区域数据
             const savedNames = localStorage.getItem('customNames');
             const savedDescs = localStorage.getItem('customDescs');
             const savedIcons = localStorage.getItem('customIcons');
+            const mainCards = Array.from(document.querySelectorAll('.site-card')).filter(card => !card.closest('.video-section'));
 
             if (savedNames) {
-                const names = JSON.parse(savedNames);
-                document.querySelectorAll('.site-card').forEach((card, index) => {
-                    if (names[index]) {
-                        card.querySelector('.site-name').textContent = names[index];
+                try {
+                    const names = JSON.parse(savedNames);
+                    if (names.length === mainCards.length) {
+                        mainCards.forEach((card, index) => {
+                            if (names[index]) {
+                                card.querySelector('.site-name').textContent = names[index];
+                            }
+                        });
                     }
-                });
+                } catch (e) {}
             }
 
             if (savedDescs) {
-                const descs = JSON.parse(savedDescs);
-                document.querySelectorAll('.site-card').forEach((card, index) => {
-                    if (descs[index]) {
-                        card.querySelector('.site-desc').textContent = descs[index];
+                try {
+                    const descs = JSON.parse(savedDescs);
+                    if (descs.length === mainCards.length) {
+                        mainCards.forEach((card, index) => {
+                            if (descs[index]) {
+                                card.querySelector('.site-desc').textContent = descs[index];
+                            }
+                        });
                     }
-                });
+                } catch (e) {}
             }
 
             if (savedIcons) {
-                const icons = JSON.parse(savedIcons);
-                document.querySelectorAll('.site-card').forEach((card, index) => {
-                    if (icons[index]) {
-                        const img = card.querySelector('.site-icon-img');
-                        if (img) img.src = icons[index];
+                try {
+                    const icons = JSON.parse(savedIcons);
+                    if (icons.length === mainCards.length) {
+                        mainCards.forEach((card, index) => {
+                            if (icons[index]) {
+                                const img = card.querySelector('.site-icon-img');
+                                if (img) img.src = icons[index];
+                            }
+                        });
                     }
-                });
+                } catch (e) {}
+            }
+
+            // 加载视频专区数据
+            const videoNames = localStorage.getItem('videoNames');
+            const videoDescs = localStorage.getItem('videoDescs');
+            const videoIcons = localStorage.getItem('videoIcons');
+            const videoCards = document.querySelectorAll('.video-section .site-card');
+
+            if (videoNames) {
+                try {
+                    const names = JSON.parse(videoNames);
+                    if (names.length === videoCards.length) {
+                        videoCards.forEach((card, index) => {
+                            if (names[index]) {
+                                card.querySelector('.site-name').textContent = names[index];
+                            }
+                        });
+                    }
+                } catch (e) {}
+            }
+
+            if (videoDescs) {
+                try {
+                    const descs = JSON.parse(videoDescs);
+                    if (descs.length === videoCards.length) {
+                        videoCards.forEach((card, index) => {
+                            if (descs[index]) {
+                                card.querySelector('.site-desc').textContent = descs[index];
+                            }
+                        });
+                    }
+                } catch (e) {}
+            }
+
+            if (videoIcons) {
+                try {
+                    const icons = JSON.parse(videoIcons);
+                    if (icons.length === videoCards.length) {
+                        videoCards.forEach((card, index) => {
+                            if (icons[index]) {
+                                const img = card.querySelector('.site-icon-img');
+                                if (img) img.src = icons[index];
+                            }
+                        });
+                    }
+                } catch (e) {}
             }
         }
         
@@ -2966,8 +3975,13 @@
         
         // 页面加载时恢复保存的链接
         loadSavedLinks();
+        // 恢复拖动排序
+        loadDragOrder();
         // 异步加载 Firebase 数据
         setTimeout(() => loadSavedData(), 1000);
+
+        // 重置 Firebase 数据（仅用于修复数据错乱问题，使用一次后注释掉）
+        // resetFirebaseData();
         
         // 侧边栏菜单切换 - 处理所有分类
         const sectionMap = {
@@ -2996,7 +4010,9 @@
             '在线设计': 'design',
             '免费图标': 'icons',
             '图片素材': 'images',
-            '设计字体': 'fonts'
+            '设计字体': 'fonts',
+            // 实用工具
+            '刷机专区': 'flash'
         };
         
         // 获取所有sidebar-section（前5个：置顶推荐、人工智能、开发工具、办公工具、设计资源）
@@ -3028,12 +4044,14 @@
                         const allGrids = mainContent.querySelectorAll(':scope > .sites-grid');
                         const cs2Sections = mainContent.querySelectorAll('.cs2-section');
                         const categorySections = mainContent.querySelectorAll('.category-section');
+                        const videoSection = mainContent.querySelectorAll('.video-section');
                         
                         const targetId = sectionMap[text];
                         
                         if (targetId === 'home') {
                             // 显示首页内容
                             categorySections.forEach(el => el.style.display = 'none');
+                            videoSection.forEach(el => el.style.display = '');
                             allHeaders.forEach(el => el.style.display = '');
                             allGrids.forEach(el => el.style.display = '');
                             cs2Sections.forEach(el => el.style.display = '');
@@ -3043,6 +4061,7 @@
                             allGrids.forEach(el => el.style.display = 'none');
                             cs2Sections.forEach(el => el.style.display = 'none');
                             categorySections.forEach(el => el.style.display = 'none');
+                            videoSection.forEach(el => el.style.display = 'none');
                             const targetEl = document.getElementById(targetId);
                             if (targetEl) targetEl.style.display = 'block';
                         }
