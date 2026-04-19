@@ -643,10 +643,19 @@
         <!-- 左侧边栏 -->
         <aside class="sidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">置顶推荐</div>
+                <div class="sidebar-title">常用</div>
                 <ul class="sidebar-menu">
                     <li><a href="#" class="active">精选热门</a></li>
                     <li><a href="#">省钱能手</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">快捷跳转</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#cs2-zone">🎮 CS2专区</a></li>
+                    <li><a href="#video-zone">🎬 视频专区</a></li>
+                    <li><a href="#steam-zone">📦 Steam专区</a></li>
                 </ul>
             </div>
             
@@ -712,350 +721,355 @@
                 </div>
             </div>
             
-            <!-- CS2 专区 -->
-            <div class="cs2-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                <div class="category-header" style="margin-bottom: 25px;">
-                    <h2 class="category-title" style="font-size: 22px;">🎮 CS2 玩家专区</h2>
-                </div>
-                
-                <!-- 饰品交易 -->
-                <div class="cs2-subsection" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">💰 饰品交易</h3>
-                    <div class="sites-grid">
-                        <a href="https://buff.163.com" class="site-card" target="_blank">
-                            <img src="https://buff.163.com/favicon.ico" class="site-icon-img" alt="BUFF">
-                            <div class="site-info">
-                                <div class="site-name">网易BUFF</div>
-                                <div class="site-desc">国内最大的CS饰品交易平台</div>
-                            </div>
-                        </a>
-                        <a href="https://www.youpin898.com" class="site-card" target="_blank">
-                            <img src="https://www.youpin898.com/favicon.ico" class="site-icon-img" alt="悠悠">
-                            <div class="site-info">
-                                <div class="site-name">悠悠有品</div>
-                                <div class="site-desc">支持租赁和购买</div>
-                            </div>
-                        </a>
-                        <a href="https://www.igxe.cn" class="site-card" target="_blank">
-                            <img src="https://www.igxe.cn/favicon.ico" class="site-icon-img" alt="IGXE">
-                            <div class="site-info">
-                                <div class="site-name">IGXE</div>
-                                <div class="site-desc">老牌饰品交易平台</div>
-                            </div>
-                        </a>
-                        <a href="https://www.c5game.com" class="site-card" target="_blank">
-                            <img src="https://www.google.com/s2/favicons?domain=c5game.com&sz=128" class="site-icon-img" alt="C5">
-                            <div class="site-info">
-                                <div class="site-name">C5GAME</div>
-                                <div class="site-desc">交易+价格查询</div>
-                            </div>
-                        </a>
+            <!-- CS2 玩家专区 -->
+            <div class="category-section" id="cs2-section" style="display: none;">
+                <div id="cs2-zone" class="category-header">
+                <h2 class="category-title">🎮 CS2 玩家专区</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://buff.163.com" class="site-card" target="_blank">
+                    <img src="https://buff.163.com/favicon.ico" class="site-icon-img" alt="BUFF">
+                    <div class="site-info">
+                        <div class="site-name">网易BUFF</div>
+                        <div class="site-desc">国内最大的CS饰品交易平台</div>
                     </div>
-                </div>
-                
-                <!-- 赛事数据 -->
-                <div class="cs2-subsection" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">🏆 赛事数据</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.hltv.org" class="site-card" target="_blank">
-                            <img src="https://www.hltv.org/img/static/favicon.png" class="site-icon-img" alt="HLTV">
-                            <div class="site-info">
-                                <div class="site-name">HLTV.org</div>
-                                <div class="site-desc">全球权威赛事网站</div>
-                            </div>
-                        </a>
-                        <a href="https://liquipedia.net/counterstrike" class="site-card" target="_blank">
-                            <img src="https://liquipedia.net/favicon.ico" class="site-icon-img" alt="Liquipedia">
-                            <div class="site-info">
-                                <div class="site-name">Liquipedia</div>
-                                <div class="site-desc">电竞维基百科</div>
-                            </div>
-                        </a>
-                        <a href="https://www.gosugamers.net/counterstrike" class="site-card" target="_blank">
-                            <img src="https://www.gosugamers.net/favicon.ico" class="site-icon-img" alt="Gosu">
-                            <div class="site-info">
-                                <div class="site-name">GosuGamers</div>
-                                <div class="site-desc">赛程比分数据</div>
-                            </div>
-                        </a>
-                        <a href="https://escharts.com/games/csgo" class="site-card" target="_blank">
-                            <img src="https://escharts.com/favicon.ico" class="site-icon-img" alt="ES">
-                            <div class="site-info">
-                                <div class="site-name">Esports Charts</div>
-                                <div class="site-desc">赛事收视统计</div>
-                            </div>
-                        </a>
+                </a>
+                <a href="https://www.youpin898.com" class="site-card" target="_blank">
+                    <img src="https://www.youpin898.com/favicon.ico" class="site-icon-img" alt="悠悠">
+                    <div class="site-info">
+                        <div class="site-name">悠悠有品</div>
+                        <div class="site-desc">支持租赁和购买</div>
                     </div>
-                </div>
-                
-                <!-- 社区论坛 -->
-                <div class="cs2-subsection" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">💬 社区论坛</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.reddit.com/r/GlobalOffensive/" class="site-card" target="_blank">
-                            <img src="https://www.reddit.com/favicon.ico" class="site-icon-img" alt="Reddit">
-                            <div class="site-info">
-                                <div class="site-name">Reddit CS</div>
-                                <div class="site-desc">全球最大CS社区</div>
-                            </div>
-                        </a>
-                        <a href="https://bbs.nga.cn/thread.php?fid=577" class="site-card" target="_blank">
-                            <img src="https://bbs.nga.cn/favicon.ico" class="site-icon-img" alt="NGA">
-                            <div class="site-info">
-                                <div class="site-name">NGA CS版块</div>
-                                <div class="site-desc">国内玩家社区</div>
-                            </div>
-                        </a>
-                        <a href="https://keylol.com/f161-1" class="site-card" target="_blank">
-                            <img src="https://keylol.com/favicon.ico" class="site-icon-img" alt="其乐">
-                            <div class="site-info">
-                                <div class="site-name">其乐</div>
-                                <div class="site-desc">Steam玩家社区</div>
-                            </div>
-                        </a>
-                        <a href="https://www.csgo.com.cn" class="site-card" target="_blank">
-                            <img src="https://www.csgo.com.cn/favicon.ico" class="site-icon-img" alt="完美">
-                            <div class="site-info">
-                                <div class="site-name">完美世界CS</div>
-                                <div class="site-desc">国服官网</div>
-                            </div>
-                        </a>
+                </a>
+                <a href="https://www.igxe.cn" class="site-card" target="_blank">
+                    <img src="https://www.igxe.cn/favicon.ico" class="site-icon-img" alt="IGXE">
+                    <div class="site-info">
+                        <div class="site-name">IGXE</div>
+                        <div class="site-desc">老牌饰品交易平台</div>
                     </div>
-                </div>
-                
-                <!-- 攻略教学 -->
-                <div class="cs2-subsection" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #96ceb4;">📚 攻略教学</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.youtube.com/c/NiPTV" class="site-card" target="_blank">
-                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="NiP">
-                            <div class="site-info">
-                                <div class="site-name">NiP TV</div>
-                                <div class="site-desc">职业战队教学</div>
-                            </div>
-                        </a>
-                        <a href="https://www.youtube.com/c/vooCSGO" class="site-card" target="_blank">
-                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="voo">
-                            <div class="site-info">
-                                <div class="site-name">voo CSGO</div>
-                                <div class="site-desc">新手进阶技巧</div>
-                            </div>
-                        </a>
-                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
-                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
-                            <div class="site-info">
-                                <div class="site-name">B站教学</div>
-                                <div class="site-desc">中文解说视频</div>
-                            </div>
-                        </a>
-                        <a href="https://prosettings.net/cs-go-pro-settings-gear-list/" class="site-card" target="_blank">
-                            <img src="https://prosettings.net/favicon.ico" class="site-icon-img" alt="Pro">
-                            <div class="site-info">
-                                <div class="site-name">ProSettings</div>
-                                <div class="site-desc">职业选手设置</div>
-                            </div>
-                        </a>
+                </a>
+                <a href="https://www.c5game.com" class="site-card" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?domain=c5game.com&sz=128" class="site-icon-img" alt="C5">
+                    <div class="site-info">
+                        <div class="site-name">C5GAME</div>
+                        <div class="site-desc">交易+价格查询</div>
                     </div>
-                </div>
-                
-                <!-- 实用工具 -->
-                <div class="cs2-subsection">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #feca57;">🛠️ 实用工具</h3>
-                    <div class="sites-grid">
-                        <a href="https://csgostash.com" class="site-card" target="_blank">
-                            <img src="https://csgostash.com/favicon.ico" class="site-icon-img" alt="Stash">
-                            <div class="site-info">
-                                <div class="site-name">CSGO Stash</div>
-                                <div class="site-desc">饰品数据库</div>
-                            </div>
-                        </a>
-                        <a href="https://csfloat.com" class="site-card" target="_blank">
-                            <img src="https://csfloat.com/favicon.ico" class="site-icon-img" alt="Float">
-                            <div class="site-info">
-                                <div class="site-name">CSFloat</div>
-                                <div class="site-desc">磨损值查询</div>
-                            </div>
-                        </a>
-                        <a href="https://scope.gg" class="site-card" target="_blank">
-                            <img src="https://scope.gg/favicon.ico" class="site-icon-img" alt="Scope">
-                            <div class="site-info">
-                                <div class="site-name">Scope.gg</div>
-                                <div class="site-desc">Demo分析</div>
-                            </div>
-                        </a>
-                        <a href="https://leetify.com" class="site-card" target="_blank">
-                            <img src="https://leetify.com/favicon.ico" class="site-icon-img" alt="Leetify">
-                            <div class="site-info">
-                                <div class="site-name">Leetify</div>
-                                <div class="site-desc">AI数据分析</div>
-                            </div>
-                        </a>
-                        <a href="https://csstats.gg" class="site-card" target="_blank">
-                            <img src="https://csstats.gg/favicon.ico" class="site-icon-img" alt="Stats">
-                            <div class="site-info">
-                                <div class="site-name">CSStats.gg</div>
-                                <div class="site-desc">战绩查询</div>
-                            </div>
-                        </a>
-                        <a href="https://www.csgozone.net" class="site-card" target="_blank">
-                            <img src="https://www.csgozone.net/favicon.ico" class="site-icon-img" alt="Zone">
-                            <div class="site-info">
-                                <div class="site-name">CSGOZone</div>
-                                <div class="site-desc">价格追踪</div>
-                            </div>
-                        </a>
+                </a>
+                <a href="https://www.hltv.org" class="site-card" target="_blank">
+                    <img src="https://www.hltv.org/img/static/favicon.png" class="site-icon-img" alt="HLTV">
+                    <div class="site-info">
+                        <div class="site-name">HLTV.org</div>
+                        <div class="site-desc">全球权威赛事网站</div>
                     </div>
-                </div>
+                </a>
+                <a href="https://liquipedia.net/counterstrike" class="site-card" target="_blank">
+                    <img src="https://liquipedia.net/favicon.ico" class="site-icon-img" alt="Liquipedia">
+                    <div class="site-info">
+                        <div class="site-name">Liquipedia</div>
+                        <div class="site-desc">电竞维基百科</div>
+                    </div>
+                </a>
+                <a href="https://www.gosugamers.net/counterstrike" class="site-card" target="_blank">
+                    <img src="https://www.gosugamers.net/favicon.ico" class="site-icon-img" alt="Gosu">
+                    <div class="site-info">
+                        <div class="site-name">GosuGamers</div>
+                        <div class="site-desc">赛程比分数据</div>
+                    </div>
+                </a>
+                <a href="https://escharts.com/games/csgo" class="site-card" target="_blank">
+                    <img src="https://escharts.com/favicon.ico" class="site-icon-img" alt="ES">
+                    <div class="site-info">
+                        <div class="site-name">Esports Charts</div>
+                        <div class="site-desc">赛事收视统计</div>
+                    </div>
+                </a>
+                <a href="https://www.reddit.com/r/GlobalOffensive/" class="site-card" target="_blank">
+                    <img src="https://www.reddit.com/favicon.ico" class="site-icon-img" alt="Reddit">
+                    <div class="site-info">
+                        <div class="site-name">Reddit CS</div>
+                        <div class="site-desc">全球最大CS社区</div>
+                    </div>
+                </a>
+                <a href="https://bbs.nga.cn/thread.php?fid=577" class="site-card" target="_blank">
+                    <img src="https://bbs.nga.cn/favicon.ico" class="site-icon-img" alt="NGA">
+                    <div class="site-info">
+                        <div class="site-name">NGA CS版块</div>
+                        <div class="site-desc">国内玩家社区</div>
+                    </div>
+                </a>
+                <a href="https://keylol.com/f161-1" class="site-card" target="_blank">
+                    <img src="https://keylol.com/favicon.ico" class="site-icon-img" alt="其乐">
+                    <div class="site-info">
+                        <div class="site-name">其乐</div>
+                        <div class="site-desc">Steam玩家社区</div>
+                    </div>
+                </a>
+                <a href="https://www.csgo.com.cn" class="site-card" target="_blank">
+                    <img src="https://www.csgo.com.cn/favicon.ico" class="site-icon-img" alt="完美">
+                    <div class="site-info">
+                        <div class="site-name">完美世界CS</div>
+                        <div class="site-desc">国服官网</div>
+                    </div>
+                </a>
+
+                <a href="https://prosettings.net/cs-go-pro-settings-gear-list/" class="site-card" target="_blank">
+                    <img src="https://prosettings.net/favicon.ico" class="site-icon-img" alt="Pro">
+                    <div class="site-info">
+                        <div class="site-name">ProSettings</div>
+                        <div class="site-desc">职业选手设置</div>
+                    </div>
+                </a>
+                <a href="https://csgostash.com" class="site-card" target="_blank">
+                    <img src="https://csgostash.com/favicon.ico" class="site-icon-img" alt="Stash">
+                    <div class="site-info">
+                        <div class="site-name">CSGO Stash</div>
+                        <div class="site-desc">饰品数据库</div>
+                    </div>
+                </a>
+                <a href="https://csfloat.com" class="site-card" target="_blank">
+                    <img src="https://csfloat.com/favicon.ico" class="site-icon-img" alt="Float">
+                    <div class="site-info">
+                        <div class="site-name">CSFloat</div>
+                        <div class="site-desc">磨损值查询</div>
+                    </div>
+                </a>
+                <a href="https://scope.gg" class="site-card" target="_blank">
+                    <img src="https://scope.gg/favicon.ico" class="site-icon-img" alt="Scope">
+                    <div class="site-info">
+                        <div class="site-name">Scope.gg</div>
+                        <div class="site-desc">Demo分析</div>
+                    </div>
+                </a>
+                <a href="https://leetify.com" class="site-card" target="_blank">
+                    <img src="https://leetify.com/favicon.ico" class="site-icon-img" alt="Leetify">
+                    <div class="site-info">
+                        <div class="site-name">Leetify</div>
+                        <div class="site-desc">AI数据分析</div>
+                    </div>
+                </a>
+                <a href="https://csstats.gg" class="site-card" target="_blank">
+                    <img src="https://csstats.gg/favicon.ico" class="site-icon-img" alt="Stats">
+                    <div class="site-info">
+                        <div class="site-name">CSStats.gg</div>
+                        <div class="site-desc">战绩查询</div>
+                    </div>
+                </a>
+                <a href="https://www.csgozone.net" class="site-card" target="_blank">
+                    <img src="https://www.csgozone.net/favicon.ico" class="site-icon-img" alt="Zone">
+                    <div class="site-info">
+                        <div class="site-name">CSGOZone</div>
+                        <div class="site-desc">价格追踪</div>
+                    </div>
+                </a>
+            </div>
             </div>
 
             <!-- 视频专区 -->
-            <div class="video-section" id="video-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                <div class="category-header" style="margin-bottom: 25px;">
-                    <h2 class="category-title" style="font-size: 22px;">🎬 视频专区</h2>
-                </div>
+            <div class="category-section" id="video-section" style="display: none;">
+                <div id="video-zone" class="category-header">
+                <h2 class="category-title">🎬 视频专区</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                    <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
+                    <div class="site-info">
+                        <div class="site-name">哔哩哔哩</div>
+                        <div class="site-desc">国内最大弹幕视频网站</div>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com" class="site-card" target="_blank">
+                    <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="YouTube">
+                    <div class="site-info">
+                        <div class="site-name">YouTube</div>
+                        <div class="site-desc">全球最大视频平台</div>
+                    </div>
+                </a>
+                <a href="https://www.douyin.com" class="site-card" target="_blank">
+                    <img src="https://www.douyin.com/favicon.ico" class="site-icon-img" alt="抖音">
+                    <div class="site-info">
+                        <div class="site-name">抖音</div>
+                        <div class="site-desc">短视频平台</div>
+                    </div>
+                </a>
+                <a href="https://www.kuaishou.com" class="site-card" target="_blank">
+                    <img src="https://www.kuaishou.com/favicon.ico" class="site-icon-img" alt="快手">
+                    <div class="site-info">
+                        <div class="site-name">快手</div>
+                        <div class="site-desc">短视频社区</div>
+                    </div>
+                </a>
+                <a href="https://v.qq.com" class="site-card" target="_blank">
+                    <img src="https://v.qq.com/favicon.ico" class="site-icon-img" alt="腾讯视频">
+                    <div class="site-info">
+                        <div class="site-name">腾讯视频</div>
+                        <div class="site-desc">正版高清视频</div>
+                    </div>
+                </a>
+                <a href="https://www.iqiyi.com" class="site-card" target="_blank">
+                    <img src="https://www.iqiyi.com/favicon.ico" class="site-icon-img" alt="爱奇艺">
+                    <div class="site-info">
+                        <div class="site-name">爱奇艺</div>
+                        <div class="site-desc">海量影视资源</div>
+                    </div>
+                </a>
+                <a href="https://www.youku.com" class="site-card" target="_blank">
+                    <img src="https://www.youku.com/favicon.ico" class="site-icon-img" alt="优酷">
+                    <div class="site-info">
+                        <div class="site-name">优酷</div>
+                        <div class="site-desc">视频服务平台</div>
+                    </div>
+                </a>
+                <a href="https://www.mgtv.com" class="site-card" target="_blank">
+                    <img src="https://www.mgtv.com/favicon.ico" class="site-icon-img" alt="芒果TV">
+                    <div class="site-info">
+                        <div class="site-name">芒果TV</div>
+                        <div class="site-desc">湖南卫视综艺</div>
+                    </div>
+                </a>
+                <a href="https://www.netflix.com" class="site-card" target="_blank">
+                    <img src="https://www.netflix.com/favicon.ico" class="site-icon-img" alt="Netflix">
+                    <div class="site-info">
+                        <div class="site-name">Netflix</div>
+                        <div class="site-desc">全球流媒体巨头</div>
+                    </div>
+                </a>
+                <a href="https://www.disneyplus.com" class="site-card" target="_blank">
+                    <img src="https://www.disneyplus.com/favicon.ico" class="site-icon-img" alt="Disney+">
+                    <div class="site-info">
+                        <div class="site-name">Disney+</div>
+                        <div class="site-desc">迪士尼流媒体</div>
+                    </div>
+                </a>
+                <a href="https://www.hbomax.com" class="site-card" target="_blank">
+                    <img src="https://www.hbomax.com/favicon.ico" class="site-icon-img" alt="HBO">
+                    <div class="site-info">
+                        <div class="site-name">HBO Max</div>
+                        <div class="site-desc">美剧影视平台</div>
+                    </div>
+                </a>
+                <a href="https://www.hulu.com" class="site-card" target="_blank">
+                    <img src="https://www.hulu.com/favicon.ico" class="site-icon-img" alt="Hulu">
+                    <div class="site-info">
+                        <div class="site-name">Hulu</div>
+                        <div class="site-desc">美国视频网站</div>
+                    </div>
+                </a>
+                <a href="https://www.huya.com" class="site-card" target="_blank">
+                    <img src="https://www.huya.com/favicon.ico" class="site-icon-img" alt="虎牙">
+                    <div class="site-info">
+                        <div class="site-name">虎牙直播</div>
+                        <div class="site-desc">游戏直播平台</div>
+                    </div>
+                </a>
+                <a href="https://www.douyu.com" class="site-card" target="_blank">
+                    <img src="https://www.douyu.com/favicon.ico" class="site-icon-img" alt="斗鱼">
+                    <div class="site-info">
+                        <div class="site-name">斗鱼直播</div>
+                        <div class="site-desc">游戏娱乐直播</div>
+                    </div>
+                </a>
+                <a href="https://www.twitch.tv" class="site-card" target="_blank">
+                    <img src="https://www.twitch.tv/favicon.ico" class="site-icon-img" alt="Twitch">
+                    <div class="site-info">
+                        <div class="site-name">Twitch</div>
+                        <div class="site-desc">国外游戏直播</div>
+                    </div>
+                </a>
+                <a href="https://live.bilibili.com" class="site-card" target="_blank">
+                    <img src="https://live.bilibili.com/favicon.ico" class="site-icon-img" alt="B站直播">
+                    <div class="site-info">
+                        <div class="site-name">B站直播</div>
+                        <div class="site-desc">哔哩哔哩直播</div>
+                    </div>
+                </a>
+                <a href="https://www.yy.com" class="site-card" target="_blank">
+                    <img src="https://www.yy.com/favicon.ico" class="site-icon-img" alt="YY">
+                    <div class="site-info">
+                        <div class="site-name">YY直播</div>
+                        <div class="site-desc">语音视频直播</div>
+                    </div>
+                </a>
+                <a href="https://www.zhanqi.tv" class="site-card" target="_blank">
+                    <img src="https://www.zhanqi.tv/favicon.ico" class="site-icon-img" alt="战旗">
+                    <div class="site-info">
+                        <div class="site-name">战旗直播</div>
+                        <div class="site-desc">游戏直播平台</div>
+                    </div>
+                </a>
+            </div>
+            </div>
 
-                <!-- 综合视频 -->
-                <div class="video-subsection" id="video-general" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">📺 综合视频</h3>
-                    <div class="sites-grid video-grid">
-                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
-                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
+            <!-- Steam专区 -->
+            <div class="steam-section" id="steam-section" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📦 Steam专区</h2>
+                </div>
+                
+                <!-- Steam官方 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #1b2838;">🎮 Steam官方</h3>
+                    <div class="sites-grid">
+                        <a href="https://store.steampowered.com" class="site-card" target="_blank">
+                            <img src="https://store.steampowered.com/favicon.ico" class="site-icon-img" alt="Steam">
                             <div class="site-info">
-                                <div class="site-name">哔哩哔哩</div>
-                                <div class="site-desc">国内最大弹幕视频网站</div>
+                                <div class="site-name">Steam商店</div>
+                                <div class="site-desc">官方游戏商城</div>
                             </div>
                         </a>
-                        <a href="https://www.youtube.com" class="site-card" target="_blank">
-                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="YouTube">
+                        <a href="https://steamcommunity.com" class="site-card" target="_blank">
+                            <img src="https://steamcommunity.com/favicon.ico" class="site-icon-img" alt="Steam社区">
                             <div class="site-info">
-                                <div class="site-name">YouTube</div>
-                                <div class="site-desc">全球最大视频平台</div>
+                                <div class="site-name">Steam社区</div>
+                                <div class="site-desc">游戏论坛和攻略</div>
                             </div>
                         </a>
-                        <a href="https://www.douyin.com" class="site-card" target="_blank">
-                            <img src="https://www.douyin.com/favicon.ico" class="site-icon-img" alt="抖音">
+                        <a href="https://steamcharts.com" class="site-card" target="_blank">
+                            <img src="https://steamcharts.com/favicon.ico" class="site-icon-img" alt="SteamCharts">
                             <div class="site-info">
-                                <div class="site-name">抖音</div>
-                                <div class="site-desc">短视频平台</div>
+                                <div class="site-name">SteamCharts</div>
+                                <div class="site-desc">在线人数统计</div>
                             </div>
                         </a>
-                        <a href="https://www.kuaishou.com" class="site-card" target="_blank">
-                            <img src="https://www.kuaishou.com/favicon.ico" class="site-icon-img" alt="快手">
+                        <a href="https://steamdb.info" class="site-card" target="_blank">
+                            <img src="https://steamdb.info/favicon.ico" class="site-icon-img" alt="SteamDB">
                             <div class="site-info">
-                                <div class="site-name">快手</div>
-                                <div class="site-desc">短视频社区</div>
-                            </div>
-                        </a>
-                        <a href="https://v.qq.com" class="site-card" target="_blank">
-                            <img src="https://v.qq.com/favicon.ico" class="site-icon-img" alt="腾讯视频">
-                            <div class="site-info">
-                                <div class="site-name">腾讯视频</div>
-                                <div class="site-desc">正版高清视频</div>
-                            </div>
-                        </a>
-                        <a href="https://www.iqiyi.com" class="site-card" target="_blank">
-                            <img src="https://www.iqiyi.com/favicon.ico" class="site-icon-img" alt="爱奇艺">
-                            <div class="site-info">
-                                <div class="site-name">爱奇艺</div>
-                                <div class="site-desc">海量影视资源</div>
+                                <div class="site-name">SteamDB</div>
+                                <div class="site-desc">游戏价格历史</div>
                             </div>
                         </a>
                     </div>
                 </div>
-
-                <!-- 影视追剧 -->
-                <div class="video-subsection" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">🎭 影视追剧</h3>
-                    <div class="sites-grid video-grid">
-                        <a href="https://www.youku.com" class="site-card" target="_blank">
-                            <img src="https://www.youku.com/favicon.ico" class="site-icon-img" alt="优酷">
+                
+                <!-- 假入库工具 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">⚠️ 假入库工具</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.hackv.cn/ruku.html" class="site-card" target="_blank">
+                            <img src="https://www.hackv.cn/favicon.ico" class="site-icon-img" alt="古韵假入库" onerror="this.src='https://www.google.com/s2/favicons?domain=hackv.cn'">
                             <div class="site-info">
-                                <div class="site-name">优酷</div>
-                                <div class="site-desc">视频服务平台</div>
+                                <div class="site-name">古韵假入库工具</div>
+                                <div class="site-desc">假入库查询工具</div>
                             </div>
                         </a>
-                        <a href="https://www.mgtv.com" class="site-card" target="_blank">
-                            <img src="https://www.mgtv.com/favicon.ico" class="site-icon-img" alt="芒果TV">
+                        <a href="https://www.hackv.cn/%e5%8f%a4%e9%9f%b5%e6%b8%b8%e6%88%8f%e7%a4%be%e5%8c%ba%e9%80%9a%e7%9f%a5%e8%af%b4%e6%98%8e.html" class="site-card" target="_blank">
+                            <img src="https://www.hackv.cn/favicon.ico" class="site-icon-img" alt="古韵游戏盒子" onerror="this.src='https://www.google.com/s2/favicons?domain=hackv.cn'">
                             <div class="site-info">
-                                <div class="site-name">芒果TV</div>
-                                <div class="site-desc">湖南卫视综艺</div>
+                                <div class="site-name">古韵游戏盒子</div>
+                                <div class="site-desc">游戏工具合集</div>
                             </div>
                         </a>
-                        <a href="https://www.netflix.com" class="site-card" target="_blank">
-                            <img src="https://www.netflix.com/favicon.ico" class="site-icon-img" alt="Netflix">
+                        <a href="https://www.steamtools.net/" class="site-card" target="_blank">
+                            <img src="https://www.steamtools.net/favicon.ico" class="site-icon-img" alt="SteamTools" onerror="this.src='https://www.google.com/s2/favicons?domain=steamtools.net'">
                             <div class="site-info">
-                                <div class="site-name">Netflix</div>
-                                <div class="site-desc">全球流媒体巨头</div>
+                                <div class="site-name">SteamTools</div>
+                                <div class="site-desc">Steam游戏工具</div>
                             </div>
                         </a>
-                        <a href="https://www.disneyplus.com" class="site-card" target="_blank">
-                            <img src="https://www.disneyplus.com/favicon.ico" class="site-icon-img" alt="Disney+">
+                        <a href="https://3a.lol" class="site-card" target="_blank">
+                            <img src="https://3a.lol/favicon.ico" class="site-icon-img" alt="SteamTools论坛" onerror="this.src='https://www.google.com/s2/favicons?domain=3a.lol'">
                             <div class="site-info">
-                                <div class="site-name">Disney+</div>
-                                <div class="site-desc">迪士尼流媒体</div>
-                            </div>
-                        </a>
-                        <a href="https://www.hbomax.com" class="site-card" target="_blank">
-                            <img src="https://www.hbomax.com/favicon.ico" class="site-icon-img" alt="HBO">
-                            <div class="site-info">
-                                <div class="site-name">HBO Max</div>
-                                <div class="site-desc">美剧影视平台</div>
-                            </div>
-                        </a>
-                        <a href="https://www.hulu.com" class="site-card" target="_blank">
-                            <img src="https://www.hulu.com/favicon.ico" class="site-icon-img" alt="Hulu">
-                            <div class="site-info">
-                                <div class="site-name">Hulu</div>
-                                <div class="site-desc">美国视频网站</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 直播 -->
-                <div class="video-subsection">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #96ceb4;">📡 直播平台</h3>
-                    <div class="sites-grid video-grid">
-                        <a href="https://www.huya.com" class="site-card" target="_blank">
-                            <img src="https://www.huya.com/favicon.ico" class="site-icon-img" alt="虎牙">
-                            <div class="site-info">
-                                <div class="site-name">虎牙直播</div>
-                                <div class="site-desc">游戏直播平台</div>
-                            </div>
-                        </a>
-                        <a href="https://www.douyu.com" class="site-card" target="_blank">
-                            <img src="https://www.douyu.com/favicon.ico" class="site-icon-img" alt="斗鱼">
-                            <div class="site-info">
-                                <div class="site-name">斗鱼直播</div>
-                                <div class="site-desc">游戏娱乐直播</div>
-                            </div>
-                        </a>
-                        <a href="https://www.twitch.tv" class="site-card" target="_blank">
-                            <img src="https://www.twitch.tv/favicon.ico" class="site-icon-img" alt="Twitch">
-                            <div class="site-info">
-                                <div class="site-name">Twitch</div>
-                                <div class="site-desc">国外游戏直播</div>
-                            </div>
-                        </a>
-                        <a href="https://live.bilibili.com" class="site-card" target="_blank">
-                            <img src="https://live.bilibili.com/favicon.ico" class="site-icon-img" alt="B站直播">
-                            <div class="site-info">
-                                <div class="site-name">B站直播</div>
-                                <div class="site-desc">哔哩哔哩直播</div>
-                            </div>
-                        </a>
-                        <a href="https://www.yy.com" class="site-card" target="_blank">
-                            <img src="https://www.yy.com/favicon.ico" class="site-icon-img" alt="YY">
-                            <div class="site-info">
-                                <div class="site-name">YY直播</div>
-                                <div class="site-desc">语音视频直播</div>
-                            </div>
-                        </a>
-                        <a href="https://www.zhanqi.tv" class="site-card" target="_blank">
-                            <img src="https://www.zhanqi.tv/favicon.ico" class="site-icon-img" alt="战旗">
-                            <div class="site-info">
-                                <div class="site-name">战旗直播</div>
-                                <div class="site-desc">游戏直播平台</div>
+                                <div class="site-name">SteamTools论坛</div>
+                                <div class="site-desc">SteamTools社区</div>
                             </div>
                         </a>
                     </div>
@@ -1063,171 +1077,144 @@
             </div>
 
             <!-- 省钱购物 -->
-            <div class="cs2-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                <div class="category-header" style="margin-bottom: 25px;">
-                    <h2 class="category-title" style="font-size: 22px;">💰 省钱购物</h2>
-                </div>
-                
-                <!-- 购物返利 -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">🎁 购物返利</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.fanli.com" class="site-card" target="_blank">
-                            <img src="https://www.fanli.com/favicon.ico" class="site-icon-img" alt="返利网">
-                            <div class="site-info">
-                                <div class="site-name">返利网</div>
-                                <div class="site-desc">国内老牌返利平台，淘宝京东返利</div>
-                            </div>
-                        </a>
-                        <a href="https://www.huihui.cn.com" class="site-card" target="_blank">
-                            <img src="https://www.huihui.cn.com/favicon.ico" class="site-icon-img" alt="惠惠" onerror="this.src='https://www.google.com/s2/favicons?domain=huihui.cn.com'">
-                            <div class="site-info">
-                                <div class="site-name">惠惠购物助手</div>
-                                <div class="site-desc">网易出品，比价返利一站式服务</div>
-                            </div>
-                        </a>
-                        <a href="https://www.yitao.com" class="site-card" target="_blank">
-                            <img src="https://www.yitao.com/favicon.ico" class="site-icon-img" alt="一淘" onerror="this.src='https://www.google.com/s2/favicons?domain=yitao.com'">
-                            <div class="site-info">
-                                <div class="site-name">一淘</div>
-                                <div class="site-desc">阿里官方返利，淘宝天猫返利</div>
-                            </div>
-                        </a>
-                        <a href="https://union.jd.com/index" class="site-card" target="_blank">
-                            <img src="https://union.jd.com/favicon.ico" class="site-icon-img" alt="京粉" onerror="this.src='https://www.google.com/s2/favicons?domain=jd.com'">
-                            <div class="site-info">
-                                <div class="site-name">京粉返利</div>
-                                <div class="site-desc">京东官方返利平台，自购省钱分享赚钱</div>
-                            </div>
-                        </a>
-                        <a href="https://buyin.jinritemai.com" class="site-card" target="_blank">
-                            <img src="https://buyin.jinritemai.com/favicon.ico" class="site-icon-img" alt="抖音电商" onerror="this.src='https://www.google.com/s2/favicons?domain=douyin.com'">
-                            <div class="site-info">
-                                <div class="site-name">抖音返利</div>
-                                <div class="site-desc">抖音电商精选联盟，短视频带货返利</div>
-                            </div>
-                        </a>
-                        <a href="https://www.ele.me" class="site-card" target="_blank">
-                            <img src="https://www.ele.me/favicon.ico" class="site-icon-img" alt="饿了么">
-                            <div class="site-info">
-                                <div class="site-name">饿了么返利</div>
-                                <div class="site-desc">外卖红包返利，天天领红包</div>
-                            </div>
-                        </a>
-                        <a href="https://www.meituan.com" class="site-card" target="_blank">
-                            <img src="https://www.meituan.com/favicon.ico" class="site-icon-img" alt="美团">
-                            <div class="site-info">
-                                <div class="site-name">美团返利</div>
-                                <div class="site-desc">团购外卖返利，吃喝玩乐省钱</div>
-                            </div>
-                        </a>
-                        <a href="https://www.topcashback.cn" class="site-card" target="_blank">
-                            <img src="https://www.topcashback.cn/favicon.ico" class="site-icon-img" alt="TopCashback" onerror="this.src='https://www.google.com/s2/favicons?domain=topcashback.cn'">
-                            <div class="site-info">
-                                <div class="site-name">TopCashback</div>
-                                <div class="site-desc">国际返利网站，海淘返利首选</div>
-                            </div>
-                        </a>
+            <div class="category-header">
+                <h2 class="category-title">💰 省钱购物</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://www.fanli.com" class="site-card" target="_blank">
+                    <img src="https://www.fanli.com/favicon.ico" class="site-icon-img" alt="返利网">
+                    <div class="site-info">
+                        <div class="site-name">返利网</div>
+                        <div class="site-desc">国内老牌返利平台，淘宝京东返利</div>
                     </div>
-                </div>
-                
-                <!-- 比价查价 -->
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">📊 比价查价</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.smzdm.com" class="site-card" target="_blank">
-                            <img src="https://www.smzdm.com/favicon.ico" class="site-icon-img" alt="什么值得买">
-                            <div class="site-info">
-                                <div class="site-name">什么值得买</div>
-                                <div class="site-desc">消费决策平台，购物攻略、优惠信息聚合</div>
-                            </div>
-                        </a>
-                        <a href="https://www.gwdang.com" class="site-card" target="_blank">
-                            <img src="https://www.gwdang.com/favicon.ico" class="site-icon-img" alt="购物党">
-                            <div class="site-info">
-                                <div class="site-name">购物党</div>
-                                <div class="site-desc">历史价格查询，自动比价，防止买贵</div>
-                            </div>
-                        </a>
-                        <a href="https://www.manmanbuy.com" class="site-card" target="_blank">
-                            <img src="https://www.manmanbuy.com/favicon.ico" class="site-icon-img" alt="慢慢买">
-                            <div class="site-info">
-                                <div class="site-name">慢慢买</div>
-                                <div class="site-desc">比价网，历史价格走势，降价提醒</div>
-                            </div>
-                        </a>
-                        <a href="https://www.quanmama.com" class="site-card" target="_blank">
-                            <img src="https://www.quanmama.com/favicon.ico" class="site-icon-img" alt="券妈妈">
-                            <div class="site-info">
-                                <div class="site-name">券妈妈</div>
-                                <div class="site-desc">优惠券分享平台，淘宝京东优惠券领取</div>
-                            </div>
-                        </a>
+                </a>
+
+                <a href="https://www.yitao.com" class="site-card" target="_blank">
+                    <img src="https://www.yitao.com/favicon.ico" class="site-icon-img" alt="一淘" onerror="this.src='https://www.google.com/s2/favicons?domain=yitao.com'">
+                    <div class="site-info">
+                        <div class="site-name">一淘</div>
+                        <div class="site-desc">阿里官方返利，淘宝天猫返利</div>
                     </div>
-                </div>
-                
-                <!-- 电商平台 -->
-                <div>
-                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">🛒 电商平台</h3>
-                    <div class="sites-grid">
-                        <a href="https://www.taobao.com" class="site-card" target="_blank">
-                            <img src="https://www.taobao.com/favicon.ico" class="site-icon-img" alt="淘宝">
-                            <div class="site-info">
-                                <div class="site-name">淘宝</div>
-                                <div class="site-desc">国内最大电商平台，各种优惠活动</div>
-                            </div>
-                        </a>
-                        <a href="https://www.jd.com" class="site-card" target="_blank">
-                            <img src="https://www.jd.com/favicon.ico" class="site-icon-img" alt="京东">
-                            <div class="site-info">
-                                <div class="site-name">京东</div>
-                                <div class="site-desc">自营品质保障，618、双11大促优惠</div>
-                            </div>
-                        </a>
-                        <a href="https://www.pinduoduo.com" class="site-card" target="_blank">
-                            <img src="https://www.pinduoduo.com/favicon.ico" class="site-icon-img" alt="拼多多">
-                            <div class="site-info">
-                                <div class="site-name">拼多多</div>
-                                <div class="site-desc">团购拼单，百亿补贴，低价好物</div>
-                            </div>
-                        </a>
-                        <a href="https://www.tmall.com" class="site-card" target="_blank">
-                            <img src="https://www.tmall.com/favicon.ico" class="site-icon-img" alt="天猫">
-                            <div class="site-info">
-                                <div class="site-name">天猫</div>
-                                <div class="site-desc">品牌官方旗舰店，品质保证</div>
-                            </div>
-                        </a>
-                        <a href="https://www.vip.com" class="site-card" target="_blank">
-                            <img src="https://www.vip.com/favicon.ico" class="site-icon-img" alt="唯品会">
-                            <div class="site-info">
-                                <div class="site-name">唯品会</div>
-                                <div class="site-desc">品牌特卖，折扣商品，限时抢购</div>
-                            </div>
-                        </a>
-                        <a href="https://www.suning.com" class="site-card" target="_blank">
-                            <img src="https://www.suning.com/favicon.ico" class="site-icon-img" alt="苏宁">
-                            <div class="site-info">
-                                <div class="site-name">苏宁易购</div>
-                                <div class="site-desc">家电数码购物平台，线上线下结合</div>
-                            </div>
-                        </a>
-                        <a href="https://www.amazon.cn" class="site-card" target="_blank">
-                            <img src="https://www.amazon.cn/favicon.ico" class="site-icon-img" alt="亚马逊">
-                            <div class="site-info">
-                                <div class="site-name">亚马逊中国</div>
-                                <div class="site-desc">全球购、Kindle电子书、海外商品</div>
-                            </div>
-                        </a>
-                        <a href="https://www.dangdang.com" class="site-card" target="_blank">
-                            <img src="https://www.dangdang.com/favicon.ico" class="site-icon-img" alt="当当">
-                            <div class="site-info">
-                                <div class="site-name">当当网</div>
-                                <div class="site-desc">网上购书首选，图书音像折扣多</div>
-                            </div>
-                        </a>
+                </a>
+                <a href="https://union.jd.com/index" class="site-card" target="_blank">
+                    <img src="https://union.jd.com/favicon.ico" class="site-icon-img" alt="京粉" onerror="this.src='https://www.google.com/s2/favicons?domain=jd.com'">
+                    <div class="site-info">
+                        <div class="site-name">京粉返利</div>
+                        <div class="site-desc">京东官方返利平台，自购省钱分享赚钱</div>
                     </div>
-                </div>
+                </a>
+                <a href="https://buyin.jinritemai.com" class="site-card" target="_blank">
+                    <img src="https://buyin.jinritemai.com/favicon.ico" class="site-icon-img" alt="抖音电商" onerror="this.src='https://www.google.com/s2/favicons?domain=douyin.com'">
+                    <div class="site-info">
+                        <div class="site-name">抖音返利</div>
+                        <div class="site-desc">抖音电商精选联盟，短视频带货返利</div>
+                    </div>
+                </a>
+                <a href="https://www.ele.me" class="site-card" target="_blank">
+                    <img src="https://www.ele.me/favicon.ico" class="site-icon-img" alt="饿了么">
+                    <div class="site-info">
+                        <div class="site-name">饿了么返利</div>
+                        <div class="site-desc">外卖红包返利，天天领红包</div>
+                    </div>
+                </a>
+                <a href="https://www.meituan.com" class="site-card" target="_blank">
+                    <img src="https://www.meituan.com/favicon.ico" class="site-icon-img" alt="美团">
+                    <div class="site-info">
+                        <div class="site-name">美团返利</div>
+                        <div class="site-desc">团购外卖返利，吃喝玩乐省钱</div>
+                    </div>
+                </a>
+                <a href="https://www.topcashback.cn" class="site-card" target="_blank">
+                    <img src="https://www.topcashback.cn/favicon.ico" class="site-icon-img" alt="TopCashback" onerror="this.src='https://www.google.com/s2/favicons?domain=topcashback.cn'">
+                    <div class="site-info">
+                        <div class="site-name">TopCashback</div>
+                        <div class="site-desc">国际返利网站，海淘返利首选</div>
+                    </div>
+                </a>
+                <a href="https://www.smzdm.com" class="site-card" target="_blank">
+                    <img src="https://www.smzdm.com/favicon.ico" class="site-icon-img" alt="什么值得买">
+                    <div class="site-info">
+                        <div class="site-name">什么值得买</div>
+                        <div class="site-desc">消费决策平台，购物攻略、优惠信息聚合</div>
+                    </div>
+                </a>
+                <a href="https://www.gwdang.com" class="site-card" target="_blank">
+                    <img src="https://www.gwdang.com/favicon.ico" class="site-icon-img" alt="购物党">
+                    <div class="site-info">
+                        <div class="site-name">购物党</div>
+                        <div class="site-desc">历史价格查询，自动比价，防止买贵</div>
+                    </div>
+                </a>
+                <a href="https://www.manmanbuy.com" class="site-card" target="_blank">
+                    <img src="https://www.manmanbuy.com/favicon.ico" class="site-icon-img" alt="慢慢买">
+                    <div class="site-info">
+                        <div class="site-name">慢慢买</div>
+                        <div class="site-desc">比价网，历史价格走势，降价提醒</div>
+                    </div>
+                </a>
+                <a href="https://www.quanmama.com" class="site-card" target="_blank">
+                    <img src="https://www.quanmama.com/favicon.ico" class="site-icon-img" alt="券妈妈">
+                    <div class="site-info">
+                        <div class="site-name">券妈妈</div>
+                        <div class="site-desc">优惠券分享平台，淘宝京东优惠券领取</div>
+                    </div>
+                </a>
+                <a href="https://www.taobao.com" class="site-card" target="_blank">
+                    <img src="https://www.taobao.com/favicon.ico" class="site-icon-img" alt="淘宝">
+                    <div class="site-info">
+                        <div class="site-name">淘宝</div>
+                        <div class="site-desc">国内最大电商平台，各种优惠活动</div>
+                    </div>
+                </a>
+                <a href="https://www.jd.com" class="site-card" target="_blank">
+                    <img src="https://www.jd.com/favicon.ico" class="site-icon-img" alt="京东">
+                    <div class="site-info">
+                        <div class="site-name">京东</div>
+                        <div class="site-desc">自营品质保障，618、双11大促优惠</div>
+                    </div>
+                </a>
+                <a href="https://www.pinduoduo.com" class="site-card" target="_blank">
+                    <img src="https://www.pinduoduo.com/favicon.ico" class="site-icon-img" alt="拼多多">
+                    <div class="site-info">
+                        <div class="site-name">拼多多</div>
+                        <div class="site-desc">团购拼单，百亿补贴，低价好物</div>
+                    </div>
+                </a>
+                <a href="https://www.tmall.com" class="site-card" target="_blank">
+                    <img src="https://www.tmall.com/favicon.ico" class="site-icon-img" alt="天猫">
+                    <div class="site-info">
+                        <div class="site-name">天猫</div>
+                        <div class="site-desc">品牌官方旗舰店，品质保证</div>
+                    </div>
+                </a>
+                <a href="https://www.vip.com" class="site-card" target="_blank">
+                    <img src="https://www.vip.com/favicon.ico" class="site-icon-img" alt="唯品会">
+                    <div class="site-info">
+                        <div class="site-name">唯品会</div>
+                        <div class="site-desc">品牌特卖，折扣商品，限时抢购</div>
+                    </div>
+                </a>
+                <a href="https://www.suning.com" class="site-card" target="_blank">
+                    <img src="https://www.suning.com/favicon.ico" class="site-icon-img" alt="苏宁">
+                    <div class="site-info">
+                        <div class="site-name">苏宁易购</div>
+                        <div class="site-desc">家电数码购物平台，线上线下结合</div>
+                    </div>
+                </a>
+                <a href="https://www.amazon.cn" class="site-card" target="_blank">
+                    <img src="https://www.amazon.cn/favicon.ico" class="site-icon-img" alt="亚马逊">
+                    <div class="site-info">
+                        <div class="site-name">亚马逊中国</div>
+                        <div class="site-desc">全球购、Kindle电子书、海外商品</div>
+                    </div>
+                </a>
+                <a href="https://www.dangdang.com" class="site-card" target="_blank">
+                    <img src="https://www.dangdang.com/favicon.ico" class="site-icon-img" alt="当当">
+                    <div class="site-info">
+                        <div class="site-name">当当网</div>
+                        <div class="site-desc">网上购书首选，图书音像折扣多</div>
+                    </div>
+                </a>
             </div>
             
             <!-- 热门推荐 -->
@@ -2861,20 +2848,7 @@
                 <div>
                     <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">📖 刷机教程社区</h3>
                     <div class="sites-grid">
-                        <a href="https://www.rom.cn" class="site-card" target="_blank">
-                            <img src="https://www.rom.cn/favicon.ico" class="site-icon-img" alt="刷机之家">
-                            <div class="site-info">
-                                <div class="site-name">刷机之家</div>
-                                <div class="site-desc">安卓刷机教程和资源下载</div>
-                            </div>
-                        </a>
-                        <a href="https://www.imobile.com.cn" class="site-card" target="_blank">
-                            <img src="https://www.imobile.com.cn/favicon.ico" class="site-icon-img" alt="iMobile">
-                            <div class="site-info">
-                                <div class="site-name">iMobile</div>
-                                <div class="site-desc">专业手机论坛，刷机教程</div>
-                            </div>
-                        </a>
+
                         <a href="https://www.weibo.com" class="site-card" target="_blank">
                             <img src="https://www.weibo.com/favicon.ico" class="site-icon-img" alt="微博">
                             <div class="site-info">
@@ -2896,13 +2870,6 @@
                                 <div class="site-desc">刷机相关问答和教程</div>
                             </div>
                         </a>
-                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
-                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
-                            <div class="site-info">
-                                <div class="site-name">B站视频</div>
-                                <div class="site-desc">刷机视频教程大全</div>
-                            </div>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -2922,13 +2889,6 @@
                             <div class="site-info">
                                 <div class="site-name">返利网</div>
                                 <div class="site-desc">国内老牌返利平台，淘宝京东返利</div>
-                            </div>
-                        </a>
-                        <a href="https://www.huihui.cn.com" class="site-card" target="_blank">
-                            <img src="https://www.huihui.cn.com/favicon.ico" class="site-icon-img" alt="惠惠" onerror="this.src='https://www.google.com/s2/favicons?domain=huihui.cn.com'">
-                            <div class="site-info">
-                                <div class="site-name">惠惠购物助手</div>
-                                <div class="site-desc">网易出品，比价返利一站式服务</div>
                             </div>
                         </a>
                         <a href="https://www.yitao.com" class="site-card" target="_blank">
@@ -3985,9 +3945,13 @@
         
         // 侧边栏菜单切换 - 处理所有分类
         const sectionMap = {
-            // 置顶推荐
+            // 常用
             '精选热门': 'home',
             '省钱能手': 'moneysaver',
+            // 快捷跳转
+            '🎮 CS2专区': 'cs2',
+            '🎬 视频专区': 'video',
+            '📦 Steam专区': 'steam',
             // 人工智能
             '聊天对话': 'chat',
             '智能生图': 'imageai',
@@ -4015,14 +3979,15 @@
             '刷机专区': 'flash'
         };
         
-        // 获取所有sidebar-section（前5个：置顶推荐、人工智能、开发工具、办公工具、设计资源）
+        // 获取所有sidebar-section（常用、快捷跳转、人工智能、开发工具、办公工具、实用工具）
         const sidebarSections = document.querySelectorAll('.sidebar-section');
         const clickableSections = [
-            sidebarSections[0], // 置顶推荐
-            sidebarSections[1], // 人工智能
-            sidebarSections[2], // 开发工具
-            sidebarSections[3], // 办公工具
-            sidebarSections[4]  // 设计资源
+            sidebarSections[0], // 常用
+            sidebarSections[1], // 快捷跳转
+            sidebarSections[2], // 人工智能
+            sidebarSections[3], // 开发工具
+            sidebarSections[4], // 办公工具
+            sidebarSections[5]  // 实用工具
         ];
         
         clickableSections.forEach(section => {
@@ -4045,6 +4010,7 @@
                         const cs2Sections = mainContent.querySelectorAll('.cs2-section');
                         const categorySections = mainContent.querySelectorAll('.category-section');
                         const videoSection = mainContent.querySelectorAll('.video-section');
+                        const steamSection = mainContent.querySelectorAll('.steam-section');
                         
                         const targetId = sectionMap[text];
                         
@@ -4052,9 +4018,30 @@
                             // 显示首页内容
                             categorySections.forEach(el => el.style.display = 'none');
                             videoSection.forEach(el => el.style.display = '');
+                            steamSection.forEach(el => el.style.display = '');
                             allHeaders.forEach(el => el.style.display = '');
                             allGrids.forEach(el => el.style.display = '');
                             cs2Sections.forEach(el => el.style.display = '');
+                        } else if (targetId === 'cs2' || targetId === 'video') {
+                            // 隐藏首页内容，显示CS2或视频专区
+                            allHeaders.forEach(el => el.style.display = 'none');
+                            allGrids.forEach(el => el.style.display = 'none');
+                            cs2Sections.forEach(el => el.style.display = targetId === 'cs2' ? '' : 'none');
+                            categorySections.forEach(el => el.style.display = 'none');
+                            videoSection.forEach(el => el.style.display = targetId === 'video' ? '' : 'none');
+                            steamSection.forEach(el => el.style.display = 'none');
+                            const targetEl = document.getElementById(targetId + '-section');
+                            if (targetEl) targetEl.style.display = 'block';
+                        } else if (targetId === 'steam') {
+                            // 隐藏首页内容，显示Steam专区
+                            allHeaders.forEach(el => el.style.display = 'none');
+                            allGrids.forEach(el => el.style.display = 'none');
+                            cs2Sections.forEach(el => el.style.display = 'none');
+                            categorySections.forEach(el => el.style.display = 'none');
+                            videoSection.forEach(el => el.style.display = 'none');
+                            steamSection.forEach(el => el.style.display = '');
+                            const targetEl = document.getElementById('steam-section');
+                            if (targetEl) targetEl.style.display = 'block';
                         } else if (targetId) {
                             // 隐藏首页内容，显示对应分类
                             allHeaders.forEach(el => el.style.display = 'none');
@@ -4062,6 +4049,7 @@
                             cs2Sections.forEach(el => el.style.display = 'none');
                             categorySections.forEach(el => el.style.display = 'none');
                             videoSection.forEach(el => el.style.display = 'none');
+                            steamSection.forEach(el => el.style.display = 'none');
                             const targetEl = document.getElementById(targetId);
                             if (targetEl) targetEl.style.display = 'block';
                         }
