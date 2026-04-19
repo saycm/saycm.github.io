@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的云端导航</title>
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+:root{--bg:#f7f8fa;--card:#fff;--text:#333;--sub:#666;--hover:#eef2ff;--accent:#3b82f6}
+.dark{--bg:#121212;--card:#1e1e1e;--text:#e0e0e0;--sub:#aaa;--hover:#2d2d2d;--accent:#60a5fa}
+body{background:var(--bg);color:var(--text);padding:20px;transition:.3s}
+.container{max-width:1200px;margin:0 auto}
+.header{text-align:center;margin:30px 0}
+.header h1{font-size:28px;margin-bottom:10px}
+.search{width:100%;max-width:600px;margin:0 auto 30px}
+.search input{width:100%;padding:14px 20px;border:none;border-radius:12px;background:var(--card);outline:none;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.tool-bar{display:flex;gap:12px;justify-content:center;margin-bottom:25px;flex-wrap:wrap}
+button{padding:8px 14px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
+.category{margin-bottom:30px}
+.category-title{font-size:18px;margin-bottom:15px;padding-left:10px;border-left:4px solid var(--accent)}
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:15px}
+.link-card{background:var(--card);border-radius:12px;padding:15px;text-align:center;text-decoration:none;color:var(--text);transition:.2s}
+.link-card:hover{background:var(--hover);transform:translateY(-2px)}
+.link-card i{font-size:24px;margin-bottom:8px;color:var(--accent)}
+.add-box{border:2px dashed var(--sub);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:.7}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:99}
+.modal-box{background:var(--card);padding:25px;border-radius:12px;width:90%;max-width:400px}
+.modal-box input{width:100%;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #ccc}
+.modal-btn{display:flex;gap:10px;margin-top:15px;justify-content:flex-end}
+.footer{text-align:center;margin-top:50px;color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>个人云端导航</h1>
+</div>
+
+<div class="search">
+<input type="text" placeholder="全网搜索..." onkeydown="if(event.key==='Enter')window.open('https://www.baidu.com/s?wd='+this.value)">
+</div>
+
+<div class="tool-bar">
+<button id="themeBtn">🌙 暗黑模式</button>
+<button id="addCategoryBtn">➕ 新增分类</button>
+<button id="exportBtn">💾 导出备份</button>
+<button id="importBtn">📥 导入恢复</button>
+</div>
+
+<div id="navBox"></div>
+
+<div class="footer">云端永久导航 · 自由收藏</div>
+</div>
+
+<!-- 添加网站弹窗 -->
+<div class="modal" id="addModal">
+<div class="modal-box">
+<h3>添加网站</h3>
+<input placeholder="网站名称" id="name">
+<input placeholder="网站链接 https://" id="url">
+<input placeholder="图标类名 如 fa-globe" id="icon" value="fa-globe">
+<div class="modal-btn">
+<button id="cancel">取消</button>
+<button id="confirm">保存</button>
+</div>
+</div>
+</div>
+
+<script>
+// ===================== 核心持久化存储 =====================
+const STORAGE_KEY = 'cloud_nav_data';
+let navData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+{title:'常用网站',links:[
+{name:'百度',url:'https://www.baidu.com',icon:'fa-search'},
+{name:'B站',url:'https://www.bilibili.com',icon:'fa-play'},
+{name:'知乎',url:'https://www.zhihu.com',icon:'fa-question'},
+{name:'GitHub',url:'https://github.com',icon:'fa-code'}
+]},
+{title:'实用工具',links:[
+{name:'百度网盘',url:'https://pan.baidu.com',icon:'fa-cloud'},
+{name:'百度翻译',url:'https://fanyi.baidu.com',icon:'fa-language'}
+]}
+];
+
+// 保存数据到浏览器本地
+function saveData(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(navData));
+render();
+}
+
+// 渲染页面全部内容
+function render(){
+const box = document.getElementById('navBox');
+box.innerHTML='';
+navData.forEach((cate,cIdx)=>{
+let div = document.createElement('div');
+div.className='category';
+div.innerHTML=`
+<div class="category-title">${cate.title}</div>
+<div class="link-grid">
+${cate.links.map((link,lIdx)=>`
+<a href="${link.url}" target="_blank" class="link-card">
+<i class="fa-solid ${link.icon}"></i>
+<div>${link.name}</div>
+</a>
+`).join('')}
+<div class="link-card add-box" onclick="openAdd(${cIdx})">
+<i class="fa-solid fa-plus"></i>
+</div>
+</div>`;
+box.appendChild(div);
+});
+}
+
+// 弹窗控制逻辑
+const modal = document.getElementById('addModal');
+function openAdd(cIdx){modal.style.display='flex';window.currCate=cIdx;}
+document.getElementById('cancel').onclick=()=>modal.style.display='none';
+document.getElementById('confirm').onclick=()=>{
+const name=document.getElementById('name').value;
+const url=document.getElementById('url').value;
+const icon=document.getElementById('icon').value;
+if(name&&url){
+navData[currCate].links.push({name,url,icon});
+saveData();
+modal.style.display='none';
+}
+};
+
+// 暗黑模式切换
+document.getElementById('themeBtn').onclick=()=>{
+document.body.classList.toggle('dark');
+localStorage.setItem('dark',document.body.classList.contains('dark'));
+};
+if(localStorage.getItem('dark')==='true')document.body.classList.add('dark');
+
+// 配置导出备份
+document.getElementById('exportBtn').onclick=()=>{
+const blob=new Blob([JSON.stringify(navData,null,2)],{type:'application/json'});
+const a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='导航备份.json';a.click();
+};
+
+// 配置导入恢复
+document.getElementById('importBtn').onclick=()=>{
+const input=document.createElement('input');input.type='file';input.accept='.json';
+input.onchange=(e)=>{
+const reader=new FileReader();
+reader.onload=()=>{navData=JSON.parse(reader.result);saveData();};
+reader.readAsText(e.target.files[0]);
+};input.click();
+};
+
+// 新增分类功能
+document.getElementById('addCategoryBtn').onclick=()=>{
+const name=prompt('请输入新分类名称');
+if(name){navData.push({title:name,links:[]});saveData();}
+};
+
+// 页面初始化渲染
+render();
+</script>
+</body>
+</html>
