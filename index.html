@@ -1,166 +1,2873 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的云端导航</title>
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-:root{--bg:#f7f8fa;--card:#fff;--text:#333;--sub:#666;--hover:#eef2ff;--accent:#3b82f6}
-.dark{--bg:#121212;--card:#1e1e1e;--text:#e0e0e0;--sub:#aaa;--hover:#2d2d2d;--accent:#60a5fa}
-body{background:var(--bg);color:var(--text);padding:20px;transition:.3s}
-.container{max-width:1200px;margin:0 auto}
-.header{text-align:center;margin:30px 0}
-.header h1{font-size:28px;margin-bottom:10px}
-.search{width:100%;max-width:600px;margin:0 auto 30px}
-.search input{width:100%;padding:14px 20px;border:none;border-radius:12px;background:var(--card);outline:none;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-.tool-bar{display:flex;gap:12px;justify-content:center;margin-bottom:25px;flex-wrap:wrap}
-button{padding:8px 14px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer}
-.category{margin-bottom:30px}
-.category-title{font-size:18px;margin-bottom:15px;padding-left:10px;border-left:4px solid var(--accent)}
-.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:15px}
-.link-card{background:var(--card);border-radius:12px;padding:15px;text-align:center;text-decoration:none;color:var(--text);transition:.2s}
-.link-card:hover{background:var(--hover);transform:translateY(-2px)}
-.link-card i{font-size:24px;margin-bottom:8px;color:var(--accent)}
-.add-box{border:2px dashed var(--sub);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:.7}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:99}
-.modal-box{background:var(--card);padding:25px;border-radius:12px;width:90%;max-width:400px}
-.modal-box input{width:100%;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #ccc}
-.modal-btn{display:flex;gap:10px;margin-top:15px;justify-content:flex-end}
-.footer{text-align:center;margin-top:50px;color:var(--sub);font-size:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自用导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        /* 顶部导航 */
+        .top-nav {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+        
+        .top-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 100%;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4a90e2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .top-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .top-menu a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .top-menu a:hover {
+            color: #4a90e2;
+        }
+        
+        .top-menu a.active {
+            color: #4a90e2;
+            font-weight: 500;
+        }
+        
+        /* 主体布局 */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 80px auto 20px;
+            padding: 0 20px;
+            gap: 20px;
+        }
+        
+        /* 左侧边栏 */
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+        
+        .sidebar-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #f0f7ff;
+            color: #4a90e2;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* 搜索区域 */
+        .search-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .search-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-tab {
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .search-tab:hover,
+        .search-tab.active {
+            color: #4a90e2;
+            background: #f0f7ff;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #4a90e2;
+        }
+        
+        .search-btn {
+            padding: 12px 30px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: #3a7bc8;
+        }
+        
+        /* 分类标题 */
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .category-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        /* 网站卡片网格 */
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .site-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border-color: #e0e7ff;
+        }
+        
+        .site-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .site-icon.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .site-icon.green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .site-icon.orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .site-icon.cyan { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .site-icon.purple { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #764ba2; }
+        .site-icon.yellow { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        
+        .site-icon-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f5f5f5;
+            padding: 5px;
+        }
+        
+        .site-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .site-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        
+        .site-desc {
+            font-size: 12px;
+            color: #999;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* 右侧边栏 */
+        .right-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .widget {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .widget-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .notice-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .notice-time {
+            color: #999;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        
+        .hot-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .hot-tag {
+            padding: 6px 12px;
+            background: #f0f7ff;
+            color: #4a90e2;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .hot-tag:hover {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .top-menu {
+                display: none;
+            }
+            
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 编辑模式动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(-50%) translateY(0); }
+            to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        /* 编辑容器样式 */
+        .edit-container input:focus {
+            outline: none;
+            border-color: #667eea !important;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
-<h1>个人云端导航</h1>
-</div>
-
-<div class="search">
-<input type="text" placeholder="全网搜索..." onkeydown="if(event.key==='Enter')window.open('https://www.baidu.com/s?wd='+this.value)">
-</div>
-
-<div class="tool-bar">
-<button id="themeBtn">🌙 暗黑模式</button>
-<button id="addCategoryBtn">➕ 新增分类</button>
-<button id="exportBtn">💾 导出备份</button>
-<button id="importBtn">📥 导入恢复</button>
-</div>
-
-<div id="navBox"></div>
-
-<div class="footer">云端永久导航 · 自由收藏</div>
-</div>
-
-<!-- 添加网站弹窗 -->
-<div class="modal" id="addModal">
-<div class="modal-box">
-<h3>添加网站</h3>
-<input placeholder="网站名称" id="name">
-<input placeholder="网站链接 https://" id="url">
-<input placeholder="图标类名 如 fa-globe" id="icon" value="fa-globe">
-<div class="modal-btn">
-<button id="cancel">取消</button>
-<button id="confirm">保存</button>
-</div>
-</div>
-</div>
-
-<script>
-// ===================== 核心持久化存储 =====================
-const STORAGE_KEY = 'cloud_nav_data';
-let navData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
-{title:'常用网站',links:[
-{name:'百度',url:'https://www.baidu.com',icon:'fa-search'},
-{name:'B站',url:'https://www.bilibili.com',icon:'fa-play'},
-{name:'知乎',url:'https://www.zhihu.com',icon:'fa-question'},
-{name:'GitHub',url:'https://github.com',icon:'fa-code'}
-]},
-{title:'实用工具',links:[
-{name:'百度网盘',url:'https://pan.baidu.com',icon:'fa-cloud'},
-{name:'百度翻译',url:'https://fanyi.baidu.com',icon:'fa-language'}
-]}
-];
-
-// 保存数据到浏览器本地
-function saveData(){
-localStorage.setItem(STORAGE_KEY,JSON.stringify(navData));
-render();
-}
-
-// 渲染页面全部内容
-function render(){
-const box = document.getElementById('navBox');
-box.innerHTML='';
-navData.forEach((cate,cIdx)=>{
-let div = document.createElement('div');
-div.className='category';
-div.innerHTML=`
-<div class="category-title">${cate.title}</div>
-<div class="link-grid">
-${cate.links.map((link,lIdx)=>`
-<a href="${link.url}" target="_blank" class="link-card">
-<i class="fa-solid ${link.icon}"></i>
-<div>${link.name}</div>
-</a>
-`).join('')}
-<div class="link-card add-box" onclick="openAdd(${cIdx})">
-<i class="fa-solid fa-plus"></i>
-</div>
-</div>`;
-box.appendChild(div);
-});
-}
-
-// 弹窗控制逻辑
-const modal = document.getElementById('addModal');
-function openAdd(cIdx){modal.style.display='flex';window.currCate=cIdx;}
-document.getElementById('cancel').onclick=()=>modal.style.display='none';
-document.getElementById('confirm').onclick=()=>{
-const name=document.getElementById('name').value;
-const url=document.getElementById('url').value;
-const icon=document.getElementById('icon').value;
-if(name&&url){
-navData[currCate].links.push({name,url,icon});
-saveData();
-modal.style.display='none';
-}
-};
-
-// 暗黑模式切换
-document.getElementById('themeBtn').onclick=()=>{
-document.body.classList.toggle('dark');
-localStorage.setItem('dark',document.body.classList.contains('dark'));
-};
-if(localStorage.getItem('dark')==='true')document.body.classList.add('dark');
-
-// 配置导出备份
-document.getElementById('exportBtn').onclick=()=>{
-const blob=new Blob([JSON.stringify(navData,null,2)],{type:'application/json'});
-const a=document.createElement('a');
-a.href=URL.createObjectURL(blob);
-a.download='导航备份.json';a.click();
-};
-
-// 配置导入恢复
-document.getElementById('importBtn').onclick=()=>{
-const input=document.createElement('input');input.type='file';input.accept='.json';
-input.onchange=(e)=>{
-const reader=new FileReader();
-reader.onload=()=>{navData=JSON.parse(reader.result);saveData();};
-reader.readAsText(e.target.files[0]);
-};input.click();
-};
-
-// 新增分类功能
-document.getElementById('addCategoryBtn').onclick=()=>{
-const name=prompt('请输入新分类名称');
-if(name){navData.push({title:name,links:[]});saveData();}
-};
-
-// 页面初始化渲染
-render();
-</script>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="logo">
+                <div class="logo-icon">N</div>
+                <span>自用导航</span>
+            </div>
+            <div class="top-menu">
+                <a href="#" class="active">首页</a>
+                <a href="#">起始页</a>
+                <a href="#">精品集</a>
+                <a href="#">发布页</a>
+                <a href="#">神器集</a>
+                <a href="#">在线便笺</a>
+                <a href="#">留言板</a>
+                <button id="editLinksBtn" onclick="toggleEditMode()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(102,126,234,0.3); transition: all 0.3s; margin-left: 10px;">✏️ 编辑链接</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主体 -->
+    <div class="main-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">置顶推荐</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active">精选热门</a></li>
+                    <li><a href="#">省钱能手</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">人工智能</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#">聊天对话</a></li>
+                    <li><a href="#">智能生图</a></li>
+                    <li><a href="#">代码辅助</a></li>
+                    <li><a href="#">写作论文</a></li>
+                    <li><a href="#">智能搜索</a></li>
+                    <li><a href="#">模型广场</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">开发工具</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#">代码托管</a></li>
+                    <li><a href="#">API工具</a></li>
+                    <li><a href="#">在线编辑器</a></li>
+                    <li><a href="#">正则工具</a></li>
+                    <li><a href="#">JSON工具</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">办公工具</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#">文档笔记</a></li>
+                    <li><a href="#">网盘存储</a></li>
+                    <li><a href="#">PDF工具</a></li>
+                    <li><a href="#">格式转换</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">设计资源</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#">在线设计</a></li>
+                    <li><a href="#">免费图标</a></li>
+                    <li><a href="#">图片素材</a></li>
+                    <li><a href="#">设计字体</a></li>
+                </ul>
+            </div>
+        </aside>
+        
+        <!-- 主内容 -->
+        <main class="main-content">
+            <!-- 搜索 -->
+            <div class="search-section">
+                <div class="search-tabs">
+                    <span class="search-tab active">常用</span>
+                    <span class="search-tab">搜索</span>
+                    <span class="search-tab">工具</span>
+                    <span class="search-tab">社区</span>
+                    <span class="search-tab">生活</span>
+                </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="搜索或输入网址..." id="searchInput">
+                    <button class="search-btn" onclick="doSearch()">搜索</button>
+                </div>
+            </div>
+            
+            <!-- CS2 专区 -->
+            <div class="cs2-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                <div class="category-header" style="margin-bottom: 25px;">
+                    <h2 class="category-title" style="font-size: 22px;">🎮 CS2 玩家专区</h2>
+                </div>
+                
+                <!-- 饰品交易 -->
+                <div class="cs2-subsection" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">💰 饰品交易</h3>
+                    <div class="sites-grid">
+                        <a href="https://buff.163.com" class="site-card" target="_blank">
+                            <img src="https://buff.163.com/favicon.ico" class="site-icon-img" alt="BUFF">
+                            <div class="site-info">
+                                <div class="site-name">网易BUFF</div>
+                                <div class="site-desc">国内最大的CS饰品交易平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.youpin898.com" class="site-card" target="_blank">
+                            <img src="https://www.youpin898.com/favicon.ico" class="site-icon-img" alt="悠悠">
+                            <div class="site-info">
+                                <div class="site-name">悠悠有品</div>
+                                <div class="site-desc">支持租赁和购买</div>
+                            </div>
+                        </a>
+                        <a href="https://www.igxe.cn" class="site-card" target="_blank">
+                            <img src="https://www.igxe.cn/favicon.ico" class="site-icon-img" alt="IGXE">
+                            <div class="site-info">
+                                <div class="site-name">IGXE</div>
+                                <div class="site-desc">老牌饰品交易平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.c5game.com" class="site-card" target="_blank">
+                            <img src="https://www.c5game.com/favicon.ico" class="site-icon-img" alt="C5">
+                            <div class="site-info">
+                                <div class="site-name">C5GAME</div>
+                                <div class="site-desc">交易+价格查询</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 赛事数据 -->
+                <div class="cs2-subsection" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">🏆 赛事数据</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.hltv.org" class="site-card" target="_blank">
+                            <img src="https://www.hltv.org/img/static/favicon.png" class="site-icon-img" alt="HLTV">
+                            <div class="site-info">
+                                <div class="site-name">HLTV.org</div>
+                                <div class="site-desc">全球权威赛事网站</div>
+                            </div>
+                        </a>
+                        <a href="https://liquipedia.net/counterstrike" class="site-card" target="_blank">
+                            <img src="https://liquipedia.net/favicon.ico" class="site-icon-img" alt="Liquipedia">
+                            <div class="site-info">
+                                <div class="site-name">Liquipedia</div>
+                                <div class="site-desc">电竞维基百科</div>
+                            </div>
+                        </a>
+                        <a href="https://www.gosugamers.net/counterstrike" class="site-card" target="_blank">
+                            <img src="https://www.gosugamers.net/favicon.ico" class="site-icon-img" alt="Gosu">
+                            <div class="site-info">
+                                <div class="site-name">GosuGamers</div>
+                                <div class="site-desc">赛程比分数据</div>
+                            </div>
+                        </a>
+                        <a href="https://escharts.com/games/csgo" class="site-card" target="_blank">
+                            <img src="https://escharts.com/favicon.ico" class="site-icon-img" alt="ES">
+                            <div class="site-info">
+                                <div class="site-name">Esports Charts</div>
+                                <div class="site-desc">赛事收视统计</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 社区论坛 -->
+                <div class="cs2-subsection" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">💬 社区论坛</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.reddit.com/r/GlobalOffensive/" class="site-card" target="_blank">
+                            <img src="https://www.reddit.com/favicon.ico" class="site-icon-img" alt="Reddit">
+                            <div class="site-info">
+                                <div class="site-name">Reddit CS</div>
+                                <div class="site-desc">全球最大CS社区</div>
+                            </div>
+                        </a>
+                        <a href="https://bbs.nga.cn/thread.php?fid=577" class="site-card" target="_blank">
+                            <img src="https://bbs.nga.cn/favicon.ico" class="site-icon-img" alt="NGA">
+                            <div class="site-info">
+                                <div class="site-name">NGA CS版块</div>
+                                <div class="site-desc">国内玩家社区</div>
+                            </div>
+                        </a>
+                        <a href="https://keylol.com/f161-1" class="site-card" target="_blank">
+                            <img src="https://keylol.com/favicon.ico" class="site-icon-img" alt="其乐">
+                            <div class="site-info">
+                                <div class="site-name">其乐</div>
+                                <div class="site-desc">Steam玩家社区</div>
+                            </div>
+                        </a>
+                        <a href="https://www.csgo.com.cn" class="site-card" target="_blank">
+                            <img src="https://www.csgo.com.cn/favicon.ico" class="site-icon-img" alt="完美">
+                            <div class="site-info">
+                                <div class="site-name">完美世界CS</div>
+                                <div class="site-desc">国服官网</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 攻略教学 -->
+                <div class="cs2-subsection" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #96ceb4;">📚 攻略教学</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.youtube.com/c/NiPTV" class="site-card" target="_blank">
+                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="NiP">
+                            <div class="site-info">
+                                <div class="site-name">NiP TV</div>
+                                <div class="site-desc">职业战队教学</div>
+                            </div>
+                        </a>
+                        <a href="https://www.youtube.com/c/vooCSGO" class="site-card" target="_blank">
+                            <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="voo">
+                            <div class="site-info">
+                                <div class="site-name">voo CSGO</div>
+                                <div class="site-desc">新手进阶技巧</div>
+                            </div>
+                        </a>
+                        <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                            <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="B站">
+                            <div class="site-info">
+                                <div class="site-name">B站教学</div>
+                                <div class="site-desc">中文解说视频</div>
+                            </div>
+                        </a>
+                        <a href="https://prosettings.net/cs-go-pro-settings-gear-list/" class="site-card" target="_blank">
+                            <img src="https://prosettings.net/favicon.ico" class="site-icon-img" alt="Pro">
+                            <div class="site-info">
+                                <div class="site-name">ProSettings</div>
+                                <div class="site-desc">职业选手设置</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 实用工具 -->
+                <div class="cs2-subsection">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #feca57;">🛠️ 实用工具</h3>
+                    <div class="sites-grid">
+                        <a href="https://csgostash.com" class="site-card" target="_blank">
+                            <img src="https://csgostash.com/favicon.ico" class="site-icon-img" alt="Stash">
+                            <div class="site-info">
+                                <div class="site-name">CSGO Stash</div>
+                                <div class="site-desc">饰品数据库</div>
+                            </div>
+                        </a>
+                        <a href="https://csfloat.com" class="site-card" target="_blank">
+                            <img src="https://csfloat.com/favicon.ico" class="site-icon-img" alt="Float">
+                            <div class="site-info">
+                                <div class="site-name">CSFloat</div>
+                                <div class="site-desc">磨损值查询</div>
+                            </div>
+                        </a>
+                        <a href="https://scope.gg" class="site-card" target="_blank">
+                            <img src="https://scope.gg/favicon.ico" class="site-icon-img" alt="Scope">
+                            <div class="site-info">
+                                <div class="site-name">Scope.gg</div>
+                                <div class="site-desc">Demo分析</div>
+                            </div>
+                        </a>
+                        <a href="https://leetify.com" class="site-card" target="_blank">
+                            <img src="https://leetify.com/favicon.ico" class="site-icon-img" alt="Leetify">
+                            <div class="site-info">
+                                <div class="site-name">Leetify</div>
+                                <div class="site-desc">AI数据分析</div>
+                            </div>
+                        </a>
+                        <a href="https://csstats.gg" class="site-card" target="_blank">
+                            <img src="https://csstats.gg/favicon.ico" class="site-icon-img" alt="Stats">
+                            <div class="site-info">
+                                <div class="site-name">CSStats.gg</div>
+                                <div class="site-desc">战绩查询</div>
+                            </div>
+                        </a>
+                        <a href="https://www.csgozone.net" class="site-card" target="_blank">
+                            <img src="https://www.csgozone.net/favicon.ico" class="site-icon-img" alt="Zone">
+                            <div class="site-info">
+                                <div class="site-name">CSGOZone</div>
+                                <div class="site-desc">价格追踪</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 省钱购物 -->
+            <div class="cs2-section" style="background: #fff; border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                <div class="category-header" style="margin-bottom: 25px;">
+                    <h2 class="category-title" style="font-size: 22px;">💰 省钱购物</h2>
+                </div>
+                
+                <!-- 购物返利 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">🎁 购物返利</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.fanli.com" class="site-card" target="_blank">
+                            <img src="https://www.fanli.com/favicon.ico" class="site-icon-img" alt="返利网">
+                            <div class="site-info">
+                                <div class="site-name">返利网</div>
+                                <div class="site-desc">国内老牌返利平台，淘宝京东返利</div>
+                            </div>
+                        </a>
+                        <a href="https://www.huihui.cn.com" class="site-card" target="_blank">
+                            <img src="https://www.huihui.cn.com/favicon.ico" class="site-icon-img" alt="惠惠" onerror="this.src='https://www.google.com/s2/favicons?domain=huihui.cn.com'">
+                            <div class="site-info">
+                                <div class="site-name">惠惠购物助手</div>
+                                <div class="site-desc">网易出品，比价返利一站式服务</div>
+                            </div>
+                        </a>
+                        <a href="https://www.yitao.com" class="site-card" target="_blank">
+                            <img src="https://www.yitao.com/favicon.ico" class="site-icon-img" alt="一淘" onerror="this.src='https://www.google.com/s2/favicons?domain=yitao.com'">
+                            <div class="site-info">
+                                <div class="site-name">一淘</div>
+                                <div class="site-desc">阿里官方返利，淘宝天猫返利</div>
+                            </div>
+                        </a>
+                        <a href="https://union.jd.com/index" class="site-card" target="_blank">
+                            <img src="https://union.jd.com/favicon.ico" class="site-icon-img" alt="京粉" onerror="this.src='https://www.google.com/s2/favicons?domain=jd.com'">
+                            <div class="site-info">
+                                <div class="site-name">京粉返利</div>
+                                <div class="site-desc">京东官方返利平台，自购省钱分享赚钱</div>
+                            </div>
+                        </a>
+                        <a href="https://buyin.jinritemai.com" class="site-card" target="_blank">
+                            <img src="https://buyin.jinritemai.com/favicon.ico" class="site-icon-img" alt="抖音电商" onerror="this.src='https://www.google.com/s2/favicons?domain=douyin.com'">
+                            <div class="site-info">
+                                <div class="site-name">抖音返利</div>
+                                <div class="site-desc">抖音电商精选联盟，短视频带货返利</div>
+                            </div>
+                        </a>
+                        <a href="https://www.ele.me" class="site-card" target="_blank">
+                            <img src="https://www.ele.me/favicon.ico" class="site-icon-img" alt="饿了么">
+                            <div class="site-info">
+                                <div class="site-name">饿了么返利</div>
+                                <div class="site-desc">外卖红包返利，天天领红包</div>
+                            </div>
+                        </a>
+                        <a href="https://www.meituan.com" class="site-card" target="_blank">
+                            <img src="https://www.meituan.com/favicon.ico" class="site-icon-img" alt="美团">
+                            <div class="site-info">
+                                <div class="site-name">美团返利</div>
+                                <div class="site-desc">团购外卖返利，吃喝玩乐省钱</div>
+                            </div>
+                        </a>
+                        <a href="https://www.topcashback.cn" class="site-card" target="_blank">
+                            <img src="https://www.topcashback.cn/favicon.ico" class="site-icon-img" alt="TopCashback" onerror="this.src='https://www.google.com/s2/favicons?domain=topcashback.cn'">
+                            <div class="site-info">
+                                <div class="site-name">TopCashback</div>
+                                <div class="site-desc">国际返利网站，海淘返利首选</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 比价查价 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">📊 比价查价</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.smzdm.com" class="site-card" target="_blank">
+                            <img src="https://www.smzdm.com/favicon.ico" class="site-icon-img" alt="什么值得买">
+                            <div class="site-info">
+                                <div class="site-name">什么值得买</div>
+                                <div class="site-desc">消费决策平台，购物攻略、优惠信息聚合</div>
+                            </div>
+                        </a>
+                        <a href="https://www.gwdang.com" class="site-card" target="_blank">
+                            <img src="https://www.gwdang.com/favicon.ico" class="site-icon-img" alt="购物党">
+                            <div class="site-info">
+                                <div class="site-name">购物党</div>
+                                <div class="site-desc">历史价格查询，自动比价，防止买贵</div>
+                            </div>
+                        </a>
+                        <a href="https://www.manmanbuy.com" class="site-card" target="_blank">
+                            <img src="https://www.manmanbuy.com/favicon.ico" class="site-icon-img" alt="慢慢买">
+                            <div class="site-info">
+                                <div class="site-name">慢慢买</div>
+                                <div class="site-desc">比价网，历史价格走势，降价提醒</div>
+                            </div>
+                        </a>
+                        <a href="https://www.quanmama.com" class="site-card" target="_blank">
+                            <img src="https://www.quanmama.com/favicon.ico" class="site-icon-img" alt="券妈妈">
+                            <div class="site-info">
+                                <div class="site-name">券妈妈</div>
+                                <div class="site-desc">优惠券分享平台，淘宝京东优惠券领取</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 电商平台 -->
+                <div>
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #45b7d1;">🛒 电商平台</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.taobao.com" class="site-card" target="_blank">
+                            <img src="https://www.taobao.com/favicon.ico" class="site-icon-img" alt="淘宝">
+                            <div class="site-info">
+                                <div class="site-name">淘宝</div>
+                                <div class="site-desc">国内最大电商平台，各种优惠活动</div>
+                            </div>
+                        </a>
+                        <a href="https://www.jd.com" class="site-card" target="_blank">
+                            <img src="https://www.jd.com/favicon.ico" class="site-icon-img" alt="京东">
+                            <div class="site-info">
+                                <div class="site-name">京东</div>
+                                <div class="site-desc">自营品质保障，618、双11大促优惠</div>
+                            </div>
+                        </a>
+                        <a href="https://www.pinduoduo.com" class="site-card" target="_blank">
+                            <img src="https://www.pinduoduo.com/favicon.ico" class="site-icon-img" alt="拼多多">
+                            <div class="site-info">
+                                <div class="site-name">拼多多</div>
+                                <div class="site-desc">团购拼单，百亿补贴，低价好物</div>
+                            </div>
+                        </a>
+                        <a href="https://www.tmall.com" class="site-card" target="_blank">
+                            <img src="https://www.tmall.com/favicon.ico" class="site-icon-img" alt="天猫">
+                            <div class="site-info">
+                                <div class="site-name">天猫</div>
+                                <div class="site-desc">品牌官方旗舰店，品质保证</div>
+                            </div>
+                        </a>
+                        <a href="https://www.vip.com" class="site-card" target="_blank">
+                            <img src="https://www.vip.com/favicon.ico" class="site-icon-img" alt="唯品会">
+                            <div class="site-info">
+                                <div class="site-name">唯品会</div>
+                                <div class="site-desc">品牌特卖，折扣商品，限时抢购</div>
+                            </div>
+                        </a>
+                        <a href="https://www.suning.com" class="site-card" target="_blank">
+                            <img src="https://www.suning.com/favicon.ico" class="site-icon-img" alt="苏宁">
+                            <div class="site-info">
+                                <div class="site-name">苏宁易购</div>
+                                <div class="site-desc">家电数码购物平台，线上线下结合</div>
+                            </div>
+                        </a>
+                        <a href="https://www.amazon.cn" class="site-card" target="_blank">
+                            <img src="https://www.amazon.cn/favicon.ico" class="site-icon-img" alt="亚马逊">
+                            <div class="site-info">
+                                <div class="site-name">亚马逊中国</div>
+                                <div class="site-desc">全球购、Kindle电子书、海外商品</div>
+                            </div>
+                        </a>
+                        <a href="https://www.dangdang.com" class="site-card" target="_blank">
+                            <img src="https://www.dangdang.com/favicon.ico" class="site-icon-img" alt="当当">
+                            <div class="site-info">
+                                <div class="site-name">当当网</div>
+                                <div class="site-desc">网上购书首选，图书音像折扣多</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 热门推荐 -->
+            <div class="category-header">
+                <h2 class="category-title">热门推荐</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://github.com" class="site-card" target="_blank">
+                    <img src="https://github.com/favicon.ico" class="site-icon-img" alt="GitHub">
+                    <div class="site-info">
+                        <div class="site-name">GitHub</div>
+                        <div class="site-desc">全球最大的代码托管平台，开发者必备的开源社区</div>
+                    </div>
+                </a>
+                <a href="https://chat.openai.com" class="site-card" target="_blank">
+                    <img src="https://chat.openai.com/favicon.ico" class="site-icon-img" alt="ChatGPT">
+                    <div class="site-info">
+                        <div class="site-name">ChatGPT</div>
+                        <div class="site-desc">OpenAI开发的AI对话模型，强大的自然语言处理能力</div>
+                    </div>
+                </a>
+                <a href="https://stackoverflow.com" class="site-card" target="_blank">
+                    <img src="https://stackoverflow.com/favicon.ico" class="site-icon-img" alt="Stack Overflow">
+                    <div class="site-info">
+                        <div class="site-name">Stack Overflow</div>
+                        <div class="site-desc">全球最大的程序员问答社区，解决技术难题</div>
+                    </div>
+                </a>
+                <a href="https://vercel.com" class="site-card" target="_blank">
+                    <img src="https://vercel.com/favicon.ico" class="site-icon-img" alt="Vercel">
+                    <div class="site-info">
+                        <div class="site-name">Vercel</div>
+                        <div class="site-desc">前端部署平台，支持Next.js等框架，免费且快速</div>
+                    </div>
+                </a>
+                <a href="https://www.google.com" class="site-card" target="_blank">
+                    <img src="https://www.google.com/favicon.ico" class="site-icon-img" alt="Google">
+                    <div class="site-info">
+                        <div class="site-name">Google</div>
+                        <div class="site-desc">全球最大搜索引擎，程序员必备工具</div>
+                    </div>
+                </a>
+                <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                    <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="Bilibili">
+                    <div class="site-info">
+                        <div class="site-name">哔哩哔哩</div>
+                        <div class="site-desc">国内最大视频学习平台，海量技术教程</div>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com" class="site-card" target="_blank">
+                    <img src="https://www.youtube.com/favicon.ico" class="site-icon-img" alt="YouTube">
+                    <div class="site-info">
+                        <div class="site-name">YouTube</div>
+                        <div class="site-desc">全球最大视频平台，技术教程资源丰富</div>
+                    </div>
+                </a>
+                <a href="https://developer.mozilla.org" class="site-card" target="_blank">
+                    <img src="https://developer.mozilla.org/favicon.ico" class="site-icon-img" alt="MDN">
+                    <div class="site-info">
+                        <div class="site-name">MDN Web Docs</div>
+                        <div class="site-desc">Mozilla的Web技术文档，前端开发权威参考</div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- AI工具 -->
+            <div class="category-header">
+                <h2 class="category-title">AI 工具</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://claude.ai" class="site-card" target="_blank">
+                    <img src="https://claude.ai/favicon.ico" class="site-icon-img" alt="Claude" onerror="this.src='https://www.google.com/s2/favicons?domain=claude.ai'">
+                    <div class="site-info">
+                        <div class="site-name">Claude</div>
+                        <div class="site-desc">Anthropic开发的AI助手，擅长长文本分析和代码生成</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.midjourney.com" class="site-card" target="_blank">
+                    <img src="https://www.midjourney.com/favicon.ico" class="site-icon-img" alt="Midjourney" onerror="this.src='https://www.google.com/s2/favicons?domain=midjourney.com'">
+                    <div class="site-info">
+                        <div class="site-name">Midjourney</div>
+                        <div class="site-desc">AI绘画工具，生成高质量艺术图像</div>
+                    </div>
+                </a>
+                <a href="https://copilot.github.com" class="site-card" target="_blank">
+                    <img src="https://github.com/favicon.ico" class="site-icon-img" alt="Copilot">
+                    <div class="site-info">
+                        <div class="site-name">GitHub Copilot</div>
+                        <div class="site-desc">AI编程助手，自动补全代码，提高开发效率</div>
+                    </div>
+                </a>
+                <a href="https://www.notion.so" class="site-card" target="_blank">
+                    <img src="https://www.notion.so/favicon.ico" class="site-icon-img" alt="Notion">
+                    <div class="site-info">
+                        <div class="site-name">Notion AI</div>
+                        <div class="site-desc">集成AI的笔记工具，支持智能写作和知识管理</div>
+                    </div>
+                </a>
+                <a href="https://gemini.google.com" class="site-card" target="_blank">
+                    <img src="https://gemini.google.com/favicon.ico" class="site-icon-img" alt="Gemini">
+                    <div class="site-info">
+                        <div class="site-name">Google Gemini</div>
+                        <div class="site-desc">谷歌AI助手，多模态理解和代码能力</div>
+                    </div>
+                </a>
+                <a href="https://www.perplexity.ai" class="site-card" target="_blank">
+                    <img src="https://www.perplexity.ai/favicon.ico" class="site-icon-img" alt="Perplexity">
+                    <div class="site-info">
+                        <div class="site-name">Perplexity</div>
+                        <div class="site-desc">AI搜索引擎，实时信息查询和问答</div>
+                    </div>
+                </a>
+                <a href="https://www.anthropic.com" class="site-card" target="_blank">
+                    <img src="https://www.anthropic.com/favicon.ico" class="site-icon-img" alt="Anthropic" onerror="this.src='https://www.google.com/s2/favicons?domain=anthropic.com'">
+                    <div class="site-info">
+                        <div class="site-name">Anthropic</div>
+                        <div class="site-desc">Claude开发商，AI安全研究公司</div>
+                    </div>
+                </a>
+                <a href="https://openai.com" class="site-card" target="_blank">
+                    <img src="https://openai.com/favicon.ico" class="site-icon-img" alt="OpenAI">
+                    <div class="site-info">
+                        <div class="site-name">OpenAI</div>
+                        <div class="site-desc">ChatGPT开发商，人工智能研究实验室</div>
+                    </div>
+                </a>
+                <a href="https://www.cursor.com" class="site-card" target="_blank">
+                    <img src="https://www.cursor.com/favicon.ico" class="site-icon-img" alt="Cursor" onerror="this.src='https://www.google.com/s2/favicons?domain=cursor.com'">
+                    <div class="site-info">
+                        <div class="site-name">Cursor</div>
+                        <div class="site-desc">AI驱动的代码编辑器，智能编程助手</div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 开发工具 -->
+            <div class="category-header">
+                <h2 class="category-title">开发工具</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://code.visualstudio.com" class="site-card" target="_blank">
+                    <img src="https://code.visualstudio.com/favicon.ico" class="site-icon-img" alt="VS Code">
+                    <div class="site-info">
+                        <div class="site-name">VS Code</div>
+                        <div class="site-desc">微软开源的代码编辑器，插件丰富，功能强大</div>
+                    </div>
+                </a>
+                <a href="https://www.postman.com" class="site-card" target="_blank">
+                    <img src="https://www.postman.com/favicon.ico" class="site-icon-img" alt="Postman">
+                    <div class="site-info">
+                        <div class="site-name">Postman</div>
+                        <div class="site-desc">API开发和测试工具，接口调试必备</div>
+                    </div>
+                </a>
+                <a href="https://www.docker.com" class="site-card" target="_blank">
+                    <img src="https://www.docker.com/favicon.ico" class="site-icon-img" alt="Docker">
+                    <div class="site-info">
+                        <div class="site-name">Docker</div>
+                        <div class="site-desc">容器化平台，简化应用部署和环境配置</div>
+                    </div>
+                </a>
+                <a href="https://regex101.com" class="site-card" target="_blank">
+                    <img src="https://regex101.com/favicon.ico" class="site-icon-img" alt="Regex101">
+                    <div class="site-info">
+                        <div class="site-name">Regex101</div>
+                        <div class="site-desc">正则表达式测试工具，在线调试和学习正则</div>
+                    </div>
+                </a>
+                <a href="https://git-scm.com" class="site-card" target="_blank">
+                    <img src="https://git-scm.com/favicon.ico" class="site-icon-img" alt="Git">
+                    <div class="site-info">
+                        <div class="site-name">Git</div>
+                        <div class="site-desc">分布式版本控制系统，代码管理必备</div>
+                    </div>
+                </a>
+                <a href="https://www.jetbrains.com" class="site-card" target="_blank">
+                    <img src="https://www.jetbrains.com/favicon.ico" class="site-icon-img" alt="JetBrains">
+                    <div class="site-info">
+                        <div class="site-name">JetBrains</div>
+                        <div class="site-desc">专业IDE开发商，IntelliJ IDEA、WebStorm等</div>
+                    </div>
+                </a>
+                <a href="https://nodejs.org" class="site-card" target="_blank">
+                    <img src="https://nodejs.org/favicon.ico" class="site-icon-img" alt="Node.js">
+                    <div class="site-info">
+                        <div class="site-name">Node.js</div>
+                        <div class="site-desc">JavaScript运行时，服务端开发环境</div>
+                    </div>
+                </a>
+                <a href="https://www.npmjs.com" class="site-card" target="_blank">
+                    <img src="https://www.npmjs.com/favicon.ico" class="site-icon-img" alt="npm">
+                    <div class="site-info">
+                        <div class="site-name">npm</div>
+                        <div class="site-desc">Node包管理器，JavaScript生态核心</div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 学习资源 -->
+            <div class="category-header">
+                <h2 class="category-title">学习资源</h2>
+            </div>
+            <div class="sites-grid">
+                <a href="https://www.bilibili.com" class="site-card" target="_blank">
+                    <img src="https://www.bilibili.com/favicon.ico" class="site-icon-img" alt="Bilibili">
+                    <div class="site-info">
+                        <div class="site-name">哔哩哔哩</div>
+                        <div class="site-desc">国内最大的视频学习平台，海量技术教程</div>
+                    </div>
+                </a>
+                <a href="https://www.freecodecamp.org" class="site-card" target="_blank">
+                    <img src="https://www.freecodecamp.org/favicon.ico" class="site-icon-img" alt="freeCodeCamp">
+                    <div class="site-info">
+                        <div class="site-name">freeCodeCamp</div>
+                        <div class="site-desc">免费的编程学习平台，项目驱动学习</div>
+                    </div>
+                </a>
+                <a href="https://developer.mozilla.org" class="site-card" target="_blank">
+                    <img src="https://developer.mozilla.org/favicon.ico" class="site-icon-img" alt="MDN">
+                    <div class="site-info">
+                        <div class="site-name">MDN Web Docs</div>
+                        <div class="site-desc">Mozilla的Web技术文档，前端开发权威参考</div>
+                    </div>
+                </a>
+                <a href="https://leetcode.cn" class="site-card" target="_blank">
+                    <img src="https://leetcode.cn/favicon.ico" class="site-icon-img" alt="LeetCode">
+                    <div class="site-info">
+                        <div class="site-name">LeetCode</div>
+                        <div class="site-desc">算法练习平台，程序员面试刷题必备</div>
+                    </div>
+                </a>
+                <a href="https://www.coursera.org" class="site-card" target="_blank">
+                    <img src="https://www.coursera.org/favicon.ico" class="site-icon-img" alt="Coursera">
+                    <div class="site-info">
+                        <div class="site-name">Coursera</div>
+                        <div class="site-desc">全球知名在线课程平台，名校计算机课程</div>
+                    </div>
+                </a>
+                <a href="https://www.udemy.com" class="site-card" target="_blank">
+                    <img src="https://www.udemy.com/favicon.ico" class="site-icon-img" alt="Udemy">
+                    <div class="site-info">
+                        <div class="site-name">Udemy</div>
+                        <div class="site-desc">实用技能学习平台，编程开发课程丰富</div>
+                    </div>
+                </a>
+                <a href="https://www.w3schools.com" class="site-card" target="_blank">
+                    <img src="https://www.w3schools.com/favicon.ico" class="site-icon-img" alt="W3Schools">
+                    <div class="site-info">
+                        <div class="site-name">W3Schools</div>
+                        <div class="site-desc">Web技术教程网站，入门学习首选</div>
+                    </div>
+                </a>
+                <a href="https://cs50.harvard.edu" class="site-card" target="_blank">
+                    <img src="https://cs50.harvard.edu/favicon.ico" class="site-icon-img" alt="CS50" onerror="this.src='https://www.google.com/s2/favicons?domain=cs50.harvard.edu'">
+                    <div class="site-info">
+                        <div class="site-name">CS50</div>
+                        <div class="site-desc">哈佛计算机科学导论，全球最火编程课</div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 聊天对话 -->
+            <div class="category-section" id="chat" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">💬 聊天对话</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://chat.openai.com" class="site-card" target="_blank">
+                        <img src="https://chat.openai.com/favicon.ico" class="site-icon-img" alt="ChatGPT">
+                        <div class="site-info">
+                            <div class="site-name">ChatGPT</div>
+                            <div class="site-desc">OpenAI开发的AI对话模型，强大的自然语言处理能力</div>
+                        </div>
+                    </a>
+                    <a href="https://claude.ai" class="site-card" target="_blank">
+                        <img src="https://claude.ai/favicon.ico" class="site-icon-img" alt="Claude" onerror="this.src='https://www.google.com/s2/favicons?domain=claude.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Claude</div>
+                            <div class="site-desc">Anthropic开发的AI助手，擅长长文本分析和代码生成</div>
+                        </div>
+                    </a>
+                    <a href="https://gemini.google.com" class="site-card" target="_blank">
+                        <img src="https://gemini.google.com/favicon.ico" class="site-icon-img" alt="Gemini">
+                        <div class="site-info">
+                            <div class="site-name">Google Gemini</div>
+                            <div class="site-desc">谷歌AI助手，多模态理解和代码能力</div>
+                        </div>
+                    </a>
+                    <a href="https://tongyi.aliyun.com" class="site-card" target="_blank">
+                        <img src="https://tongyi.aliyun.com/favicon.ico" class="site-icon-img" alt="通义千问" onerror="this.src='https://www.google.com/s2/favicons?domain=tongyi.aliyun.com'">
+                        <div class="site-info">
+                            <div class="site-name">通义千问</div>
+                            <div class="site-desc">阿里云大模型，中文对话能力强</div>
+                        </div>
+                    </a>
+                    <a href="https://yiyan.baidu.com" class="site-card" target="_blank">
+                        <img src="https://yiyan.baidu.com/favicon.ico" class="site-icon-img" alt="文心一言">
+                        <div class="site-info">
+                            <div class="site-name">文心一言</div>
+                            <div class="site-desc">百度AI大模型，中文知识问答</div>
+                        </div>
+                    </a>
+                    <a href="https://kimi.moonshot.cn" class="site-card" target="_blank">
+                        <img src="https://kimi.moonshot.cn/favicon.ico" class="site-icon-img" alt="Kimi" onerror="this.src='https://www.google.com/s2/favicons?domain=kimi.moonshot.cn'">
+                        <div class="site-info">
+                            <div class="site-name">Kimi</div>
+                            <div class="site-desc">月之暗面出品，支持超长文本上下文</div>
+                        </div>
+                    </a>
+                    <a href="https://xinghuo.xfyun.cn" class="site-card" target="_blank">
+                        <img src="https://xinghuo.xfyun.cn/favicon.ico" class="site-icon-img" alt="讯飞星火" onerror="this.src='https://www.google.com/s2/favicons?domain=xinghuo.xfyun.cn'">
+                        <div class="site-info">
+                            <div class="site-name">讯飞星火</div>
+                            <div class="site-desc">科大讯飞AI大模型，语音交互能力强</div>
+                        </div>
+                    </a>
+                    <a href="https://doubao.com" class="site-card" target="_blank">
+                        <img src="https://doubao.com/favicon.ico" class="site-icon-img" alt="豆包" onerror="this.src='https://www.google.com/s2/favicons?domain=doubao.com'">
+                        <div class="site-info">
+                            <div class="site-name">豆包</div>
+                            <div class="site-desc">字节跳动AI助手，多场景智能对话</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 智能生图 -->
+            <div class="category-section" id="imageai" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🎨 智能生图</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.midjourney.com" class="site-card" target="_blank">
+                        <img src="https://www.midjourney.com/favicon.ico" class="site-icon-img" alt="Midjourney" onerror="this.src='https://www.google.com/s2/favicons?domain=midjourney.com'">
+                        <div class="site-info">
+                            <div class="site-name">Midjourney</div>
+                            <div class="site-desc">AI绘画工具，生成高质量艺术图像</div>
+                        </div>
+                    </a>
+                    <a href="https://openai.com/dall-e-3" class="site-card" target="_blank">
+                        <img src="https://openai.com/favicon.ico" class="site-icon-img" alt="DALL-E">
+                        <div class="site-info">
+                            <div class="site-name">DALL-E 3</div>
+                            <div class="site-desc">OpenAI图像生成模型，文本转图像</div>
+                        </div>
+                    </a>
+                    <a href="https://www.bing.com/create" class="site-card" target="_blank">
+                        <img src="https://www.bing.com/favicon.ico" class="site-icon-img" alt="Bing Image">
+                        <div class="site-info">
+                            <div class="site-name">Bing Image Creator</div>
+                            <div class="site-desc">微软AI图像生成，基于DALL-E</div>
+                        </div>
+                    </a>
+                    <a href="https://leonardo.ai" class="site-card" target="_blank">
+                        <img src="https://leonardo.ai/favicon.ico" class="site-icon-img" alt="Leonardo" onerror="this.src='https://www.google.com/s2/favicons?domain=leonardo.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Leonardo.ai</div>
+                            <div class="site-desc">游戏资产生成，多种风格模型</div>
+                        </div>
+                    </a>
+                    <a href="https://www.canva.com" class="site-card" target="_blank">
+                        <img src="https://www.canva.com/favicon.ico" class="site-icon-img" alt="Canva">
+                        <div class="site-info">
+                            <div class="site-name">Canva AI</div>
+                            <div class="site-desc">在线设计工具，集成AI生图功能</div>
+                        </div>
+                    </a>
+                    <a href="https://stability.ai" class="site-card" target="_blank">
+                        <img src="https://stability.ai/favicon.ico" class="site-icon-img" alt="Stable" onerror="this.src='https://www.google.com/s2/favicons?domain=stability.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Stable Diffusion</div>
+                            <div class="site-desc">开源AI绘画模型，可本地部署</div>
+                        </div>
+                    </a>
+                    <a href="https://www.liblib.art" class="site-card" target="_blank">
+                        <img src="https://www.liblib.art/favicon.ico" class="site-icon-img" alt="Liblib" onerror="this.src='https://www.google.com/s2/favicons?domain=liblib.art'">
+                        <div class="site-info">
+                            <div class="site-name">LiblibAI</div>
+                            <div class="site-desc">国内AI绘画平台，模型丰富</div>
+                        </div>
+                    </a>
+                    <a href="https://www.gaoding.com" class="site-card" target="_blank">
+                        <img src="https://www.gaoding.com/favicon.ico" class="site-icon-img" alt="稿定" onerror="this.src='https://www.google.com/s2/favicons?domain=gaoding.com'">
+                        <div class="site-info">
+                            <div class="site-name">稿定AI</div>
+                            <div class="site-desc">国内设计工具，AI生成营销素材</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 代码辅助 -->
+            <div class="category-section" id="codeai" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">💻 代码辅助</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://github.com/features/copilot" class="site-card" target="_blank">
+                        <img src="https://github.com/favicon.ico" class="site-icon-img" alt="Copilot">
+                        <div class="site-info">
+                            <div class="site-name">GitHub Copilot</div>
+                            <div class="site-desc">AI编程助手，自动补全代码，提高开发效率</div>
+                        </div>
+                    </a>
+                    <a href="https://www.cursor.com" class="site-card" target="_blank">
+                        <img src="https://www.cursor.com/favicon.ico" class="site-icon-img" alt="Cursor" onerror="this.src='https://www.google.com/s2/favicons?domain=cursor.com'">
+                        <div class="site-info">
+                            <div class="site-name">Cursor</div>
+                            <div class="site-desc">AI驱动的代码编辑器，智能编程助手</div>
+                        </div>
+                    </a>
+                    <a href="https://codeium.com" class="site-card" target="_blank">
+                        <img src="https://codeium.com/favicon.ico" class="site-icon-img" alt="Codeium" onerror="this.src='https://www.google.com/s2/favicons?domain=codeium.com'">
+                        <div class="site-info">
+                            <div class="site-name">Codeium</div>
+                            <div class="site-desc">免费AI代码补全工具，支持多种IDE</div>
+                        </div>
+                    </a>
+                    <a href="https://www.tabnine.com" class="site-card" target="_blank">
+                        <img src="https://www.tabnine.com/favicon.ico" class="site-icon-img" alt="Tabnine">
+                        <div class="site-info">
+                            <div class="site-name">Tabnine</div>
+                            <div class="site-desc">AI代码补全，支持私有代码训练</div>
+                        </div>
+                    </a>
+                    <a href="https://sourcegraph.com/cody" class="site-card" target="_blank">
+                        <img src="https://sourcegraph.com/favicon.ico" class="site-icon-img" alt="Cody" onerror="this.src='https://www.google.com/s2/favicons?domain=sourcegraph.com'">
+                        <div class="site-info">
+                            <div class="site-name">Sourcegraph Cody</div>
+                            <div class="site-desc">AI编程助手，代码搜索和理解</div>
+                        </div>
+                    </a>
+                    <a href="https://replit.com" class="site-card" target="_blank">
+                        <img src="https://replit.com/favicon.ico" class="site-icon-img" alt="Replit">
+                        <div class="site-info">
+                            <div class="site-name">Replit Ghostwriter</div>
+                            <div class="site-desc">在线IDE，内置AI编程助手</div>
+                        </div>
+                    </a>
+                    <a href="https://www.anthropic.com/claude" class="site-card" target="_blank">
+                        <img src="https://www.anthropic.com/favicon.ico" class="site-icon-img" alt="Claude" onerror="this.src='https://www.google.com/s2/favicons?domain=anthropic.com'">
+                        <div class="site-info">
+                            <div class="site-name">Claude for Code</div>
+                            <div class="site-desc">Claude代码能力，擅长长代码分析</div>
+                        </div>
+                    </a>
+                    <a href="https://codegeex.cn" class="site-card" target="_blank">
+                        <img src="https://codegeex.cn/favicon.ico" class="site-icon-img" alt="CodeGeeX" onerror="this.src='https://www.google.com/s2/favicons?domain=codegeex.cn'">
+                        <div class="site-info">
+                            <div class="site-name">CodeGeeX</div>
+                            <div class="site-desc">智谱AI代码助手，支持中文注释</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 写作论文 -->
+            <div class="category-section" id="writing" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">✍️ 写作论文</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.notion.so" class="site-card" target="_blank">
+                        <img src="https://www.notion.so/favicon.ico" class="site-icon-img" alt="Notion">
+                        <div class="site-info">
+                            <div class="site-name">Notion AI</div>
+                            <div class="site-desc">集成AI的笔记工具，支持智能写作和知识管理</div>
+                        </div>
+                    </a>
+                    <a href="https://chat.openai.com" class="site-card" target="_blank">
+                        <img src="https://chat.openai.com/favicon.ico" class="site-icon-img" alt="ChatGPT">
+                        <div class="site-info">
+                            <div class="site-name">ChatGPT</div>
+                            <div class="site-desc">论文写作辅助，文献综述生成</div>
+                        </div>
+                    </a>
+                    <a href="https://claude.ai" class="site-card" target="_blank">
+                        <img src="https://claude.ai/favicon.ico" class="site-icon-img" alt="Claude" onerror="this.src='https://www.google.com/s2/favicons?domain=claude.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Claude</div>
+                            <div class="site-desc">长文本分析，论文润色和改写</div>
+                        </div>
+                    </a>
+                    <a href="https://www.jasper.ai" class="site-card" target="_blank">
+                        <img src="https://www.jasper.ai/favicon.ico" class="site-icon-img" alt="Jasper" onerror="this.src='https://www.google.com/s2/favicons?domain=jasper.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Jasper</div>
+                            <div class="site-desc">AI写作助手，营销文案和博客写作</div>
+                        </div>
+                    </a>
+                    <a href="https://writesonic.com" class="site-card" target="_blank">
+                        <img src="https://writesonic.com/favicon.ico" class="site-icon-img" alt="Writesonic" onerror="this.src='https://www.google.com/s2/favicons?domain=writesonic.com'">
+                        <div class="site-info">
+                            <div class="site-name">Writesonic</div>
+                            <div class="site-desc">AI内容创作，SEO优化文章生成</div>
+                        </div>
+                    </a>
+                    <a href="https://www.grammarly.com" class="site-card" target="_blank">
+                        <img src="https://www.grammarly.com/favicon.ico" class="site-icon-img" alt="Grammarly">
+                        <div class="site-info">
+                            <div class="site-name">Grammarly</div>
+                            <div class="site-desc">英文写作润色，语法检查和改写</div>
+                        </div>
+                    </a>
+                    <a href="https://quillbot.com" class="site-card" target="_blank">
+                        <img src="https://quillbot.com/favicon.ico" class="site-icon-img" alt="QuillBot">
+                        <div class="site-info">
+                            <div class="site-name">QuillBot</div>
+                            <div class="site-desc">论文改写降重，同义词替换</div>
+                        </div>
+                    </a>
+                    <a href="https://www.zotero.org" class="site-card" target="_blank">
+                        <img src="https://www.zotero.org/favicon.ico" class="site-icon-img" alt="Zotero">
+                        <div class="site-info">
+                            <div class="site-name">Zotero</div>
+                            <div class="site-desc">文献管理工具，论文引用整理</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 智能搜索 -->
+            <div class="category-section" id="searchai" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🔍 智能搜索</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.perplexity.ai" class="site-card" target="_blank">
+                        <img src="https://www.perplexity.ai/favicon.ico" class="site-icon-img" alt="Perplexity">
+                        <div class="site-info">
+                            <div class="site-name">Perplexity</div>
+                            <div class="site-desc">AI搜索引擎，实时信息查询和问答</div>
+                        </div>
+                    </a>
+                    <a href="https://www.bing.com/chat" class="site-card" target="_blank">
+                        <img src="https://www.bing.com/favicon.ico" class="site-icon-img" alt="Copilot">
+                        <div class="site-info">
+                            <div class="site-name">Microsoft Copilot</div>
+                            <div class="site-desc">微软AI搜索，集成GPT-4</div>
+                        </div>
+                    </a>
+                    <a href="https://www.google.com" class="site-card" target="_blank">
+                        <img src="https://www.google.com/favicon.ico" class="site-icon-img" alt="Google">
+                        <div class="site-info">
+                            <div class="site-name">Google SGE</div>
+                            <div class="site-desc">谷歌生成式搜索体验</div>
+                        </div>
+                    </a>
+                    <a href="https://you.com" class="site-card" target="_blank">
+                        <img src="https://you.com/favicon.ico" class="site-icon-img" alt="You.com">
+                        <div class="site-info">
+                            <div class="site-name">You.com</div>
+                            <div class="site-desc">隐私保护AI搜索引擎</div>
+                        </div>
+                    </a>
+                    <a href="https://phind.com" class="site-card" target="_blank">
+                        <img src="https://phind.com/favicon.ico" class="site-icon-img" alt="Phind" onerror="this.src='https://www.google.com/s2/favicons?domain=phind.com'">
+                        <div class="site-info">
+                            <div class="site-name">Phind</div>
+                            <div class="site-desc">专为开发者设计的AI搜索引擎</div>
+                        </div>
+                    </a>
+                    <a href="https://kagi.com" class="site-card" target="_blank">
+                        <img src="https://kagi.com/favicon.ico" class="site-icon-img" alt="Kagi">
+                        <div class="site-info">
+                            <div class="site-name">Kagi</div>
+                            <div class="site-desc">付费AI搜索，无广告高质量结果</div>
+                        </div>
+                    </a>
+                    <a href="https://metaso.cn" class="site-card" target="_blank">
+                        <img src="https://metaso.cn/favicon.ico" class="site-icon-img" alt="秘塔" onerror="this.src='https://www.google.com/s2/favicons?domain=metaso.cn'">
+                        <div class="site-info">
+                            <div class="site-name">秘塔AI搜索</div>
+                            <div class="site-desc">国内AI搜索引擎，结构化结果</div>
+                        </div>
+                    </a>
+                    <a href="https://www.tiangong.cn" class="site-card" target="_blank">
+                        <img src="https://www.tiangong.cn/favicon.ico" class="site-icon-img" alt="天工" onerror="this.src='https://www.google.com/s2/favicons?domain=tiangong.cn'">
+                        <div class="site-info">
+                            <div class="site-name">天工AI搜索</div>
+                            <div class="site-desc">昆仑万维AI搜索，多模态问答</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 模型广场 -->
+            <div class="category-section" id="models" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🤖 模型广场</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://openai.com" class="site-card" target="_blank">
+                        <img src="https://openai.com/favicon.ico" class="site-icon-img" alt="OpenAI">
+                        <div class="site-info">
+                            <div class="site-name">OpenAI</div>
+                            <div class="site-desc">ChatGPT开发商，GPT系列模型</div>
+                        </div>
+                    </a>
+                    <a href="https://www.anthropic.com" class="site-card" target="_blank">
+                        <img src="https://www.anthropic.com/favicon.ico" class="site-icon-img" alt="Anthropic" onerror="this.src='https://www.google.com/s2/favicons?domain=anthropic.com'">
+                        <div class="site-info">
+                            <div class="site-name">Anthropic</div>
+                            <div class="site-desc">Claude开发商，AI安全研究公司</div>
+                        </div>
+                    </a>
+                    <a href="https://gemini.google.com" class="site-card" target="_blank">
+                        <img src="https://gemini.google.com/favicon.ico" class="site-icon-img" alt="Google">
+                        <div class="site-info">
+                            <div class="site-name">Google DeepMind</div>
+                            <div class="site-desc">Gemini系列模型，多模态AI</div>
+                        </div>
+                    </a>
+                    <a href="https://mistral.ai" class="site-card" target="_blank">
+                        <img src="https://mistral.ai/favicon.ico" class="site-icon-img" alt="Mistral" onerror="this.src='https://www.google.com/s2/favicons?domain=mistral.ai'">
+                        <div class="site-info">
+                            <div class="site-name">Mistral AI</div>
+                            <div class="site-desc">欧洲开源大模型，Mixtral系列</div>
+                        </div>
+                    </a>
+                    <a href="https://cohere.com" class="site-card" target="_blank">
+                        <img src="https://cohere.com/favicon.ico" class="site-icon-img" alt="Cohere">
+                        <div class="site-info">
+                            <div class="site-name">Cohere</div>
+                            <div class="site-desc">企业级大语言模型，Command系列</div>
+                        </div>
+                    </a>
+                    <a href="https://ai.meta.com" class="site-card" target="_blank">
+                        <img src="https://ai.meta.com/favicon.ico" class="site-icon-img" alt="Meta" onerror="this.src='https://www.google.com/s2/favicons?domain=ai.meta.com'">
+                        <div class="site-info">
+                            <div class="site-name">Meta AI</div>
+                            <div class="site-desc">Llama系列开源大模型</div>
+                        </div>
+                    </a>
+                    <a href="https://huggingface.co" class="site-card" target="_blank">
+                        <img src="https://huggingface.co/favicon.ico" class="site-icon-img" alt="HuggingFace">
+                        <div class="site-info">
+                            <div class="site-name">Hugging Face</div>
+                            <div class="site-desc">开源模型社区，Transformers库</div>
+                        </div>
+                    </a>
+                    <a href="https://platform.openai.com/playground" class="site-card" target="_blank">
+                        <img src="https://openai.com/favicon.ico" class="site-icon-img" alt="Playground">
+                        <div class="site-info">
+                            <div class="site-name">OpenAI Playground</div>
+                            <div class="site-desc">模型参数调试，API测试平台</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 代码托管 -->
+            <div class="category-section" id="codehost" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📦 代码托管</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://github.com" class="site-card" target="_blank">
+                        <img src="https://github.com/favicon.ico" class="site-icon-img" alt="GitHub">
+                        <div class="site-info">
+                            <div class="site-name">GitHub</div>
+                            <div class="site-desc">全球最大的代码托管平台，开源社区</div>
+                        </div>
+                    </a>
+                    <a href="https://gitlab.com" class="site-card" target="_blank">
+                        <img src="https://gitlab.com/favicon.ico" class="site-icon-img" alt="GitLab">
+                        <div class="site-info">
+                            <div class="site-name">GitLab</div>
+                            <div class="site-desc">完整的DevOps平台，支持CI/CD</div>
+                        </div>
+                    </a>
+                    <a href="https://gitee.com" class="site-card" target="_blank">
+                        <img src="https://gitee.com/favicon.ico" class="site-icon-img" alt="Gitee">
+                        <div class="site-info">
+                            <div class="site-name">Gitee</div>
+                            <div class="site-desc">国内代码托管平台，访问速度快</div>
+                        </div>
+                    </a>
+                    <a href="https://bitbucket.org" class="site-card" target="_blank">
+                        <img src="https://bitbucket.org/favicon.ico" class="site-icon-img" alt="Bitbucket">
+                        <div class="site-info">
+                            <div class="site-name">Bitbucket</div>
+                            <div class="site-desc">Atlassian出品，支持私有仓库</div>
+                        </div>
+                    </a>
+                    <a href="https://sourceforge.net" class="site-card" target="_blank">
+                        <img src="https://sourceforge.net/favicon.ico" class="site-icon-img" alt="SourceForge">
+                        <div class="site-info">
+                            <div class="site-name">SourceForge</div>
+                            <div class="site-desc">老牌开源软件托管平台</div>
+                        </div>
+                    </a>
+                    <a href="https://coding.net" class="site-card" target="_blank">
+                        <img src="https://coding.net/favicon.ico" class="site-icon-img" alt="Coding">
+                        <div class="site-info">
+                            <div class="site-name">CODING</div>
+                            <div class="site-desc">腾讯云DevOps平台，一站式研发管理</div>
+                        </div>
+                    </a>
+                    <a href="https://codeup.aliyun.com" class="site-card" target="_blank">
+                        <img src="https://codeup.aliyun.com/favicon.ico" class="site-icon-img" alt="Codeup" onerror="this.src='https://www.google.com/s2/favicons?domain=codeup.aliyun.com'">
+                        <div class="site-info">
+                            <div class="site-name">阿里云Codeup</div>
+                            <div class="site-desc">阿里云代码托管，企业级安全</div>
+                        </div>
+                    </a>
+                    <a href="https://gitea.io" class="site-card" target="_blank">
+                        <img src="https://gitea.io/favicon.ico" class="site-icon-img" alt="Gitea">
+                        <div class="site-info">
+                            <div class="site-name">Gitea</div>
+                            <div class="site-desc">轻量级自建Git服务，开源免费</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- API工具 -->
+            <div class="category-section" id="apitools" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🔌 API工具</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.postman.com" class="site-card" target="_blank">
+                        <img src="https://www.postman.com/favicon.ico" class="site-icon-img" alt="Postman">
+                        <div class="site-info">
+                            <div class="site-name">Postman</div>
+                            <div class="site-desc">API开发和测试工具，接口调试必备</div>
+                        </div>
+                    </a>
+                    <a href="https://hoppscotch.io" class="site-card" target="_blank">
+                        <img src="https://hoppscotch.io/favicon.ico" class="site-icon-img" alt="Hoppscotch">
+                        <div class="site-info">
+                            <div class="site-name">Hoppscotch</div>
+                            <div class="site-desc">开源API客户端，Postman替代品</div>
+                        </div>
+                    </a>
+                    <a href="https://insomnia.rest" class="site-card" target="_blank">
+                        <img src="https://insomnia.rest/favicon.ico" class="site-icon-img" alt="Insomnia">
+                        <div class="site-info">
+                            <div class="site-name">Insomnia</div>
+                            <div class="site-desc">现代化API测试工具，界面简洁</div>
+                        </div>
+                    </a>
+                    <a href="https://swagger.io" class="site-card" target="_blank">
+                        <img src="https://swagger.io/favicon.ico" class="site-icon-img" alt="Swagger">
+                        <div class="site-info">
+                            <div class="site-name">Swagger</div>
+                            <div class="site-desc">API文档生成工具，OpenAPI规范</div>
+                        </div>
+                    </a>
+                    <a href="https://apifox.com" class="site-card" target="_blank">
+                        <img src="https://apifox.com/favicon.ico" class="site-icon-img" alt="Apifox">
+                        <div class="site-info">
+                            <div class="site-name">Apifox</div>
+                            <div class="site-desc">国产API一体化协作平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.apipost.cn" class="site-card" target="_blank">
+                        <img src="https://www.apipost.cn/favicon.ico" class="site-icon-img" alt="Apipost">
+                        <div class="site-info">
+                            <div class="site-name">Apipost</div>
+                            <div class="site-desc">中文API文档和测试工具</div>
+                        </div>
+                    </a>
+                    <a href="https://httpie.io" class="site-card" target="_blank">
+                        <img src="https://httpie.io/favicon.ico" class="site-icon-img" alt="HTTPie">
+                        <div class="site-info">
+                            <div class="site-name">HTTPie</div>
+                            <div class="site-desc">命令行HTTP客户端，简单易用</div>
+                        </div>
+                    </a>
+                    <a href="https://reqbin.com" class="site-card" target="_blank">
+                        <img src="https://reqbin.com/favicon.ico" class="site-icon-img" alt="ReqBin">
+                        <div class="site-info">
+                            <div class="site-name">ReqBin</div>
+                            <div class="site-desc">在线HTTP请求测试工具</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 在线编辑器 -->
+            <div class="category-section" id="editor" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📝 在线编辑器</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://vscode.dev" class="site-card" target="_blank">
+                        <img src="https://vscode.dev/favicon.ico" class="site-icon-img" alt="VS Code Web">
+                        <div class="site-info">
+                            <div class="site-name">VS Code for Web</div>
+                            <div class="site-desc">VS Code网页版，无需安装</div>
+                        </div>
+                    </a>
+                    <a href="https://replit.com" class="site-card" target="_blank">
+                        <img src="https://replit.com/favicon.ico" class="site-icon-img" alt="Replit">
+                        <div class="site-info">
+                            <div class="site-name">Replit</div>
+                            <div class="site-desc">在线IDE，支持50+编程语言</div>
+                        </div>
+                    </a>
+                    <a href="https://codesandbox.io" class="site-card" target="_blank">
+                        <img src="https://codesandbox.io/favicon.ico" class="site-icon-img" alt="CodeSandbox">
+                        <div class="site-info">
+                            <div class="site-name">CodeSandbox</div>
+                            <div class="site-desc">云端Web开发环境，React/Vue友好</div>
+                        </div>
+                    </a>
+                    <a href="https://stackblitz.com" class="site-card" target="_blank">
+                        <img src="https://stackblitz.com/favicon.ico" class="site-icon-img" alt="StackBlitz">
+                        <div class="site-info">
+                            <div class="site-name">StackBlitz</div>
+                            <div class="site-desc">基于WebContainer的在线IDE</div>
+                        </div>
+                    </a>
+                    <a href="https://jsfiddle.net" class="site-card" target="_blank">
+                        <img src="https://jsfiddle.net/favicon.ico" class="site-icon-img" alt="JSFiddle">
+                        <div class="site-info">
+                            <div class="site-name">JSFiddle</div>
+                            <div class="site-desc">在线代码片段测试和分享</div>
+                        </div>
+                    </a>
+                    <a href="https://codepen.io" class="site-card" target="_blank">
+                        <img src="https://codepen.io/favicon.ico" class="site-icon-img" alt="CodePen">
+                        <div class="site-info">
+                            <div class="site-name">CodePen</div>
+                            <div class="site-desc">前端代码展示和分享平台</div>
+                        </div>
+                    </a>
+                    <a href="https://glitch.com" class="site-card" target="_blank">
+                        <img src="https://glitch.com/favicon.ico" class="site-icon-img" alt="Glitch">
+                        <div class="site-info">
+                            <div class="site-name">Glitch</div>
+                            <div class="site-desc">构建和部署全栈Web应用</div>
+                        </div>
+                    </a>
+                    <a href="https://gitpod.io" class="site-card" target="_blank">
+                        <img src="https://gitpod.io/favicon.ico" class="site-icon-img" alt="Gitpod">
+                        <div class="site-info">
+                            <div class="site-name">Gitpod</div>
+                            <div class="site-desc">云端开发环境，基于VS Code</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 正则工具 -->
+            <div class="category-section" id="regex" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🔍 正则工具</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://regex101.com" class="site-card" target="_blank">
+                        <img src="https://regex101.com/favicon.ico" class="site-icon-img" alt="Regex101">
+                        <div class="site-info">
+                            <div class="site-name">Regex101</div>
+                            <div class="site-desc">正则表达式测试工具，在线调试和学习</div>
+                        </div>
+                    </a>
+                    <a href="https://regexr.com" class="site-card" target="_blank">
+                        <img src="https://regexr.com/favicon.ico" class="site-icon-img" alt="RegExr">
+                        <div class="site-info">
+                            <div class="site-name">RegExr</div>
+                            <div class="site-desc">正则表达式学习和测试，可视化</div>
+                        </div>
+                    </a>
+                    <a href="https://regexper.com" class="site-card" target="_blank">
+                        <img src="https://regexper.com/favicon.ico" class="site-icon-img" alt="RegExper">
+                        <div class="site-info">
+                            <div class="site-name">RegExper</div>
+                            <div class="site-desc">正则表达式可视化图解工具</div>
+                        </div>
+                    </a>
+                    <a href="https://jex.im" class="site-card" target="_blank">
+                        <img src="https://jex.im/favicon.ico" class="site-icon-img" alt="Jex" onerror="this.src='https://www.google.com/s2/favicons?domain=jex.im'">
+                        <div class="site-info">
+                            <div class="site-name">Jex</div>
+                            <div class="site-desc">正则表达式可视化编辑器</div>
+                        </div>
+                    </a>
+                    <a href="https://www.debuggex.com" class="site-card" target="_blank">
+                        <img src="https://www.debuggex.com/favicon.ico" class="site-icon-img" alt="Debuggex">
+                        <div class="site-info">
+                            <div class="site-name">Debuggex</div>
+                            <div class="site-desc">正则表达式调试和可视化</div>
+                        </div>
+                    </a>
+                    <a href="https://rubular.com" class="site-card" target="_blank">
+                        <img src="https://rubular.com/favicon.ico" class="site-icon-img" alt="Rubular">
+                        <div class="site-info">
+                            <div class="site-name">Rubular</div>
+                            <div class="site-desc">Ruby正则表达式测试工具</div>
+                        </div>
+                    </a>
+                    <a href="https://extendsclass.com/regex-tester.html" class="site-card" target="_blank">
+                        <img src="https://extendsclass.com/favicon.ico" class="site-icon-img" alt="ExtendsClass">
+                        <div class="site-info">
+                            <div class="site-name">Regex Tester</div>
+                            <div class="site-desc">多语言正则表达式测试</div>
+                        </div>
+                    </a>
+                    <a href="https://ihateregex.io" class="site-card" target="_blank">
+                        <img src="https://ihateregex.io/favicon.ico" class="site-icon-img" alt="iHateRegex">
+                        <div class="site-info">
+                            <div class="site-name">iHateRegex</div>
+                            <div class="site-desc">常用正则表达式速查和测试</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- JSON工具 -->
+            <div class="category-section" id="json" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📋 JSON工具</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://jsonformatter.org" class="site-card" target="_blank">
+                        <img src="https://jsonformatter.org/favicon.ico" class="site-icon-img" alt="JSON Formatter">
+                        <div class="site-info">
+                            <div class="site-name">JSON Formatter</div>
+                            <div class="site-desc">JSON格式化、验证和美化工具</div>
+                        </div>
+                    </a>
+                    <a href="https://jsoneditoronline.org" class="site-card" target="_blank">
+                        <img src="https://jsoneditoronline.org/favicon.ico" class="site-icon-img" alt="JSON Editor">
+                        <div class="site-info">
+                            <div class="site-name">JSON Editor Online</div>
+                            <div class="site-desc">在线JSON编辑器和查看器</div>
+                        </div>
+                    </a>
+                    <a href="https://www.json.cn" class="site-card" target="_blank">
+                        <img src="https://www.json.cn/favicon.ico" class="site-icon-img" alt="JSON.cn">
+                        <div class="site-info">
+                            <div class="site-name">JSON.cn</div>
+                            <div class="site-desc">中文JSON格式化工具</div>
+                        </div>
+                    </a>
+                    <a href="https://transform.tools/json-to-typescript" class="site-card" target="_blank">
+                        <img src="https://transform.tools/favicon.ico" class="site-icon-img" alt="Transform">
+                        <div class="site-info">
+                            <div class="site-name">JSON to TypeScript</div>
+                            <div class="site-desc">JSON转TypeScript类型定义</div>
+                        </div>
+                    </a>
+                    <a href="https://quicktype.io" class="site-card" target="_blank">
+                        <img src="https://quicktype.io/favicon.ico" class="site-icon-img" alt="Quicktype">
+                        <div class="site-info">
+                            <div class="site-name">Quicktype</div>
+                            <div class="site-desc">JSON转各种编程语言类型</div>
+                        </div>
+                    </a>
+                    <a href="https://www.sojson.com" class="site-card" target="_blank">
+                        <img src="https://www.sojson.com/favicon.ico" class="site-icon-img" alt="SoJson">
+                        <div class="site-info">
+                            <div class="site-name">SoJson</div>
+                            <div class="site-desc">JSON解析、压缩、转义工具</div>
+                        </div>
+                    </a>
+                    <a href="https://jsonpath.com" class="site-card" target="_blank">
+                        <img src="https://jsonpath.com/favicon.ico" class="site-icon-img" alt="JSONPath">
+                        <div class="site-info">
+                            <div class="site-name">JSONPath Tester</div>
+                            <div class="site-desc">JSONPath表达式测试工具</div>
+                        </div>
+                    </a>
+                    <a href="https://jqplay.org" class="site-card" target="_blank">
+                        <img src="https://jqplay.org/favicon.ico" class="site-icon-img" alt="jq">
+                        <div class="site-info">
+                            <div class="site-name">jq play</div>
+                            <div class="site-desc">jq命令行JSON处理器在线版</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 文档笔记 -->
+            <div class="category-section" id="notes" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📒 文档笔记</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.notion.so" class="site-card" target="_blank">
+                        <img src="https://www.notion.so/favicon.ico" class="site-icon-img" alt="Notion">
+                        <div class="site-info">
+                            <div class="site-name">Notion</div>
+                            <div class="site-desc">全能笔记和知识管理工具</div>
+                        </div>
+                    </a>
+                    <a href="https://www.yuque.com" class="site-card" target="_blank">
+                        <img src="https://www.yuque.com/favicon.ico" class="site-icon-img" alt="语雀">
+                        <div class="site-info">
+                            <div class="site-name">语雀</div>
+                            <div class="site-desc">阿里出品，专业的云端知识库</div>
+                        </div>
+                    </a>
+                    <a href="https://www.feishu.cn" class="site-card" target="_blank">
+                        <img src="https://www.feishu.cn/favicon.ico" class="site-icon-img" alt="飞书">
+                        <div class="site-info">
+                            <div class="site-name">飞书文档</div>
+                            <div class="site-desc">字节跳动出品，协作办公套件</div>
+                        </div>
+                    </a>
+                    <a href="https://docs.qq.com" class="site-card" target="_blank">
+                        <img src="https://docs.qq.com/favicon.ico" class="site-icon-img" alt="腾讯文档">
+                        <div class="site-info">
+                            <div class="site-name">腾讯文档</div>
+                            <div class="site-desc">在线文档协作，微信生态</div>
+                        </div>
+                    </a>
+                    <a href="https://www.wolai.com" class="site-card" target="_blank">
+                        <img src="https://www.wolai.com/favicon.ico" class="site-icon-img" alt="我来">
+                        <div class="site-info">
+                            <div class="site-name">我来 wolai</div>
+                            <div class="site-desc">国产Notion替代品，中文友好</div>
+                        </div>
+                    </a>
+                    <a href="https://obsidian.md" class="site-card" target="_blank">
+                        <img src="https://obsidian.md/favicon.ico" class="site-icon-img" alt="Obsidian">
+                        <div class="site-info">
+                            <div class="site-name">Obsidian</div>
+                            <div class="site-desc">本地优先的双向链接笔记</div>
+                        </div>
+                    </a>
+                    <a href="https://typora.io" class="site-card" target="_blank">
+                        <img src="https://typora.io/favicon.ico" class="site-icon-img" alt="Typora">
+                        <div class="site-info">
+                            <div class="site-name">Typora</div>
+                            <div class="site-desc">极简Markdown编辑器</div>
+                        </div>
+                    </a>
+                    <a href="https://www.zoho.com/notebook" class="site-card" target="_blank">
+                        <img src="https://www.zoho.com/favicon.ico" class="site-icon-img" alt="Zoho">
+                        <div class="site-info">
+                            <div class="site-name">Zoho Notebook</div>
+                            <div class="site-desc">精美笔记应用，卡片式设计</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 网盘存储 -->
+            <div class="category-section" id="cloud" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">☁️ 网盘存储</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.aliyundrive.com" class="site-card" target="_blank">
+                        <img src="https://www.aliyundrive.com/favicon.ico" class="site-icon-img" alt="阿里云盘">
+                        <div class="site-info">
+                            <div class="site-name">阿里云盘</div>
+                            <div class="site-desc">不限速网盘，大容量存储</div>
+                        </div>
+                    </a>
+                    <a href="https://pan.baidu.com" class="site-card" target="_blank">
+                        <img src="https://pan.baidu.com/favicon.ico" class="site-icon-img" alt="百度网盘">
+                        <div class="site-info">
+                            <div class="site-name">百度网盘</div>
+                            <div class="site-desc">国内最大网盘，资源分享丰富</div>
+                        </div>
+                    </a>
+                    <a href="https://www.dropbox.com" class="site-card" target="_blank">
+                        <img src="https://www.dropbox.com/favicon.ico" class="site-icon-img" alt="Dropbox">
+                        <div class="site-info">
+                            <div class="site-name">Dropbox</div>
+                            <div class="site-desc">国际知名云存储，同步稳定</div>
+                        </div>
+                    </a>
+                    <a href="https://drive.google.com" class="site-card" target="_blank">
+                        <img src="https://drive.google.com/favicon.ico" class="site-icon-img" alt="Google Drive">
+                        <div class="site-info">
+                            <div class="site-name">Google Drive</div>
+                            <div class="site-desc">谷歌云盘，与Workspace集成</div>
+                        </div>
+                    </a>
+                    <a href="https://onedrive.live.com" class="site-card" target="_blank">
+                        <img src="https://onedrive.live.com/favicon.ico" class="site-icon-img" alt="OneDrive">
+                        <div class="site-info">
+                            <div class="site-name">OneDrive</div>
+                            <div class="site-desc">微软云存储，Office深度集成</div>
+                        </div>
+                    </a>
+                    <a href="https://www.icloud.com" class="site-card" target="_blank">
+                        <img src="https://www.icloud.com/favicon.ico" class="site-icon-img" alt="iCloud">
+                        <div class="site-info">
+                            <div class="site-name">iCloud</div>
+                            <div class="site-desc">苹果云服务，生态无缝同步</div>
+                        </div>
+                    </a>
+                    <a href="https://www.lanzou.com" class="site-card" target="_blank">
+                        <img src="https://www.lanzou.com/favicon.ico" class="site-icon-img" alt="蓝奏云">
+                        <div class="site-info">
+                            <div class="site-name">蓝奏云</div>
+                            <div class="site-desc">小文件分享网盘，不限速</div>
+                        </div>
+                    </a>
+                    <a href="https://cowtransfer.com" class="site-card" target="_blank">
+                        <img src="https://cowtransfer.com/favicon.ico" class="site-icon-img" alt="奶牛快传">
+                        <div class="site-info">
+                            <div class="site-name">奶牛快传</div>
+                            <div class="site-desc">临时文件传输，无需注册</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- PDF工具 -->
+            <div class="category-section" id="pdf" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">📄 PDF工具</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://smallpdf.com" class="site-card" target="_blank">
+                        <img src="https://smallpdf.com/favicon.ico" class="site-icon-img" alt="Smallpdf">
+                        <div class="site-info">
+                            <div class="site-name">Smallpdf</div>
+                            <div class="site-desc">全能PDF工具，转换、压缩、编辑</div>
+                        </div>
+                    </a>
+                    <a href="https://www.ilovepdf.com" class="site-card" target="_blank">
+                        <img src="https://www.ilovepdf.com/favicon.ico" class="site-icon-img" alt="iLovePDF">
+                        <div class="site-info">
+                            <div class="site-name">iLovePDF</div>
+                            <div class="site-desc">免费PDF处理工具合集</div>
+                        </div>
+                    </a>
+                    <a href="https://pdf2doc.com" class="site-card" target="_blank">
+                        <img src="https://pdf2doc.com/favicon.ico" class="site-icon-img" alt="PDF2DOC">
+                        <div class="site-info">
+                            <div class="site-name">PDF2DOC</div>
+                            <div class="site-desc">PDF转Word在线转换</div>
+                        </div>
+                    </a>
+                    <a href="https://tools.pdf24.org" class="site-card" target="_blank">
+                        <img src="https://tools.pdf24.org/favicon.ico" class="site-icon-img" alt="PDF24">
+                        <div class="site-info">
+                            <div class="site-name">PDF24 Tools</div>
+                            <div class="site-desc">免费在线PDF工具箱</div>
+                        </div>
+                    </a>
+                    <a href="https://www.pdfescape.com" class="site-card" target="_blank">
+                        <img src="https://www.pdfescape.com/favicon.ico" class="site-icon-img" alt="PDFescape">
+                        <div class="site-info">
+                            <div class="site-name">PDFescape</div>
+                            <div class="site-desc">在线PDF编辑器和表单填写</div>
+                        </div>
+                    </a>
+                    <a href="https://docsmall.com" class="site-card" target="_blank">
+                        <img src="https://docsmall.com/favicon.ico" class="site-icon-img" alt="Docsmall">
+                        <div class="site-info">
+                            <div class="site-name">Docsmall</div>
+                            <div class="site-desc">中文PDF压缩和转换工具</div>
+                        </div>
+                    </a>
+                    <a href="https://lightpdf.com" class="site-card" target="_blank">
+                        <img src="https://lightpdf.com/favicon.ico" class="site-icon-img" alt="LightPDF">
+                        <div class="site-info">
+                            <div class="site-name">LightPDF</div>
+                            <div class="site-desc">轻量级PDF在线处理工具</div>
+                        </div>
+                    </a>
+                    <a href="https://www.adobe.com/acrobat/online" class="site-card" target="_blank">
+                        <img src="https://www.adobe.com/favicon.ico" class="site-icon-img" alt="Adobe">
+                        <div class="site-info">
+                            <div class="site-name">Adobe Acrobat</div>
+                            <div class="site-desc">官方PDF在线服务，OCR识别</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 格式转换 -->
+            <div class="category-section" id="convert" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🔄 格式转换</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://convertio.co" class="site-card" target="_blank">
+                        <img src="https://convertio.co/favicon.ico" class="site-icon-img" alt="Convertio">
+                        <div class="site-info">
+                            <div class="site-name">Convertio</div>
+                            <div class="site-desc">全能文件格式转换，支持300+格式</div>
+                        </div>
+                    </a>
+                    <a href="https://www.zamzar.com" class="site-card" target="_blank">
+                        <img src="https://www.zamzar.com/favicon.ico" class="site-icon-img" alt="Zamzar">
+                        <div class="site-info">
+                            <div class="site-name">Zamzar</div>
+                            <div class="site-desc">在线文件转换，1200+格式支持</div>
+                        </div>
+                    </a>
+                    <a href="https://cloudconvert.com" class="site-card" target="_blank">
+                        <img src="https://cloudconvert.com/favicon.ico" class="site-icon-img" alt="CloudConvert">
+                        <div class="site-info">
+                            <div class="site-name">CloudConvert</div>
+                            <div class="site-desc">高质量文件转换，API支持</div>
+                        </div>
+                    </a>
+                    <a href="https://www.online-convert.com" class="site-card" target="_blank">
+                        <img src="https://www.online-convert.com/favicon.ico" class="site-icon-img" alt="Online Convert">
+                        <div class="site-info">
+                            <div class="site-name">Online-Convert</div>
+                            <div class="site-desc">免费在线媒体文件转换</div>
+                        </div>
+                    </a>
+                    <a href="https://www.alltoall.net" class="site-card" target="_blank">
+                        <img src="https://www.alltoall.net/favicon.ico" class="site-icon-img" alt="AllToAll">
+                        <div class="site-info">
+                            <div class="site-name">AllToAll</div>
+                            <div class="site-desc">中文全能格式转换平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.aconvert.com" class="site-card" target="_blank">
+                        <img src="https://www.aconvert.com/favicon.ico" class="site-icon-img" alt="Aconvert">
+                        <div class="site-info">
+                            <div class="site-name">Aconvert</div>
+                            <div class="site-desc">文档、图片、音视频转换</div>
+                        </div>
+                    </a>
+                    <a href="https://www.freeconvert.com" class="site-card" target="_blank">
+                        <img src="https://www.freeconvert.com/favicon.ico" class="site-icon-img" alt="FreeConvert">
+                        <div class="site-info">
+                            <div class="site-name">FreeConvert</div>
+                            <div class="site-desc">免费在线文件转换工具</div>
+                        </div>
+                    </a>
+                    <a href="https://www.pdftoword.com" class="site-card" target="_blank">
+                        <img src="https://www.pdftoword.com/favicon.ico" class="site-icon-img" alt="PDFtoWord">
+                        <div class="site-info">
+                            <div class="site-name">PDF to Word</div>
+                            <div class="site-desc">PDF与Office格式互转</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 在线设计 -->
+            <div class="category-section" id="design" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🎨 在线设计</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://www.canva.com" class="site-card" target="_blank">
+                        <img src="https://www.canva.com/favicon.ico" class="site-icon-img" alt="Canva">
+                        <div class="site-info">
+                            <div class="site-name">Canva</div>
+                            <div class="site-desc">全球领先的在线设计平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.figma.com" class="site-card" target="_blank">
+                        <img src="https://www.figma.com/favicon.ico" class="site-icon-img" alt="Figma">
+                        <div class="site-info">
+                            <div class="site-name">Figma</div>
+                            <div class="site-desc">专业UI/UX设计工具，实时协作</div>
+                        </div>
+                    </a>
+                    <a href="https://www.chuangkit.com" class="site-card" target="_blank">
+                        <img src="https://www.chuangkit.com/favicon.ico" class="site-icon-img" alt="创客贴">
+                        <div class="site-info">
+                            <div class="site-name">创客贴</div>
+                            <div class="site-desc">国产在线设计，海量模板</div>
+                        </div>
+                    </a>
+                    <a href="https://www.gaoding.com" class="site-card" target="_blank">
+                        <img src="https://www.gaoding.com/favicon.ico" class="site-icon-img" alt="稿定设计">
+                        <div class="site-info">
+                            <div class="site-name">稿定设计</div>
+                            <div class="site-desc">商业设计工具，电商素材丰富</div>
+                        </div>
+                    </a>
+                    <a href="https://www.sketch.com" class="site-card" target="_blank">
+                        <img src="https://www.sketch.com/favicon.ico" class="site-icon-img" alt="Sketch">
+                        <div class="site-info">
+                            <div class="site-name">Sketch</div>
+                            <div class="site-desc">Mac平台专业UI设计工具</div>
+                        </div>
+                    </a>
+                    <a href="https://www.photopea.com" class="site-card" target="_blank">
+                        <img src="https://www.photopea.com/favicon.ico" class="site-icon-img" alt="Photopea">
+                        <div class="site-info">
+                            <div class="site-name">Photopea</div>
+                            <div class="site-desc">免费在线PS，功能强大</div>
+                        </div>
+                    </a>
+                    <a href="https://www.remove.bg" class="site-card" target="_blank">
+                        <img src="https://www.remove.bg/favicon.ico" class="site-icon-img" alt="Remove.bg">
+                        <div class="site-info">
+                            <div class="site-name">Remove.bg</div>
+                            <div class="site-desc">AI自动抠图，去除背景</div>
+                        </div>
+                    </a>
+                    <a href="https://www.lunapic.com" class="site-card" target="_blank">
+                        <img src="https://www.lunapic.com/favicon.ico" class="site-icon-img" alt="LunaPic">
+                        <div class="site-info">
+                            <div class="site-name">LunaPic</div>
+                            <div class="site-desc">免费在线图片编辑器</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 免费图标 -->
+            <div class="category-section" id="icons" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🎯 免费图标</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://fontawesome.com" class="site-card" target="_blank">
+                        <img src="https://fontawesome.com/favicon.ico" class="site-icon-img" alt="FontAwesome">
+                        <div class="site-info">
+                            <div class="site-name">Font Awesome</div>
+                            <div class="site-desc">最流行的图标字体库</div>
+                        </div>
+                    </a>
+                    <a href="https://www.flaticon.com" class="site-card" target="_blank">
+                        <img src="https://www.flaticon.com/favicon.ico" class="site-icon-img" alt="Flaticon">
+                        <div class="site-info">
+                            <div class="site-name">Flaticon</div>
+                            <div class="site-desc">最大的免费矢量图标库</div>
+                        </div>
+                    </a>
+                    <a href="https://icons8.com" class="site-card" target="_blank">
+                        <img src="https://icons8.com/favicon.ico" class="site-icon-img" alt="Icons8">
+                        <div class="site-info">
+                            <div class="site-name">Icons8</div>
+                            <div class="site-desc">免费图标、插图、照片和音乐</div>
+                        </div>
+                    </a>
+                    <a href="https://iconmonstr.com" class="site-card" target="_blank">
+                        <img src="https://iconmonstr.com/favicon.ico" class="site-icon-img" alt="iconmonstr">
+                        <div class="site-info">
+                            <div class="site-name">iconmonstr</div>
+                            <div class="site-desc">简约风格免费图标库</div>
+                        </div>
+                    </a>
+                    <a href="https://heroicons.com" class="site-card" target="_blank">
+                        <img src="https://heroicons.com/favicon.ico" class="site-icon-img" alt="Heroicons">
+                        <div class="site-info">
+                            <div class="site-name">Heroicons</div>
+                            <div class="site-desc">Tailwind CSS官方图标集</div>
+                        </div>
+                    </a>
+                    <a href="https://tabler-icons.io" class="site-card" target="_blank">
+                        <img src="https://tabler-icons.io/favicon.ico" class="site-icon-img" alt="Tabler">
+                        <div class="site-info">
+                            <div class="site-name">Tabler Icons</div>
+                            <div class="site-desc">开源免费SVG图标库</div>
+                        </div>
+                    </a>
+                    <a href="https://www.iconfont.cn" class="site-card" target="_blank">
+                        <img src="https://www.iconfont.cn/favicon.ico" class="site-icon-img" alt="Iconfont">
+                        <div class="site-info">
+                            <div class="site-name">阿里巴巴Iconfont</div>
+                            <div class="site-desc">国内最大图标库，支持在线编辑</div>
+                        </div>
+                    </a>
+                    <a href="https://iconscout.com" class="site-card" target="_blank">
+                        <img src="https://iconscout.com/favicon.ico" class="site-icon-img" alt="Iconscout">
+                        <div class="site-info">
+                            <div class="site-name">Iconscout</div>
+                            <div class="site-desc">图标、插图、3D资源平台</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 图片素材 -->
+            <div class="category-section" id="images" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🖼️ 图片素材</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://unsplash.com" class="site-card" target="_blank">
+                        <img src="https://unsplash.com/favicon.ico" class="site-icon-img" alt="Unsplash">
+                        <div class="site-info">
+                            <div class="site-name">Unsplash</div>
+                            <div class="site-desc">高质量免费摄影图片</div>
+                        </div>
+                    </a>
+                    <a href="https://www.pexels.com" class="site-card" target="_blank">
+                        <img src="https://www.pexels.com/favicon.ico" class="site-icon-img" alt="Pexels">
+                        <div class="site-info">
+                            <div class="site-name">Pexels</div>
+                            <div class="site-desc">免费商用图片和视频素材</div>
+                        </div>
+                    </a>
+                    <a href="https://pixabay.com" class="site-card" target="_blank">
+                        <img src="https://pixabay.com/favicon.ico" class="site-icon-img" alt="Pixabay">
+                        <div class="site-info">
+                            <div class="site-name">Pixabay</div>
+                            <div class="site-desc">百万免费图片、矢量图和视频</div>
+                        </div>
+                    </a>
+                    <a href="https://www.freepik.com" class="site-card" target="_blank">
+                        <img src="https://www.freepik.com/favicon.ico" class="site-icon-img" alt="Freepik">
+                        <div class="site-info">
+                            <div class="site-name">Freepik</div>
+                            <div class="site-desc">矢量图、PSD、图标和照片</div>
+                        </div>
+                    </a>
+                    <a href="https://stocksnap.io" class="site-card" target="_blank">
+                        <img src="https://stocksnap.io/favicon.ico" class="site-icon-img" alt="StockSnap">
+                        <div class="site-info">
+                            <div class="site-name">StockSnap</div>
+                            <div class="site-desc">高质量免费库存照片</div>
+                        </div>
+                    </a>
+                    <a href="https://burst.shopify.com" class="site-card" target="_blank">
+                        <img src="https://burst.shopify.com/favicon.ico" class="site-icon-img" alt="Burst">
+                        <div class="site-info">
+                            <div class="site-name">Burst</div>
+                            <div class="site-desc">Shopify免费商业图片库</div>
+                        </div>
+                    </a>
+                    <a href="https://www.lifeofpix.com" class="site-card" target="_blank">
+                        <img src="https://www.lifeofpix.com/favicon.ico" class="site-icon-img" alt="LifeofPix">
+                        <div class="site-info">
+                            <div class="site-name">Life of Pix</div>
+                            <div class="site-desc">免费高分辨率摄影图片</div>
+                        </div>
+                    </a>
+                    <a href="https://www.foodiesfeed.com" class="site-card" target="_blank">
+                        <img src="https://www.foodiesfeed.com/favicon.ico" class="site-icon-img" alt="Foodiesfeed">
+                        <div class="site-info">
+                            <div class="site-name">Foodiesfeed</div>
+                            <div class="site-desc">免费美食摄影图片</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 设计字体 -->
+            <div class="category-section" id="fonts" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">🔤 设计字体</h2>
+                </div>
+                <div class="sites-grid">
+                    <a href="https://fonts.google.com" class="site-card" target="_blank">
+                        <img src="https://fonts.google.com/favicon.ico" class="site-icon-img" alt="Google Fonts">
+                        <div class="site-info">
+                            <div class="site-name">Google Fonts</div>
+                            <div class="site-desc">免费开源字体库，1500+字体</div>
+                        </div>
+                    </a>
+                    <a href="https://www.fontsquirrel.com" class="site-card" target="_blank">
+                        <img src="https://www.fontsquirrel.com/favicon.ico" class="site-icon-img" alt="Font Squirrel">
+                        <div class="site-info">
+                            <div class="site-name">Font Squirrel</div>
+                            <div class="site-desc">免费商用字体下载</div>
+                        </div>
+                    </a>
+                    <a href="https://www.dafont.com" class="site-card" target="_blank">
+                        <img src="https://www.dafont.com/favicon.ico" class="site-icon-img" alt="DaFont">
+                        <div class="site-info">
+                            <div class="site-name">DaFont</div>
+                            <div class="site-desc">海量免费字体下载</div>
+                        </div>
+                    </a>
+                    <a href="https://www.1001fonts.com" class="site-card" target="_blank">
+                        <img src="https://www.1001fonts.com/favicon.ico" class="site-icon-img" alt="1001 Fonts">
+                        <div class="site-info">
+                            <div class="site-name">1001 Fonts</div>
+                            <div class="site-desc">免费字体下载平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.fontspace.com" class="site-card" target="_blank">
+                        <img src="https://www.fontspace.com/favicon.ico" class="site-icon-img" alt="FontSpace">
+                        <div class="site-info">
+                            <div class="site-name">FontSpace</div>
+                            <div class="site-desc">设计师分享免费字体</div>
+                        </div>
+                    </a>
+                    <a href="https://www.ziticq.com" class="site-card" target="_blank">
+                        <img src="https://www.ziticq.com/favicon.ico" class="site-icon-img" alt="字体传奇">
+                        <div class="site-info">
+                            <div class="site-name">字体传奇</div>
+                            <div class="site-desc">中文字体品牌设计师交流</div>
+                        </div>
+                    </a>
+                    <a href="https://www.qiuziti.com" class="site-card" target="_blank">
+                        <img src="https://www.qiuziti.com/favicon.ico" class="site-icon-img" alt="求字体">
+                        <div class="site-info">
+                            <div class="site-name">求字体网</div>
+                            <div class="site-desc">上传图片识别字体</div>
+                        </div>
+                    </a>
+                    <a href="https://www.hellofont.cn" class="site-card" target="_blank">
+                        <img src="https://www.hellofont.cn/favicon.ico" class="site-icon-img" alt="字由">
+                        <div class="site-info">
+                            <div class="site-name">字由</div>
+                            <div class="site-desc">字体管理工具，设计师必备</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 省钱能手 -->
+            <div class="category-section" id="moneysaver" style="display: none;">
+                <div class="category-header">
+                    <h2 class="category-title">💰 省钱能手</h2>
+                </div>
+                
+                <!-- 购物返利 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #ff6b6b;">🎁 购物返利</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.fanli.com" class="site-card" target="_blank">
+                            <img src="https://www.fanli.com/favicon.ico" class="site-icon-img" alt="返利网">
+                            <div class="site-info">
+                                <div class="site-name">返利网</div>
+                                <div class="site-desc">国内老牌返利平台，淘宝京东返利</div>
+                            </div>
+                        </a>
+                        <a href="https://www.huihui.cn.com" class="site-card" target="_blank">
+                            <img src="https://www.huihui.cn.com/favicon.ico" class="site-icon-img" alt="惠惠" onerror="this.src='https://www.google.com/s2/favicons?domain=huihui.cn.com'">
+                            <div class="site-info">
+                                <div class="site-name">惠惠购物助手</div>
+                                <div class="site-desc">网易出品，比价返利一站式服务</div>
+                            </div>
+                        </a>
+                        <a href="https://www.yitao.com" class="site-card" target="_blank">
+                            <img src="https://www.yitao.com/favicon.ico" class="site-icon-img" alt="一淘" onerror="this.src='https://www.google.com/s2/favicons?domain=yitao.com'">
+                            <div class="site-info">
+                                <div class="site-name">一淘</div>
+                                <div class="site-desc">阿里官方返利，淘宝天猫返利</div>
+                            </div>
+                        </a>
+                        <a href="https://www.miyabaobei.com" class="site-card" target="_blank">
+                            <img src="https://www.miyabaobei.com/favicon.ico" class="site-icon-img" alt="蜜芽">
+                            <div class="site-info">
+                                <div class="site-name">蜜芽宝贝</div>
+                                <div class="site-desc">母婴返利购物平台</div>
+                            </div>
+                        </a>
+                        <a href="https://www.ele.me" class="site-card" target="_blank">
+                            <img src="https://www.ele.me/favicon.ico" class="site-icon-img" alt="饿了么">
+                            <div class="site-info">
+                                <div class="site-name">饿了么返利</div>
+                                <div class="site-desc">外卖红包返利，天天领红包</div>
+                            </div>
+                        </a>
+                        <a href="https://www.meituan.com" class="site-card" target="_blank">
+                            <img src="https://www.meituan.com/favicon.ico" class="site-icon-img" alt="美团">
+                            <div class="site-info">
+                                <div class="site-name">美团返利</div>
+                                <div class="site-desc">团购外卖返利，吃喝玩乐省钱</div>
+                            </div>
+                        </a>
+                        <a href="https://www.topcashback.cn" class="site-card" target="_blank">
+                            <img src="https://www.topcashback.cn/favicon.ico" class="site-icon-img" alt="TopCashback" onerror="this.src='https://www.google.com/s2/favicons?domain=topcashback.cn'">
+                            <div class="site-info">
+                                <div class="site-name">TopCashback</div>
+                                <div class="site-desc">国际返利网站，海淘返利首选</div>
+                            </div>
+                        </a>
+                        <a href="https://www.rakuten.com" class="site-card" target="_blank">
+                            <img src="https://www.rakuten.com/favicon.ico" class="site-icon-img" alt="Rakuten">
+                            <div class="site-info">
+                                <div class="site-name">Rakuten</div>
+                                <div class="site-desc">美国最大返利网，支持PayPal提现</div>
+                            </div>
+                        </a>
+                        <a href="https://union.jd.com/index" class="site-card" target="_blank">
+                            <img src="https://union.jd.com/favicon.ico" class="site-icon-img" alt="京粉" onerror="this.src='https://www.google.com/s2/favicons?domain=jd.com'">
+                            <div class="site-info">
+                                <div class="site-name">京粉返利</div>
+                                <div class="site-desc">京东官方返利平台，自购省钱分享赚钱</div>
+                            </div>
+                        </a>
+                        <a href="https://buyin.jinritemai.com" class="site-card" target="_blank">
+                            <img src="https://buyin.jinritemai.com/favicon.ico" class="site-icon-img" alt="抖音电商" onerror="this.src='https://www.google.com/s2/favicons?domain=douyin.com'">
+                            <div class="site-info">
+                                <div class="site-name">抖音返利</div>
+                                <div class="site-desc">抖音电商精选联盟，短视频带货返利</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 比价查价 -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 15px; color: #666; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #4ecdc4;">📊 比价查价</h3>
+                    <div class="sites-grid">
+                        <a href="https://www.smzdm.com" class="site-card" target="_blank">
+                            <img src="https://www.smzdm.com/favicon.ico" class="site-icon-img" alt="什么值得买">
+                            <div class="site-info">
+                                <div class="site-name">什么值得买</div>
+                                <div class="site-desc">消费决策平台，购物攻略、优惠信息聚合</div>
+                            </div>
+                        </a>
+                        <a href="https://www.gwdang.com" class="site-card" target="_blank">
+                            <img src="https://www.gwdang.com/favicon.ico" class="site-icon-img" alt="购物党">
+                            <div class="site-info">
+                                <div class="site-name">购物党</div>
+                                <div class="site-desc">历史价格查询，自动比价，防止买贵</div>
+                            </div>
+                        </a>
+                        <a href="https://www.manmanbuy.com" class="site-card" target="_blank">
+                            <img src="https://www.manmanbuy.com/favicon.ico" class="site-icon-img" alt="慢慢买">
+                            <div class="site-info">
+                                <div class="site-name">慢慢买</div>
+                                <div class="site-desc">比价网，历史价格走势，降价提醒</div>
+                            </div>
+                        </a>
+                        <a href="https://www.quanmama.com" class="site-card" target="_blank">
+                            <img src="https://www.quanmama.com/favicon.ico" class="site-icon-img" alt="券妈妈">
+                            <div class="site-info">
+                                <div class="site-name">券妈妈</div>
+                                <div class="site-desc">优惠券分享平台，淘宝京东优惠券领取</div>
+                        </div>
+                    </a>
+                    <a href="https://www.taobao.com" class="site-card" target="_blank">
+                        <img src="https://www.taobao.com/favicon.ico" class="site-icon-img" alt="淘宝">
+                        <div class="site-info">
+                            <div class="site-name">淘宝</div>
+                            <div class="site-desc">国内最大电商平台，各种优惠活动</div>
+                        </div>
+                    </a>
+                    <a href="https://www.jd.com" class="site-card" target="_blank">
+                        <img src="https://www.jd.com/favicon.ico" class="site-icon-img" alt="京东">
+                        <div class="site-info">
+                            <div class="site-name">京东</div>
+                            <div class="site-desc">自营品质保障，618、双11大促优惠</div>
+                        </div>
+                    </a>
+                    <a href="https://www.pinduoduo.com" class="site-card" target="_blank">
+                        <img src="https://www.pinduoduo.com/favicon.ico" class="site-icon-img" alt="拼多多">
+                        <div class="site-info">
+                            <div class="site-name">拼多多</div>
+                            <div class="site-desc">团购拼单，百亿补贴，低价好物</div>
+                        </div>
+                    </a>
+                    <a href="https://www.vip.com" class="site-card" target="_blank">
+                        <img src="https://www.vip.com/favicon.ico" class="site-icon-img" alt="唯品会">
+                        <div class="site-info">
+                            <div class="site-name">唯品会</div>
+                            <div class="site-desc">品牌特卖，折扣商品，限时抢购</div>
+                        </div>
+                    </a>
+                    <a href="https://www.tmall.com" class="site-card" target="_blank">
+                        <img src="https://www.tmall.com/favicon.ico" class="site-icon-img" alt="天猫">
+                        <div class="site-info">
+                            <div class="site-name">天猫</div>
+                            <div class="site-desc">品牌官方旗舰店，品质保证</div>
+                        </div>
+                    </a>
+                    <a href="https://www.suning.com" class="site-card" target="_blank">
+                        <img src="https://www.suning.com/favicon.ico" class="site-icon-img" alt="苏宁">
+                        <div class="site-info">
+                            <div class="site-name">苏宁易购</div>
+                            <div class="site-desc">家电数码购物平台，线上线下结合</div>
+                        </div>
+                    </a>
+                    <a href="https://www.amazon.cn" class="site-card" target="_blank">
+                        <img src="https://www.amazon.cn/favicon.ico" class="site-icon-img" alt="亚马逊">
+                        <div class="site-info">
+                            <div class="site-name">亚马逊中国</div>
+                            <div class="site-desc">全球购、Kindle电子书、海外商品</div>
+                        </div>
+                    </a>
+                    <a href="https://www.dangdang.com" class="site-card" target="_blank">
+                        <img src="https://www.dangdang.com/favicon.ico" class="site-icon-img" alt="当当">
+                        <div class="site-info">
+                            <div class="site-name">当当网</div>
+                            <div class="site-desc">网上购书首选，图书音像折扣多</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>© 2026 开发者导航 | 程序员必备工具网站收藏</p>
+            </div>
+        </main>
+        
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-title">站点公告</div>
+                <div class="notice-item">
+                    欢迎使用开发者导航！本站收录了程序员常用的工具和资源网站。
+                    <div class="notice-time">刚刚</div>
+                </div>
+                <div class="notice-item">
+                    新增AI工具分类，收录ChatGPT、Claude等热门AI服务
+                    <div class="notice-time">1天前</div>
+                </div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-title">热门标签</div>
+                <div class="hot-tags">
+                    <a href="#" class="hot-tag">人工智能</a>
+                    <a href="#" class="hot-tag">前端开发</a>
+                    <a href="#" class="hot-tag">开源项目</a>
+                    <a href="#" class="hot-tag">代码托管</a>
+                    <a href="#" class="hot-tag">在线工具</a>
+                    <a href="#" class="hot-tag">API接口</a>
+                    <a href="#" class="hot-tag">设计资源</a>
+                    <a href="#" class="hot-tag">学习平台</a>
+                </div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-title">快捷入口</div>
+                <ul class="sidebar-menu">
+                    <li><a href="https://www.google.com" target="_blank">Google</a></li>
+                    <li><a href="https://www.baidu.com" target="_blank">百度搜索</a></li>
+                    <li><a href="https://www.bing.com" target="_blank">Bing搜索</a></li>
+                    <li><a href="https://www.zhihu.com" target="_blank">知乎</a></li>
+                    <li><a href="https://www.weibo.com" target="_blank">微博</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    
+    <script>
+        function doSearch() {
+            const input = document.getElementById('searchInput').value;
+            if (input) {
+                if (input.startsWith('http')) {
+                    window.open(input, '_blank');
+                } else {
+                    window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(input), '_blank');
+                }
+            }
+        }
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                doSearch();
+            }
+        });
+        
+        // 搜索标签切换
+        document.querySelectorAll('.search-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // ==================== 链接编辑功能 ====================
+        let isEditMode = false;
+        
+        // 加载保存的链接
+        function loadSavedLinks() {
+            const savedLinks = localStorage.getItem('customLinks');
+            if (savedLinks) {
+                const links = JSON.parse(savedLinks);
+                document.querySelectorAll('.site-card').forEach((card, index) => {
+                    if (links[index]) {
+                        card.href = links[index];
+                    }
+                });
+            }
+        }
+        
+        // 切换编辑模式
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const btn = document.getElementById('editLinksBtn');
+            
+            if (isEditMode) {
+                btn.textContent = '💾 保存修改';
+                btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                enableEditMode();
+            } else {
+                btn.textContent = '✏️ 编辑链接';
+                btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                saveLinks();
+                disableEditMode();
+            }
+        }
+        
+        // 启用编辑模式
+        function enableEditMode() {
+            document.querySelectorAll('.site-card').forEach((card, index) => {
+                // 创建编辑容器
+                const editContainer = document.createElement('div');
+                editContainer.className = 'edit-container';
+                editContainer.style.cssText = 'position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.98); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; justify-content: center; gap: 6px; z-index: 100; border: 2px solid #667eea; overflow: hidden; box-sizing: border-box;';
+                
+                // 序号显示
+                const indexLabel = document.createElement('div');
+                indexLabel.textContent = `#${index + 1}`;
+                indexLabel.style.cssText = 'position: absolute; top: 4px; right: 6px; font-size: 10px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 10px;';
+                editContainer.appendChild(indexLabel);
+                
+                // 网站名称输入
+                const nameLabel = document.createElement('label');
+                nameLabel.textContent = '名称:';
+                nameLabel.style.cssText = 'font-size: 10px; color: #666; font-weight: 600; margin: 0;';
+                editContainer.appendChild(nameLabel);
+                
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.value = card.querySelector('.site-name').textContent;
+                nameInput.className = 'edit-name-input';
+                nameInput.style.cssText = 'width: 100%; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; box-sizing: border-box; height: 24px; margin: 0;';
+                editContainer.appendChild(nameInput);
+                
+                // 链接输入
+                const linkLabel = document.createElement('label');
+                linkLabel.textContent = '链接:';
+                linkLabel.style.cssText = 'font-size: 10px; color: #666; font-weight: 600; margin: 0;';
+                editContainer.appendChild(linkLabel);
+                
+                const linkInput = document.createElement('input');
+                linkInput.type = 'text';
+                linkInput.value = card.href;
+                linkInput.className = 'edit-link-input';
+                linkInput.style.cssText = 'width: 100%; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; box-sizing: border-box; height: 24px; margin: 0;';
+                linkInput.placeholder = 'https://...';
+                editContainer.appendChild(linkInput);
+                
+                card.style.position = 'relative';
+                card.appendChild(editContainer);
+                
+                // 阻止链接跳转
+                card.addEventListener('click', preventClick, true);
+            });
+            
+            // 显示提示
+            showToast('编辑模式已开启，修改完成后点击"保存修改"');
+        }
+        
+        // 禁用编辑模式
+        function disableEditMode() {
+            document.querySelectorAll('.edit-container').forEach(container => {
+                container.remove();
+            });
+            
+            document.querySelectorAll('.site-card').forEach(card => {
+                card.removeEventListener('click', preventClick, true);
+            });
+            
+            showToast('链接已保存！');
+        }
+        
+        // 阻止点击事件
+        function preventClick(e) {
+            if (isEditMode) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+        
+        // 保存链接
+        function saveLinks() {
+            const links = [];
+            const names = [];
+            
+            document.querySelectorAll('.site-card').forEach(card => {
+                const linkInput = card.querySelector('.edit-link-input');
+                const nameInput = card.querySelector('.edit-name-input');
+                
+                if (linkInput && linkInput.value) {
+                    card.href = linkInput.value;
+                    links.push(linkInput.value);
+                } else {
+                    links.push(card.href);
+                }
+                
+                if (nameInput && nameInput.value) {
+                    card.querySelector('.site-name').textContent = nameInput.value;
+                    names.push(nameInput.value);
+                } else {
+                    names.push(card.querySelector('.site-name').textContent);
+                }
+            });
+            
+            localStorage.setItem('customLinks', JSON.stringify(links));
+            localStorage.setItem('customNames', JSON.stringify(names));
+        }
+        
+        // 加载保存的名称
+        function loadSavedNames() {
+            const savedNames = localStorage.getItem('customNames');
+            if (savedNames) {
+                const names = JSON.parse(savedNames);
+                document.querySelectorAll('.site-card').forEach((card, index) => {
+                    if (names[index]) {
+                        card.querySelector('.site-name').textContent = names[index];
+                    }
+                });
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = 'position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); animation: fadeIn 0.3s ease;';
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // 页面加载时恢复保存的链接
+        loadSavedLinks();
+        loadSavedNames();
+        
+        // 侧边栏菜单切换 - 处理所有分类
+        const sectionMap = {
+            // 置顶推荐
+            '精选热门': 'home',
+            '省钱能手': 'moneysaver',
+            // 人工智能
+            '聊天对话': 'chat',
+            '智能生图': 'imageai',
+            '代码辅助': 'codeai',
+            '写作论文': 'writing',
+            '智能搜索': 'searchai',
+            '模型广场': 'models',
+            // 开发工具
+            '代码托管': 'codehost',
+            'API工具': 'apitools',
+            '在线编辑器': 'editor',
+            '正则工具': 'regex',
+            'JSON工具': 'json',
+            // 办公工具
+            '文档笔记': 'notes',
+            '网盘存储': 'cloud',
+            'PDF工具': 'pdf',
+            '格式转换': 'convert',
+            // 设计资源
+            '在线设计': 'design',
+            '免费图标': 'icons',
+            '图片素材': 'images',
+            '设计字体': 'fonts'
+        };
+        
+        // 获取所有sidebar-section（前5个：置顶推荐、人工智能、开发工具、办公工具、设计资源）
+        const sidebarSections = document.querySelectorAll('.sidebar-section');
+        const clickableSections = [
+            sidebarSections[0], // 置顶推荐
+            sidebarSections[1], // 人工智能
+            sidebarSections[2], // 开发工具
+            sidebarSections[3], // 办公工具
+            sidebarSections[4]  // 设计资源
+        ];
+        
+        clickableSections.forEach(section => {
+            if (section) {
+                section.querySelectorAll('.sidebar-menu a').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const text = this.textContent.trim();
+                        
+                        // 只在可点击的section内移除active
+                        clickableSections.forEach(s => {
+                            if (s) s.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                        });
+                        this.classList.add('active');
+                        
+                        // 隐藏所有分类区域
+                        const mainContent = document.querySelector('.main-content');
+                        const allHeaders = mainContent.querySelectorAll(':scope > .category-header');
+                        const allGrids = mainContent.querySelectorAll(':scope > .sites-grid');
+                        const cs2Section = mainContent.querySelector('.cs2-section');
+                        const categorySections = mainContent.querySelectorAll('.category-section');
+                        
+                        const targetId = sectionMap[text];
+                        
+                        if (targetId === 'home') {
+                            // 显示首页内容
+                            categorySections.forEach(el => el.style.display = 'none');
+                            allHeaders.forEach(el => el.style.display = '');
+                            allGrids.forEach(el => el.style.display = '');
+                            if (cs2Section) cs2Section.style.display = '';
+                        } else if (targetId) {
+                            // 隐藏首页内容，显示对应分类
+                            allHeaders.forEach(el => el.style.display = 'none');
+                            allGrids.forEach(el => el.style.display = 'none');
+                            if (cs2Section) cs2Section.style.display = 'none';
+                            categorySections.forEach(el => el.style.display = 'none');
+                            const targetEl = document.getElementById(targetId);
+                            if (targetEl) targetEl.style.display = 'block';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
